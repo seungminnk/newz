@@ -13,5 +13,18 @@ class _HomeViewState extends State<HomeView> {
     return Center(
       child: Text("HOME"),
     );
+    // return Scaffold(
+    //   appBar: PreferredSize(
+    //     preferredSize: const Size.fromHeight(56),
+    //     child: AppBar(title: Text('홈바입니다.'),),
+    //   ),
+    //   body: Container(
+    //     width: double.infinity,
+    //     height: double.infinity,
+    //     child: Center(
+    //       child: Text("테스트 페이지이죠."),
+    //     ),
+    //   ),
+    // );
   }
 }
