@@ -2,22 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:newz/feature/application/controller/application_controller.dart';
-import 'package:newz/feature/home/home_view.dart';
-import 'package:newz/feature/mypage/mypage_view.dart';
-import 'package:newz/feature/search/search_view.dart';
+import 'package:newz/feature/home/view/home_view.dart';
+import 'package:newz/feature/mypage/view/mypage_view.dart';
+import 'package:newz/feature/search/view/search_view.dart';
 
 class ApplicationView extends GetView<ApplicationController> {
   const ApplicationView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    Get.put(ApplicationController());
+    // Get.put(ApplicationController());
 
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(border: Border.all()),
-        child: _buildPageView(),
-      ),
+      body: _buildPageView(),
       bottomNavigationBar: _buildBottomNavigationBar(controller),
     );
   }
