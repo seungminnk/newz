@@ -13,6 +13,7 @@ class _AdsTestViewState extends State<AdsTestView> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(title: const Text("Native 광고 테스트")),
       body: ListView.separated(
