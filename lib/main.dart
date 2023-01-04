@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:newz/application/routes/app_routes.dart';
 import 'package:newz/application/routes/app_routes_info.dart';
 import 'package:newz/feature/application/controller/application_controller.dart';
 
 void main() {
-  controllerInit();
+  _controllerInit();
   runApp(const MyApp());
 }
 
-void controllerInit(){
+void _controllerInit(){
   Get.lazyPut(() => ApplicationController());
 }
 
