@@ -56,8 +56,19 @@
 
             <FrameLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
 
+                <TextView
+                    android:id="@+id/tv_image_native_ad_attribution_large"
+                    android:layout_width="240dp"
+                    android:layout_height="190dp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:background="#F19938"
+                    android:text="Ad"
+                    android:textColor="#FFFFFF"
+                    android:textSize="30sp" />
 
                 <ImageView
                     android:id="@+id/iv_image_native_ad_icon"
@@ -65,16 +76,6 @@
                     android:layout_height="190dp"
                     android:background="#EDEDED"
                     android:scaleType="fitXY" />
-                <TextView
-                    android:id="@+id/tv_image_native_ad_attribution_large"
-                    android:layout_width="240dp"
-                    android:layout_height="190dp"
-                    android:gravity="center"
-                    android:background="#F19938"
-                    android:text="Ad"
-                    android:textColor="#FFFFFF"
-                    android:textSize="30sp" />
-
 
             </FrameLayout>
 
