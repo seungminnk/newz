@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:newz/feature/ads/util/AdHelperUtil.dart';
 
-class AdsView extends StatefulWidget {
-  const AdsView({Key? key}) : super(key: key);
+class NewzComponentAdView extends StatefulWidget {
+  const NewzComponentAdView({Key? key}) : super(key: key);
 
   @override
-  State<AdsView> createState() => _AdsViewState();
+  State<NewzComponentAdView> createState() => _NewzComponentAdViewState();
 }
 
-class _AdsViewState extends State<AdsView> {
+class _NewzComponentAdViewState extends State<NewzComponentAdView> {
 
   NativeAd? _ad;
 
