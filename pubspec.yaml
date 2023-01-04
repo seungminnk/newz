@@ -38,6 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   get: ^4.6.5
   flutter_svg: ^1.1.6
+  google_mobile_ads: ^2.3.0
 
 dev_dependencies:
   flutter_test:
