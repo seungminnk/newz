@@ -56,7 +56,7 @@ class _NewzComponentAdViewState extends State<NewzComponentAdView> {
           print("error code : ${loadAdError.code}, error message : ${loadAdError.message}");
         }
       ),
-    );
+    ).load();
   }
 }
 
