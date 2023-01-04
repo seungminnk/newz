@@ -5,6 +5,7 @@ import 'package:newz/feature/application/controller/application_controller.dart'
 import 'package:newz/feature/home/view/home_view.dart';
 import 'package:newz/feature/mypage/view/mypage_view.dart';
 import 'package:newz/feature/search/view/search_view.dart';
+import 'package:newz/feature/test_page/view/test_page_view.dart';
 
 class ApplicationView extends GetView<ApplicationController> {
   const ApplicationView({Key? key}) : super(key: key);
@@ -27,6 +28,7 @@ class ApplicationView extends GetView<ApplicationController> {
         HomeView(),
         SearchView(),
         MyPageView(),
+        TestPageView(),
       ],
     );
   }
@@ -65,6 +67,21 @@ class ApplicationView extends GetView<ApplicationController> {
                 "assets/icons/user.svg",
                 color: Colors.lightBlue,
               ),
+            ),
+            BottomNavigationBarItem(
+              label: "",
+              icon: SizedBox(
+                width: 23,
+                height: 23,
+                child: SvgPicture.asset("assets/icons/experiment.svg"),
+              ),
+              activeIcon: SizedBox(
+                  width: 23,
+                  height: 23,
+                  child: SvgPicture.asset(
+                    "assets/icons/experiment.svg",
+                    color: Colors.lightBlue,
+                  )),
             ),
           ],
         ),
