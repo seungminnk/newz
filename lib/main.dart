@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newz/application/routes/app_routes.dart';
 import 'package:newz/application/routes/app_routes_info.dart';
+import 'package:newz/feature/application/controller/application_controller.dart';
 
 void main() {
+  controllerInit();
   runApp(const MyApp());
+}
+
+void controllerInit(){
+  Get.lazyPut(() => ApplicationController());
 }
 
 class MyApp extends StatelessWidget {
@@ -13,20 +19,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return MaterialApp(
-    //   debugShowCheckedModeBanner: false,
-    //   home: SafeArea(
-    //     child: GetMaterialApp(
-    //       title: 'newz',
-    //       theme: ThemeData(
-    //         primarySwatch: Colors.blue,
-    //       ),
-    //       initialRoute: AppRoutes.application,
-    //       routes: AppRoutesInfo.details,
-    //     ),
-    //   ),
-    // );
-    return GetMaterialApp(
+
+    return MaterialApp(
       title: 'newz',
       theme: ThemeData(
         primarySwatch: Colors.blue,
