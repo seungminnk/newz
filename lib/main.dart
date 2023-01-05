@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'newz',
       theme: ThemeData(
+        fontFamily: 'Pretendard',
         primarySwatch: Colors.blue,
       ),
       initialRoute: AppRoutes.application,
