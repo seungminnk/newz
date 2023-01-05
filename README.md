@@ -1,16 +1,17 @@
 # newz
 
-A new Flutter project.
+> 키워드 위주의 뉴스를 제공
 
-## Getting Started
+Code in songdo Flutter 2022 사이드 프로젝트
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## 구성원
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- 팀장 : 곽승민
+- 팀원 : 최수형
+- 팀원 : 주해성
+- 팀원 : 예선
+- 디자이너 : 정원식
+- 멘토 : 손민재
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
