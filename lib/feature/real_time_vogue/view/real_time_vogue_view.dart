@@ -13,7 +13,7 @@ class RealTimeVogueView extends GetView<RealTimeVogueController> {
         title: const Text('인기 페이지 테스트'),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+        padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
         child: ListView.separated(
           physics: const BouncingScrollPhysics(),
           itemCount: controller.mockRealTimeVogueList.length,
@@ -29,7 +29,7 @@ class RealTimeVogueView extends GetView<RealTimeVogueController> {
           },
           separatorBuilder: (context, index) {
             return const SizedBox(
-              height: 5,
+              height: 15,
             );
           },
         ),
@@ -41,7 +41,7 @@ class RealTimeVogueView extends GetView<RealTimeVogueController> {
     return Column(
       children: [
         _vogueNewsKeyword(realTimeVogueBaseDto),
-        const SizedBox(height: 10),
+        const SizedBox(height: 7),
         _vogueNewsCardView(realTimeVogueBaseDto)
       ],
     );
@@ -100,6 +100,7 @@ class RealTimeVogueView extends GetView<RealTimeVogueController> {
                       fontSize: 16.0
                     ),
                   ),
+                  const SizedBox(height: 10,),
                   Text(
                     realTimeVogueBaseDto.content,
                     maxLines: 2,
