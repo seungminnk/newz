@@ -12,6 +12,6 @@ Code in songdo Flutter 2022 사이드 프로젝트
 - 팀원 : 주해성 :computer:[github](https://github.com/sggnology), :email:sggnology@gmail.com 
 - 팀원 : 예선
 - 디자이너 : 정원식
-- 멘토 : 손민재
+- 멘토 : 손민재 [:octocat:](http://github.com/bungabear) [:envelope:](bungabear6422@gmail.com)
 
 
