@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:newz/application/routes/app_routes.dart';
 import 'package:newz/application/routes/app_routes_info.dart';
 import 'package:newz/feature/application/controller/application_controller.dart';
@@ -11,19 +10,17 @@ void main() {
   runApp(const MyApp());
 }
 
-void _controllerInit(){
+void _controllerInit() {
   Get.lazyPut(() => ApplicationController());
 
   Get.lazyPut(() => RealTimeVogueController());
 }
 
 class MyApp extends StatelessWidget {
-
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       title: 'newz',
       theme: ThemeData(
@@ -32,6 +29,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: AppRoutes.application,
       routes: AppRoutesInfo.details,
+      debugShowCheckedModeBanner: false,
     );
   }
 }
