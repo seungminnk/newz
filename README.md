@@ -9,7 +9,7 @@ Code in songdo Flutter 2022 사이드 프로젝트
 
 - 팀장 : 곽승민
 - 팀원 : 최수형
-- 팀원 : 주해성 :computer:[github](https://github.com/sggnology), :email:sggnology@gmail.com 
+- 팀원 : 주해성 [:octocat:](https://github.com/sggnology) :mailbox:sggnology@gmail.com
 - 팀원 : 예선
 - 디자이너 : 정원식
 - 멘토 : 손민재 [:octocat:](http://github.com/bungabear) [:envelope:](bungabear6422@gmail.com)
