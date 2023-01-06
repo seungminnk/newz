@@ -8,7 +8,7 @@ Code in songdo Flutter 2022 사이드 프로젝트
 ## 구성원
 
 - 팀장 : 곽승민 [:octocat:](http://github.com/seungminnk) [:envelope:](minimani.juice@gmail.com)
-- 팀원 : 최수형 [:octocat:](http://github.com/tngudzzz) [:envelope:](tngudzzz@gmail.com)
+- 팀원 : 최수형 [:octocat:](http://github.com/tngudzzz) :mailbox:tngudzzz@gmail.com
 - 팀원 : 주해성 [:octocat:](https://github.com/sggnology) :mailbox:sggnology@gmail.com
 - 팀원 : 예선
 - 디자이너 : 정원식
