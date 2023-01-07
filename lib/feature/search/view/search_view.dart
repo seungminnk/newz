@@ -19,7 +19,6 @@ class _SearchViewState extends State<SearchView> {
       });
     });
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
