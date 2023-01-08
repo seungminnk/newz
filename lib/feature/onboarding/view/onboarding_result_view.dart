@@ -19,7 +19,7 @@ class _OnboardingResultViewState extends State<OnboardingResultView> {
       body: Stack(
         children: [
           Opacity(
-            opacity: 0.3,
+            opacity: 0.25,
             child: Container(
               color: const Color(0xFF263238),
             ),
@@ -45,7 +45,7 @@ class _OnboardingResultViewState extends State<OnboardingResultView> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 30),
               Column(
                 children: const [
                   Text(
@@ -74,41 +74,33 @@ class _OnboardingResultViewState extends State<OnboardingResultView> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 40),
               Expanded(
-                child: SizedBox(
-                  height: double.infinity,
-                  child: SingleChildScrollView(
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          for (var keyword in widget.enteredKeywords)
-                            Container(
-                              margin: const EdgeInsets.all(8),
-                              padding: const EdgeInsets.only(
-                                left: 15,
-                                right: 15,
-                                top: 10,
-                                bottom: 10,
-                              ),
-                              // padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF3F51B5),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                keyword,
-                                style: const TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                        ],
+                child: Row(
+                  children: [
+                    const Expanded(
+                      flex: 1,
+                      child: SizedBox(),
+                    ),
+                    Expanded(
+                      flex: 14,
+                      child: Container(
+                        alignment: Alignment.topCenter,
+                        child: Wrap(
+                          direction: Axis.horizontal,
+                          alignment: WrapAlignment.start,
+                          children: [
+                            for (var keyword in widget.enteredKeywords)
+                              _generateEnteredKeywordTag(keyword),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
+                    const Expanded(
+                      flex: 1,
+                      child: SizedBox(),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 20),
@@ -132,6 +124,30 @@ class _OnboardingResultViewState extends State<OnboardingResultView> {
             ],
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _generateEnteredKeywordTag(String keyword) {
+    return Container(
+      margin: const EdgeInsets.all(8),
+      padding: const EdgeInsets.only(
+        left: 15,
+        right: 15,
+        top: 10,
+        bottom: 10,
+      ),
+      // padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: const Color(0xFF3F51B5),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Text(
+        keyword,
+        style: const TextStyle(
+          fontSize: 12,
+          color: Colors.white,
+        ),
       ),
     );
   }
