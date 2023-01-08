@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:newz/feature/onboarding/view/onboarding_result_view.dart';
+
 class OnboardingView extends StatefulWidget {
   const OnboardingView({Key? key}) : super(key: key);
 
@@ -9,7 +11,7 @@ class OnboardingView extends StatefulWidget {
 
 class _OnboardingViewState extends State<OnboardingView> {
   final TextEditingController _textEditingController = TextEditingController();
-  final List<String> _keywords = ["테슬라", "축구", "아이유", "올림픽"];
+  final List<String> _enteredKeywords = ["테슬라", "축구", "아이유", "올림픽"];
   final List<String> _fixedKeywords = [
     "키워드1",
     "키워드2",
@@ -38,14 +40,14 @@ class _OnboardingViewState extends State<OnboardingView> {
                 Text(
                   "길동님이 관심있는",
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
                   "키워드를 입력해주세요",
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -53,14 +55,15 @@ class _OnboardingViewState extends State<OnboardingView> {
                 Text(
                   "최대 9개까지 입력할 수 있어요",
                   style: TextStyle(
-                    fontSize: 16,
+                    fontSize: 14,
                   ),
                 ),
               ],
             ),
           ),
           Container(
-            // color: Colors.lightGreen,
+            height: 40,
+            padding: EdgeInsets.zero,
             margin: const EdgeInsets.only(
               top: 0,
               bottom: 20,
@@ -69,14 +72,18 @@ class _OnboardingViewState extends State<OnboardingView> {
             ),
             child: TextField(
               controller: _textEditingController,
-              onSubmitted: _onSubmitted,
+              textAlignVertical: TextAlignVertical.center,
+              onSubmitted: _onEnteredKeyword,
+              style: const TextStyle(
+                fontSize: 14,
+              ),
               decoration: InputDecoration(
                 hintText: "원하는 키워드를 적어보아요",
                 prefixIcon: const Icon(Icons.search),
                 suffixIcon: GestureDetector(
                   child: const Icon(
                     Icons.cancel,
-                    size: 16,
+                    size: 14,
                   ),
                   onTap: () => {_textEditingController.clear()},
                 ),
@@ -87,7 +94,6 @@ class _OnboardingViewState extends State<OnboardingView> {
             child: Column(
               children: [
                 Expanded(
-                  // flex: 2,
                   child: Container(
                     width: double.infinity,
                     margin: const EdgeInsets.only(left: 20, right: 20),
@@ -97,53 +103,13 @@ class _OnboardingViewState extends State<OnboardingView> {
                       spacing: 10,
                       runSpacing: 10,
                       children: [
-                        for (var keyword in _keywords)
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: Colors.black,
-                              ),
-                            ),
-                            child: Wrap(
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.only(
-                                    left: 8,
-                                    right: 0,
-                                    top: 8,
-                                    bottom: 8,
-                                  ),
-                                  child: Text(
-                                    keyword,
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                                IconButton(
-                                  padding: EdgeInsets.zero,
-                                  constraints: const BoxConstraints(),
-                                  splashColor: Colors.transparent,
-                                  highlightColor: Colors.transparent,
-                                  onPressed: () {
-                                    setState(() {
-                                      _keywords.remove(keyword);
-                                    });
-                                  },
-                                  icon: const Icon(
-                                    Icons.cancel_outlined,
-                                    size: 12,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                        for (var keyword in _enteredKeywords)
+                          _generateEnteredKeywordTag(keyword)
                       ],
                     ),
                   ),
                 ),
                 Expanded(
-                  // flex: 1,
                   child: Container(
                     width: double.infinity,
                     margin: const EdgeInsets.only(left: 20, right: 20),
@@ -154,30 +120,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                       runSpacing: 10,
                       children: [
                         for (var fixedKeyword in _fixedKeywords)
-                          InkWell(
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            onTap: () {
-                              if (_keywords.length < 9) {
-                                setState(() {
-                                  _keywords.add(fixedKeyword);
-                                });
-                              }
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFECEFF1),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                fixedKeyword,
-                                style: const TextStyle(
-                                  color: Color(0xFF607D8B),
-                                ),
-                              ),
-                            ),
-                          )
+                          _generateFixedKeywordTag(fixedKeyword)
                       ],
                     ),
                   ),
@@ -189,13 +132,13 @@ class _OnboardingViewState extends State<OnboardingView> {
             width: double.infinity,
             height: 56,
             child: Container(
-              color: _keywords.isEmpty
+              color: _enteredKeywords.isEmpty
                   ? const Color(0xFFC5CAE9)
                   : const Color(0xFF3F51B5),
               child: TextButton(
-                onPressed: _keywords.isEmpty ? null : () {},
+                onPressed: _enteredKeywords.isEmpty ? null : _onTabNextButton,
                 child: Text(
-                  _keywords.isEmpty ? '확인' : '이제 시작해볼까요?',
+                  _enteredKeywords.isEmpty ? '확인' : '이제 시작해볼까요?',
                   style: const TextStyle(
                     fontSize: 16,
                     color: Colors.white,
@@ -209,10 +152,95 @@ class _OnboardingViewState extends State<OnboardingView> {
     );
   }
 
-  void _onSubmitted(String text) {
+  void _onEnteredKeyword(String text) {
     setState(() {
-      _keywords.add(text);
+      _enteredKeywords.add(text);
     });
     _textEditingController.clear();
+  }
+
+  Widget _generateEnteredKeywordTag(String enteredKeyword) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: Colors.black,
+        ),
+      ),
+      child: Wrap(
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: [
+          Container(
+            padding: const EdgeInsets.only(
+              left: 8,
+              right: 0,
+              top: 8,
+              bottom: 8,
+            ),
+            child: Text(
+              enteredKeyword,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 14,
+              ),
+            ),
+          ),
+          IconButton(
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+            onPressed: () {
+              setState(() {
+                _enteredKeywords.remove(enteredKeyword);
+              });
+            },
+            icon: const Icon(
+              Icons.cancel_outlined,
+              size: 12,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _generateFixedKeywordTag(String fixedKeyword) {
+    return InkWell(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      onTap: () {
+        if (_enteredKeywords.length < 9) {
+          setState(() {
+            _enteredKeywords.add(fixedKeyword);
+          });
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: const Color(0xFFECEFF1),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Text(
+          fixedKeyword,
+          style: const TextStyle(
+            fontSize: 14,
+            color: Color(0xFF607D8B),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _onTabNextButton() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => OnboardingResultView(
+          enteredKeywords: _enteredKeywords,
+        ),
+      ),
+    );
   }
 }

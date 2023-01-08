@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 
 class OnboardingResultView extends StatefulWidget {
-  const OnboardingResultView({Key? key}) : super(key: key);
+  final List<String> enteredKeywords;
+
+  const OnboardingResultView({
+    Key? key,
+    required this.enteredKeywords,
+  }) : super(key: key);
 
   @override
   State<OnboardingResultView> createState() => _OnboardingResultViewState();
 }
 
 class _OnboardingResultViewState extends State<OnboardingResultView> {
-  final List<String> _selectedKeywords = [
-    "테슬라",
-    "축구",
-    "올림픽",
-    "플러터",
-    "구글",
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,42 +26,55 @@ class _OnboardingResultViewState extends State<OnboardingResultView> {
           ),
           Column(
             children: [
-              Container(
+              SizedBox(
                 height: 56,
-              ),
-              Container(
-                margin: const EdgeInsets.all(20),
-                child: Column(
-                  // crossAxisAlignment: CrossAxisAlignment.start,
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      "흥미로운 키워드에요",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                child: Container(
+                  alignment: Alignment.centerLeft,
+                  margin: const EdgeInsets.all(10),
+                  child: InkWell(
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Icon(
+                      Icons.keyboard_arrow_left,
+                      size: 28,
+                      color: Colors.white,
                     ),
-                    SizedBox(height: 10),
-                    Text(
-                      "키워드를 토대로",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                      ),
-                    ),
-                    SizedBox(height: 3),
-                    Text(
-                      "기사를 요약해드릴게요!",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
+              const SizedBox(height: 20),
+              Column(
+                children: const [
+                  Text(
+                    "흥미로운 키워드에요",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    "키워드를 토대로",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                    ),
+                  ),
+                  SizedBox(height: 3),
+                  Text(
+                    "기사를 요약해드릴게요!",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
               Expanded(
                 child: SizedBox(
                   height: double.infinity,
@@ -73,7 +83,7 @@ class _OnboardingResultViewState extends State<OnboardingResultView> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          for (var keyword in _selectedKeywords)
+                          for (var keyword in widget.enteredKeywords)
                             Container(
                               margin: const EdgeInsets.all(8),
                               padding: const EdgeInsets.only(
