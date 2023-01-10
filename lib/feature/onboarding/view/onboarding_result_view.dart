@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingResultView extends StatefulWidget {
@@ -13,13 +14,15 @@ class OnboardingResultView extends StatefulWidget {
 }
 
 class _OnboardingResultViewState extends State<OnboardingResultView> {
+  final dio = Dio();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
           Opacity(
-            opacity: 0.25,
+            opacity: 0.33,
             child: Container(
               color: const Color(0xFF263238),
             ),
@@ -45,7 +48,7 @@ class _OnboardingResultViewState extends State<OnboardingResultView> {
                   ),
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 35),
               Column(
                 children: const [
                   Text(
@@ -53,7 +56,7 @@ class _OnboardingResultViewState extends State<OnboardingResultView> {
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   SizedBox(height: 10),
@@ -74,16 +77,16 @@ class _OnboardingResultViewState extends State<OnboardingResultView> {
                   ),
                 ],
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 60),
               Expanded(
                 child: Row(
                   children: [
                     const Expanded(
-                      flex: 1,
+                      flex: 2,
                       child: SizedBox(),
                     ),
                     Expanded(
-                      flex: 14,
+                      flex: 12,
                       child: Container(
                         alignment: Alignment.topCenter,
                         child: Wrap(
@@ -97,7 +100,7 @@ class _OnboardingResultViewState extends State<OnboardingResultView> {
                       ),
                     ),
                     const Expanded(
-                      flex: 1,
+                      flex: 2,
                       child: SizedBox(),
                     ),
                   ],
@@ -110,7 +113,21 @@ class _OnboardingResultViewState extends State<OnboardingResultView> {
                 child: Container(
                   color: const Color(0xFF3F51B5),
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      int userId = 1;
+                      String requestUrl =
+                          "http://localhost:3001/api/user/keyword";
+                      Response response = dio.post(requestUrl, data: {
+                        'user_id': userId,
+                        'keywords': widget.enteredKeywords
+                      }) as Response;
+
+                      if (response.statusCode == 200) {
+                        // onboarding complete flag true로 변경하기
+                      } else {
+                        // 에러 리턴
+                      }
+                    },
                     child: const Text(
                       '이제 시작해볼까요?',
                       style: TextStyle(
@@ -132,8 +149,8 @@ class _OnboardingResultViewState extends State<OnboardingResultView> {
     return Container(
       margin: const EdgeInsets.all(8),
       padding: const EdgeInsets.only(
-        left: 15,
-        right: 15,
+        left: 16,
+        right: 16,
         top: 10,
         bottom: 10,
       ),
@@ -150,5 +167,20 @@ class _OnboardingResultViewState extends State<OnboardingResultView> {
         ),
       ),
     );
+  }
+
+  _onClickStartBtn(List<String> enteredKeywords) async {
+    int userId = 1;
+
+    String requestUrl = "http://localhost:3001/api/user/keyword";
+
+    Response response = await dio.post(requestUrl,
+        data: {'user_id': userId, 'keywords': enteredKeywords});
+
+    if (response.statusCode == 200) {
+      // onboarding complete flag true로 변경하기
+    } else {
+      // 에러 리턴
+    }
   }
 }

@@ -41,14 +41,14 @@ class _OnboardingViewState extends State<OnboardingView> {
                   "길동님이 관심있는",
                   style: TextStyle(
                     fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 Text(
                   "키워드를 입력해주세요",
                   style: TextStyle(
                     fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
                 SizedBox(height: 10),
@@ -172,16 +172,16 @@ class _OnboardingViewState extends State<OnboardingView> {
         children: [
           Container(
             padding: const EdgeInsets.only(
-              left: 8,
-              right: 0,
-              top: 8,
-              bottom: 8,
+              left: 16,
+              right: 4,
+              top: 9,
+              bottom: 9,
             ),
             child: Text(
               enteredKeyword,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                fontSize: 14,
+                fontSize: 12,
               ),
             ),
           ),
@@ -217,7 +217,12 @@ class _OnboardingViewState extends State<OnboardingView> {
         }
       },
       child: Container(
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.only(
+          left: 20,
+          right: 20,
+          top: 11,
+          bottom: 11,
+        ),
         decoration: BoxDecoration(
           color: const Color(0xFFECEFF1),
           borderRadius: BorderRadius.circular(8),
@@ -225,7 +230,7 @@ class _OnboardingViewState extends State<OnboardingView> {
         child: Text(
           fixedKeyword,
           style: const TextStyle(
-            fontSize: 14,
+            fontSize: 12,
             color: Color(0xFF607D8B),
           ),
         ),
