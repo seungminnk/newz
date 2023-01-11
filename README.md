@@ -1,3 +1,3 @@
-flutter_inappwebview
-expansion_tile_card
-http
+ - flutter_inappwebview
+ - expansion_tile_card
+ - http
