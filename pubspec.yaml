@@ -39,10 +39,9 @@ dependencies:
   get: ^4.6.5
   flutter_svg: ^1.1.6
   google_mobile_ads: ^2.3.0
+  http: ^0.13.5
   expansion_tile_card: ^2.0.0
   flutter_inappwebview: ^5.7.2+3
-  dio: ^4.0.6
-  http: ^0.13.5
 
 dev_dependencies:
   flutter_test:

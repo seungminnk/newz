@@ -1,5 +1,8 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:newz/application/routes/app_routes.dart';
 import 'package:newz/application/routes/app_routes_info.dart';
 import 'package:newz/feature/application/controller/application_controller.dart';
@@ -12,6 +15,7 @@ void main() {
 
 void _controllerInit() {
   Get.lazyPut(() => ApplicationController());
+
   Get.lazyPut(() => RealTimeVogueController());
 }
 
@@ -20,7 +24,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    return MaterialApp(
       title: 'newz',
       theme: ThemeData(
         fontFamily: 'Pretendard',
@@ -28,7 +32,6 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: AppRoutes.application,
       routes: AppRoutesInfo.details,
-      debugShowCheckedModeBanner: false,
     );
   }
 }
