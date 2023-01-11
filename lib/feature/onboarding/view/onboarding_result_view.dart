@@ -157,9 +157,9 @@ class OnboardingResultView extends StatelessWidget {
   _onClickLetsStartBtn() async {
     final dio = Dio();
 
-    String requestUrl = "http://localhost:3001/api/user/keyword";
+    String requestUrl = "https://newz.bbear.kr/api/user/keyword";
     final response = await dio.post(requestUrl, data: {
-      'user_id': UserDataController.to.id.value,
+      'userId': UserDataController.to.id.value,
       'keywords': KeywordListController.to.enteredKeywords.toList()
     });
 

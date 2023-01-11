@@ -13,7 +13,7 @@ class KeywordListController extends GetxController {
 
     final dio = Dio();
     final response =
-        await dio.get("http://localhost:3001/api/fixed-keyword/list");
+        await dio.get("https://newz.bbear.kr/api/fixed-keyword/list");
 
     for (var keyword in response.data) {
       fixedKeywords.add(keyword);

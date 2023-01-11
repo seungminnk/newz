@@ -18,7 +18,7 @@ class UserDataController extends GetxController {
     super.onInit();
 
     final dio = Dio();
-    final response = await dio.get("http://localhost:3001/api/user/?id=1");
+    final response = await dio.get("https://newz.bbear.kr/api/user/?id=1");
 
     var userData = User.fromJson(response.data);
 
