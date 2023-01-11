@@ -1,28 +1,21 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:newz/feature/onboarding/controller/keyword_editing_controller.dart';
 
 import 'package:newz/feature/onboarding/view/onboarding_result_view.dart';
 
-class OnboardingView extends StatefulWidget {
+import '../../../application/routes/app_routes.dart';
+import '../controller/keyword_list_controller.dart';
+
+class OnboardingView extends StatelessWidget {
   const OnboardingView({Key? key}) : super(key: key);
 
   @override
-  State<OnboardingView> createState() => _OnboardingViewState();
-}
-
-class _OnboardingViewState extends State<OnboardingView> {
-  final TextEditingController _textEditingController = TextEditingController();
-  final List<String> _enteredKeywords = ["테슬라", "축구", "아이유", "올림픽"];
-  final List<String> _fixedKeywords = [
-    "키워드1",
-    "키워드2",
-    "키워드3",
-    "키워드4",
-    "키워드5",
-    "키워드6"
-  ];
-
-  @override
   Widget build(BuildContext context) {
+    Get.put(KeywordEditingController());
+    Get.put(KeywordListController());
+
     return Scaffold(
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,7 +24,6 @@ class _OnboardingViewState extends State<OnboardingView> {
             height: 56,
           ),
           Container(
-            // color: Colors.amberAccent,
             margin: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,9 +63,9 @@ class _OnboardingViewState extends State<OnboardingView> {
               right: 20,
             ),
             child: TextField(
-              controller: _textEditingController,
+              controller: KeywordEditingController.to,
               textAlignVertical: TextAlignVertical.center,
-              onSubmitted: _onEnteredKeyword,
+              onSubmitted: _enteredKeyword,
               style: const TextStyle(
                 fontSize: 14,
               ),
@@ -85,7 +77,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                     Icons.cancel,
                     size: 14,
                   ),
-                  onTap: () => {_textEditingController.clear()},
+                  onTap: () => {KeywordEditingController.to.clear()},
                 ),
               ),
             ),
@@ -97,32 +89,32 @@ class _OnboardingViewState extends State<OnboardingView> {
                   child: Container(
                     width: double.infinity,
                     margin: const EdgeInsets.only(left: 20, right: 20),
-                    child: Wrap(
+                    child: Obx(() => Wrap(
                       direction: Axis.horizontal,
                       alignment: WrapAlignment.start,
                       spacing: 10,
                       runSpacing: 10,
                       children: [
-                        for (var keyword in _enteredKeywords)
+                        for (var keyword in KeywordListController.to.enteredKeywords)
                           _generateEnteredKeywordTag(keyword)
                       ],
-                    ),
+                    )),
                   ),
                 ),
                 Expanded(
                   child: Container(
                     width: double.infinity,
                     margin: const EdgeInsets.only(left: 20, right: 20),
-                    child: Wrap(
+                    child: Obx(() => Wrap(
                       direction: Axis.horizontal,
                       alignment: WrapAlignment.start,
                       spacing: 10,
                       runSpacing: 10,
                       children: [
-                        for (var fixedKeyword in _fixedKeywords)
+                        for (var fixedKeyword in KeywordListController.to.fixedKeywords)
                           _generateFixedKeywordTag(fixedKeyword)
                       ],
-                    ),
+                    )),
                   ),
                 ),
               ],
@@ -131,32 +123,31 @@ class _OnboardingViewState extends State<OnboardingView> {
           SizedBox(
             width: double.infinity,
             height: 56,
-            child: Container(
-              color: _enteredKeywords.isEmpty
+            child: Obx(() => Container(
+              color: KeywordListController.to.enteredKeywords.isEmpty
                   ? const Color(0xFFC5CAE9)
                   : const Color(0xFF3F51B5),
               child: TextButton(
-                onPressed: _enteredKeywords.isEmpty ? null : _onTabNextButton,
+                onPressed: KeywordListController.to.enteredKeywords.isEmpty
+                    ? null : () => _onTabNextButton(KeywordListController.to.enteredKeywords.toList()),
                 child: Text(
-                  _enteredKeywords.isEmpty ? '확인' : '이제 시작해볼까요?',
+                  KeywordListController.to.enteredKeywords.isEmpty ? '확인' : '이제 시작해볼까요?',
                   style: const TextStyle(
                     fontSize: 16,
                     color: Colors.white,
                   ),
                 ),
               ),
-            ),
+            )),
           ),
         ],
       ),
     );
   }
 
-  void _onEnteredKeyword(String text) {
-    setState(() {
-      _enteredKeywords.add(text);
-    });
-    _textEditingController.clear();
+  void _enteredKeyword(String text) {
+    KeywordListController.to.addKeyword(text);
+    KeywordEditingController.to.clear();
   }
 
   Widget _generateEnteredKeywordTag(String enteredKeyword) {
@@ -191,9 +182,7 @@ class _OnboardingViewState extends State<OnboardingView> {
             splashColor: Colors.transparent,
             highlightColor: Colors.transparent,
             onPressed: () {
-              setState(() {
-                _enteredKeywords.remove(enteredKeyword);
-              });
+              KeywordListController.to.removeKeyword(enteredKeyword);
             },
             icon: const Icon(
               Icons.cancel_outlined,
@@ -210,10 +199,8 @@ class _OnboardingViewState extends State<OnboardingView> {
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       onTap: () {
-        if (_enteredKeywords.length < 9) {
-          setState(() {
-            _enteredKeywords.add(fixedKeyword);
-          });
+        if (KeywordListController.to.enteredKeywords.length < 9) {
+          KeywordListController.to.addKeyword(fixedKeyword);
         }
       },
       child: Container(
@@ -238,14 +225,7 @@ class _OnboardingViewState extends State<OnboardingView> {
     );
   }
 
-  void _onTabNextButton() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => OnboardingResultView(
-          enteredKeywords: _enteredKeywords,
-        ),
-      ),
-    );
+  void _onTabNextButton(List<String> enteredKeyword) {
+    Get.toNamed(AppRoutes.onboardingResult);
   }
 }

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:newz/application/routes/app_routes.dart';
 import 'package:newz/application/routes/app_routes_info.dart';
 import 'package:newz/feature/application/controller/application_controller.dart';
+import 'package:newz/feature/onboarding/controller/keyword_list_controller.dart';
 import 'package:newz/feature/real_time_vogue/controller/real_time_vogue_controller.dart';
 
 void main() {
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'newz',
       theme: ThemeData(
         fontFamily: 'Pretendard',

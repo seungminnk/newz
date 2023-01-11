@@ -1,23 +1,17 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:newz/application/routes/app_routes.dart';
+import 'package:newz/application/user/controller/user_data_controller.dart';
+import 'package:newz/feature/onboarding/controller/keyword_list_controller.dart';
 
-class OnboardingResultView extends StatefulWidget {
-  final List<String> enteredKeywords;
-
-  const OnboardingResultView({
-    Key? key,
-    required this.enteredKeywords,
-  }) : super(key: key);
-
-  @override
-  State<OnboardingResultView> createState() => _OnboardingResultViewState();
-}
-
-class _OnboardingResultViewState extends State<OnboardingResultView> {
-  final dio = Dio();
+class OnboardingResultView extends StatelessWidget {
+  const OnboardingResultView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Get.put(UserDataController());
+
     return Scaffold(
       body: Stack(
         children: [
@@ -93,7 +87,8 @@ class _OnboardingResultViewState extends State<OnboardingResultView> {
                           direction: Axis.horizontal,
                           alignment: WrapAlignment.start,
                           children: [
-                            for (var keyword in widget.enteredKeywords)
+                            for (var keyword
+                                in KeywordListController.to.enteredKeywords)
                               _generateEnteredKeywordTag(keyword),
                           ],
                         ),
@@ -111,23 +106,13 @@ class _OnboardingResultViewState extends State<OnboardingResultView> {
                 width: double.infinity,
                 height: 56,
                 child: Container(
-                  color: const Color(0xFF3F51B5),
+                  color: KeywordListController.to.enteredKeywords.isEmpty
+                      ? const Color(0xFFC5CAE9)
+                      : const Color(0xFF3F51B5),
                   child: TextButton(
-                    onPressed: () {
-                      int userId = 1;
-                      String requestUrl =
-                          "http://localhost:3001/api/user/keyword";
-                      Response response = dio.post(requestUrl, data: {
-                        'user_id': userId,
-                        'keywords': widget.enteredKeywords
-                      }) as Response;
-
-                      if (response.statusCode == 200) {
-                        // onboarding complete flag true로 변경하기
-                      } else {
-                        // 에러 리턴
-                      }
-                    },
+                    onPressed: KeywordListController.to.enteredKeywords.isEmpty
+                        ? null
+                        : _onClickLetsStartBtn,
                     child: const Text(
                       '이제 시작해볼까요?',
                       style: TextStyle(
@@ -169,18 +154,24 @@ class _OnboardingResultViewState extends State<OnboardingResultView> {
     );
   }
 
-  _onClickStartBtn(List<String> enteredKeywords) async {
-    int userId = 1;
+  _onClickLetsStartBtn() async {
+    final dio = Dio();
 
     String requestUrl = "http://localhost:3001/api/user/keyword";
-
-    Response response = await dio.post(requestUrl,
-        data: {'user_id': userId, 'keywords': enteredKeywords});
+    final response = await dio.post(requestUrl, data: {
+      'user_id': UserDataController.to.id.value,
+      'keywords': KeywordListController.to.enteredKeywords.toList()
+    });
 
     if (response.statusCode == 200) {
       // onboarding complete flag true로 변경하기
+      UserDataController.to.didSelectKeywords(true);
     } else {
       // 에러 리턴
+    }
+
+    if (UserDataController.to.didSelectKeywords.value) {
+      Get.offAllNamed(AppRoutes.application);
     }
   }
 }

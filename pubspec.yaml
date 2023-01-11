@@ -43,6 +43,9 @@ dependencies:
   dio: ^4.0.6
   pretty_dio_logger: ^1.1.1
 
+  json_annotation: ^4.7.0
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -53,6 +56,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+
+  build_runner: ^2.3.3
+  json_serializable: ^6.5.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
