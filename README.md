@@ -1,3 +1,3 @@
-flutter pub add flutter_inappwebview
-flutter pub add expansion_tile_card
-flutter pub add http
+flutter_inappwebview
+expansion_tile_card
+http
