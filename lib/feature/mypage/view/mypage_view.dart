@@ -16,8 +16,8 @@ class _MyPageViewState extends State<MyPageView> {
 
   @override
   void initState() {
-    scrapController.fetchBookmark('1');
-    scrapController.fetchNews('피망');
+    // scrapController.fetchBookmark('1');
+    scrapController.fetchNews('커피');
     super.initState();
   }
 
@@ -54,14 +54,14 @@ class _MyPageViewState extends State<MyPageView> {
                   ),
                   IconButton(
                     onPressed: () {
-                      scrapController.fetchBookmark('1');
+                      //  scrapController.fetchBookmark('1');
                     },
                     icon: const Icon(Icons.replay_outlined),
                   )
                 ],
               ),
               const SizedBox(height: 10),
-              ScrapCardWidget(),
+              const ScrapCardWidget(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -74,13 +74,13 @@ class _MyPageViewState extends State<MyPageView> {
                   ),
                   IconButton(
                     onPressed: () {
-                      scrapController.fetchNews('야구');
+                      scrapController.fetchNews('커피');
                     },
                     icon: const Icon(Icons.replay_outlined),
                   )
                 ],
               ),
-              ScrapCardWidget2()
+              const ScrapCardWidget2()
             ],
           ),
         ),
@@ -89,12 +89,31 @@ class _MyPageViewState extends State<MyPageView> {
   }
 }
 
-class ScrapCardWidget extends StatelessWidget {
-  ScrapCardWidget({
+class ScrapCardWidget extends StatefulWidget {
+  const ScrapCardWidget({
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<ScrapCardWidget> createState() => _ScrapCardWidgetState();
+}
+
+class _ScrapCardWidgetState extends State<ScrapCardWidget> {
   final scrapController = Get.put(ScrapController());
+  final ScrollController _scrollController = ScrollController();
+  void _scrollToSelectedContent(
+      bool isExpanded, double previousOffset, int index, GlobalKey myKey) {
+    final keyContext = myKey.currentContext;
+
+    if (keyContext != null) {
+      // make sure that your widget is visible
+      final box = keyContext.findRenderObject() as RenderBox;
+      _scrollController.animateTo(
+          isExpanded ? (box.size.height * index) : previousOffset,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.linear);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,11 +157,15 @@ class ScrapCardWidget extends StatelessWidget {
                   children: [
                     TextButton(
                       onPressed: () {
-                        scrapController.scrapButtonClick(bookmarks.link);
+                        scrapController.scrapButtonClick(
+                            title: bookmarks.title,
+                            content: bookmarks.content,
+                            link: bookmarks.link);
                       },
                       child: Column(
                         children: [
-                          Icon(scrapController.isLiked.isTrue
+                          Icon(scrapController.bookmarklist
+                                  .contains(bookmarks.title)
                               ? Icons.favorite
                               : Icons.favorite_border),
                           const SizedBox(height: 3),
@@ -175,17 +198,37 @@ class ScrapCardWidget extends StatelessWidget {
   }
 }
 
-class ScrapCardWidget2 extends StatelessWidget {
-  ScrapCardWidget2({
+class ScrapCardWidget2 extends StatefulWidget {
+  const ScrapCardWidget2({
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<ScrapCardWidget2> createState() => _ScrapCardWidget2State();
+}
+
+class _ScrapCardWidget2State extends State<ScrapCardWidget2> {
   final scrapController = Get.put(ScrapController());
+  final ScrollController _scrollController = ScrollController();
+  void _scrollToSelectedContent(
+      bool isExpanded, double previousOffset, int index, GlobalKey myKey) {
+    final keyContext = myKey.currentContext;
+
+    if (keyContext != null) {
+      // make sure that your widget is visible
+      final box = keyContext.findRenderObject() as RenderBox;
+      _scrollController.animateTo(
+          isExpanded ? (box.size.height * index) : previousOffset,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.linear);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => ListView.separated(
+        controller: _scrollController,
         shrinkWrap: true,
         scrollDirection: Axis.vertical,
         itemCount: scrapController.newslist.length,
@@ -224,11 +267,15 @@ class ScrapCardWidget2 extends StatelessWidget {
                   children: [
                     TextButton(
                       onPressed: () {
-                        scrapController.scrapButtonClick(newsData.title);
+                        scrapController.scrapButtonClick(
+                            title: newsData.title,
+                            content: newsData.content,
+                            link: newsData.link);
                       },
                       child: Column(
                         children: [
-                          Icon(scrapController.isLiked.isTrue
+                          Icon(scrapController.bookmarklist
+                                  .contains(newsData.title)
                               ? Icons.favorite
                               : Icons.favorite_border),
                           const SizedBox(height: 3),
