@@ -42,6 +42,7 @@ dependencies:
   http: ^0.13.5
   expansion_tile_card: ^2.0.0
   flutter_inappwebview: ^5.7.2+3
+  dio: ^4.0.6
 
 dev_dependencies:
   flutter_test:

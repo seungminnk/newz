@@ -2,12 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:newz/feature/mypage/scrap_controller.dart';
 import 'package:get/get.dart';
-import '../news_api_model.dart';
-import '../news_api_service.dart';
 import 'webview_page.dart';
 
-class MyPageView extends StatelessWidget {
+class MyPageView extends StatefulWidget {
   const MyPageView({Key? key}) : super(key: key);
+
+  @override
+  State<MyPageView> createState() => _MyPageViewState();
+}
+
+class _MyPageViewState extends State<MyPageView> {
+  final scrapController = Get.put(ScrapController());
+
+  @override
+  void initState() {
+    scrapController.fetchBookmark('1');
+    scrapController.fetchNews('피망');
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,9 +42,45 @@ class MyPageView extends StatelessWidget {
             children: [
               const UserInfoWidget(),
               const SizedBox(height: 40),
-              const ScrapTextWidget(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    '스크랩',
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      scrapController.fetchBookmark('1');
+                    },
+                    icon: const Icon(Icons.replay_outlined),
+                  )
+                ],
+              ),
               const SizedBox(height: 10),
-              ScrapCardWidget()
+              ScrapCardWidget(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    '뉴스기사',
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      scrapController.fetchNews('야구');
+                    },
+                    icon: const Icon(Icons.replay_outlined),
+                  )
+                ],
+              ),
+              ScrapCardWidget2()
             ],
           ),
         ),
@@ -48,90 +96,167 @@ class ScrapCardWidget extends StatelessWidget {
 
   final scrapController = Get.put(ScrapController());
 
-  final Future<List<NewsModel>> news = ApiService.getNewsData();
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => ListView.separated(
+        shrinkWrap: true,
+        scrollDirection: Axis.vertical,
+        itemCount: scrapController.bookmarklist.length,
+        itemBuilder: (context, index) {
+          var bookmarks = scrapController.bookmarklist[index];
+          return ExpansionTileCard(
+            baseColor: Colors.grey[200],
+            shadowColor: Colors.grey,
+            borderRadius: BorderRadius.circular(20),
+            leading: const CircleAvatar(child: Text('A')),
+            title: Text(bookmarks.title),
+            children: [
+              const Divider(
+                thickness: 1.0,
+                height: 5.0,
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 8.0,
+                  ),
+                  child: Text(
+                    bookmarks.content,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2!
+                        .copyWith(fontSize: 16),
+                  ),
+                ),
+              ),
+              Obx(
+                () => ButtonBar(
+                  alignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        scrapController.scrapButtonClick(bookmarks.link);
+                      },
+                      child: Column(
+                        children: [
+                          Icon(scrapController.isLiked.isTrue
+                              ? Icons.favorite
+                              : Icons.favorite_border),
+                          const SizedBox(height: 3),
+                          const Text('Like'),
+                        ],
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () =>
+                          Get.to(() => WebviewWidget(weburl: bookmarks.link)),
+                      child: Column(
+                        children: const [
+                          Icon(Icons.list_alt),
+                          SizedBox(height: 3),
+                          Text('원문 읽기'),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return const SizedBox(height: 10);
+        },
+      ),
+    );
+  }
+}
+
+class ScrapCardWidget2 extends StatelessWidget {
+  ScrapCardWidget2({
+    Key? key,
+  }) : super(key: key);
+
+  final scrapController = Get.put(ScrapController());
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: news,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return ListView.separated(
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) {
-              var newz = snapshot.data![index];
-              return ExpansionTileCard(
-                baseColor: Colors.grey[200],
-                shadowColor: Colors.grey,
-                borderRadius: BorderRadius.circular(20),
-                leading: const CircleAvatar(child: Text('A')),
-                title: Text(newz.title),
-                children: [
-                  const Divider(
-                    thickness: 1.0,
-                    height: 5.0,
+    return Obx(
+      () => ListView.separated(
+        shrinkWrap: true,
+        scrollDirection: Axis.vertical,
+        itemCount: scrapController.newslist.length,
+        itemBuilder: (context, index) {
+          var newsData = scrapController.newslist[index];
+          return ExpansionTileCard(
+            baseColor: Colors.grey[200],
+            shadowColor: Colors.grey,
+            borderRadius: BorderRadius.circular(20),
+            leading: const CircleAvatar(child: Text('A')),
+            title: Text(newsData.title),
+            children: [
+              const Divider(
+                thickness: 1.0,
+                height: 5.0,
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                    vertical: 8.0,
                   ),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0,
-                        vertical: 8.0,
-                      ),
-                      child: Text(
-                        newz.content,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText2!
-                            .copyWith(fontSize: 16),
+                  child: Text(
+                    newsData.content,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2!
+                        .copyWith(fontSize: 16),
+                  ),
+                ),
+              ),
+              Obx(
+                () => ButtonBar(
+                  alignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        scrapController.scrapButtonClick(newsData.title);
+                      },
+                      child: Column(
+                        children: [
+                          Icon(scrapController.isLiked.isTrue
+                              ? Icons.favorite
+                              : Icons.favorite_border),
+                          const SizedBox(height: 3),
+                          const Text('Like'),
+                        ],
                       ),
                     ),
-                  ),
-                  Obx(
-                    () => ButtonBar(
-                      alignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                          onPressed: () {
-                            scrapController.scrapButtonClick();
-                          },
-                          child: Column(
-                            children: [
-                              Icon(scrapController.isLiked.isTrue
-                                  ? Icons.favorite
-                                  : Icons.favorite_border),
-                              const SizedBox(height: 3),
-                              const Text('Like'),
-                            ],
-                          ),
-                        ),
-                        TextButton(
-                          onPressed: () =>
-                              Get.to(() => WebviewWidget(weburl: newz.link)),
-                          child: Column(
-                            children: const [
-                              Icon(Icons.list_alt),
-                              SizedBox(height: 3),
-                              Text('원문 읽기'),
-                            ],
-                          ),
-                        ),
-                      ],
+                    TextButton(
+                      onPressed: () =>
+                          Get.to(() => WebviewWidget(weburl: newsData.link)),
+                      child: Column(
+                        children: const [
+                          Icon(Icons.list_alt),
+                          SizedBox(height: 3),
+                          Text('원문 읽기'),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return const SizedBox(height: 10);
-            },
+                  ],
+                ),
+              ),
+            ],
           );
-        } else {
-          return const CircularProgressIndicator();
-        }
-      },
+        },
+        separatorBuilder: (BuildContext context, int index) {
+          return const SizedBox(height: 10);
+        },
+      ),
     );
   }
 }
