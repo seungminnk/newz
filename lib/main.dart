@@ -16,7 +16,6 @@ void main() {
 
 void _controllerInit() {
   Get.lazyPut(() => ApplicationController());
-
   Get.lazyPut(() => RealTimeVogueController());
 }
 
