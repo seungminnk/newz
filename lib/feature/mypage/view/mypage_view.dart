@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
-import 'package:newz/feature/mypage/scrap_controller.dart';
+import 'package:newz/application/routes/app_routes.dart';
+import 'package:newz/feature/mypage/controller/scrap_controller.dart';
 import 'package:get/get.dart';
 import 'webview_page.dart';
 
@@ -26,7 +27,9 @@ class _MyPageViewState extends State<MyPageView> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: (() {}),
+          onPressed: (() {
+            Get.toNamed(AppRoutes.login);
+          }),
           icon: const Icon(
             Icons.arrow_back_ios_new_outlined,
             color: Colors.black,
@@ -101,6 +104,7 @@ class ScrapCardWidget extends StatefulWidget {
 class _ScrapCardWidgetState extends State<ScrapCardWidget> {
   final scrapController = Get.put(ScrapController());
   final ScrollController _scrollController = ScrollController();
+
   void _scrollToSelectedContent(
       bool isExpanded, double previousOffset, int index, GlobalKey myKey) {
     final keyContext = myKey.currentContext;
@@ -151,41 +155,39 @@ class _ScrapCardWidgetState extends State<ScrapCardWidget> {
                   ),
                 ),
               ),
-              Obx(
-                () => ButtonBar(
-                  alignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                      onPressed: () {
-                        scrapController.scrapButtonClick(
-                            title: bookmarks.title,
-                            content: bookmarks.content,
-                            link: bookmarks.link);
-                      },
-                      child: Column(
-                        children: [
-                          Icon(scrapController.bookmarklist
-                                  .contains(bookmarks.title)
-                              ? Icons.favorite
-                              : Icons.favorite_border),
-                          const SizedBox(height: 3),
-                          const Text('Like'),
-                        ],
-                      ),
+              ButtonBar(
+                alignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      scrapController.scrapButtonClick(
+                          title: bookmarks.title,
+                          content: bookmarks.content,
+                          link: bookmarks.link);
+                    },
+                    child: Column(
+                      children: [
+                        Icon(scrapController.bookmarklist
+                                .contains(bookmarks.title)
+                            ? Icons.favorite
+                            : Icons.favorite_border),
+                        const SizedBox(height: 3),
+                        const Text('Like'),
+                      ],
                     ),
-                    TextButton(
-                      onPressed: () =>
-                          Get.to(() => WebviewWidget(weburl: bookmarks.link)),
-                      child: Column(
-                        children: const [
-                          Icon(Icons.list_alt),
-                          SizedBox(height: 3),
-                          Text('원문 읽기'),
-                        ],
-                      ),
+                  ),
+                  TextButton(
+                    onPressed: () =>
+                        Get.to(() => WebviewWidget(weburl: bookmarks.link)),
+                    child: Column(
+                      children: const [
+                        Icon(Icons.list_alt),
+                        SizedBox(height: 3),
+                        Text('원문 읽기'),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ],
           );

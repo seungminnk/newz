@@ -43,11 +43,11 @@ dependencies:
   expansion_tile_card: ^2.0.0
   flutter_inappwebview: ^5.7.2+3
   dio: ^4.0.6
-
-  dio: ^4.0.6
   pretty_dio_logger: ^1.1.1
-
   json_annotation: ^4.7.0
+  google_sign_in: ^5.4.3
+  firebase_core: ^2.4.1
+  firebase_auth: ^4.2.5
 
 
 dev_dependencies:

@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:newz/feature/mypage/bookmark_api_model.dart';
-import 'package:newz/feature/mypage/news_api_service.dart';
+import 'package:newz/feature/mypage/service/bookmark_api_model.dart';
+import 'package:newz/feature/mypage/service/news_api_service.dart';
 
-import 'news_api_model.dart';
+import '../service/news_api_model.dart';
 
 class ScrapController extends GetxController {
   final RxBool isLiked = false.obs;
