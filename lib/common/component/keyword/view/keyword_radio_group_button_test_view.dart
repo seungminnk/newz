@@ -13,6 +13,7 @@ class KeywordRadioGroupButtonTestView extends StatelessWidget {
     list.add(KeywordRadioModel(false, 'BBBBB', 'April 17'));
     list.add(KeywordRadioModel(false, 'CCCCC', 'April 16'));
     list.add(KeywordRadioModel(false, 'DDDDD', 'April 15'));
+    list.add(KeywordRadioModel(false, 'EEEEE', 'April 14'));
 
     return Scaffold(
       appBar: AppBar(title: const Text('키워드 그룹 테스트')),

@@ -35,6 +35,8 @@ class _CustomKeywordButtonGroupViewState extends State<CustomKeywordButtonGroupV
   Widget build(BuildContext context) {
 
     return Wrap(
+      spacing: 8.0,
+      runSpacing: 10.0,
       children: _buildKeywordButtons(sampleData, widget.clickCb),
     );
   }
@@ -64,10 +66,6 @@ class _CustomKeywordButtonGroupViewState extends State<CustomKeywordButtonGroupV
       widgetList.add(
           _keywordButtonWrappedView(keywordRadioModelList, clickedCb, index)
       );
-
-      if(index != lastIndex){
-        widgetList.add(const SizedBox(width: 20));
-      }
     }
 
     return widgetList;
