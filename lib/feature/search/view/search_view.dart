@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:newz/common/component/keyword/model/keyword_radio_model.dart';
+import 'package:newz/common/component/keyword/view/custom_keyword_button_group_view.dart';
+import 'package:newz/common/component/loading/view/CustomCircularProgressIndicator.dart';
 import 'package:newz/feature/home/components/keyword_box.dart';
+import 'package:newz/feature/real_time_vogue/controller/real_time_vogue_keyword_controller.dart';
 
 class SearchView extends StatefulWidget {
   const SearchView({Key? key}) : super(key: key);
@@ -11,33 +16,49 @@ class SearchView extends StatefulWidget {
 }
 
 class _SearchViewState extends State<SearchView> {
+  RealTimeVogueKeywordController realTimeVogueKeywordController = Get.find();
   final _searchController = TextEditingController();
   final List _keywordList = [];
-  final List keyword = ['Text','Text','Text','Text','Text','Text','Text','Text','Text','Text'];
+  final List keyword = [
+    'Text',
+    'Text',
+    'Text',
+    'Text',
+    'Text',
+    'Text',
+    'Text',
+    'Text',
+    'Text',
+    'Text'
+  ];
   final FocusNode _focusNode = FocusNode();
   bool isFocus = false;
   String _searchText = "";
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
+
+    realTimeVogueKeywordController.requestVogueKeyword();
+
     SystemChannels.textInput.invokeMethod('TextInput.hide');
-    _focusNode.addListener(() {_onFocusChange();});}
+    _focusNode.addListener(() {
+      _onFocusChange();
+    });
+  }
 
-
-  void _onFocusChange(){
+  void _onFocusChange() {
     setState(() {
       isFocus = !isFocus;
     });
   }
 
-  void _unFocus(){
+  void _unFocus() {
     _focusNode.unfocus();
     _searchController.clear();
   }
 
-
-  _SearchViewState () {
+  _SearchViewState() {
     _searchController.addListener(() {
       setState(() {
         _searchText = _searchController.text;
@@ -51,97 +72,99 @@ class _SearchViewState extends State<SearchView> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0.0,
-        leading: IconButton(icon: const Icon(Icons.arrow_back_ios),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
           onPressed: () => Navigator.pop(context),
-            color: Colors.black,),
-          title: const Text("검색",
+          color: Colors.black,
+        ),
+        title: const Text(
+          "검색",
           style: TextStyle(
             fontSize: 20.0,
             fontWeight: FontWeight.w600,
-            color: Color(0xff37474f),),
+            color: Color(0xff37474f),
+          ),
         ),
         centerTitle: true,
         actions: [
-          IconButton(icon: SvgPicture.asset("assets/icons/sort.svg"),
-            onPressed: () => Navigator.pop(context),)
+          IconButton(
+            icon: SvgPicture.asset("assets/icons/sort.svg"),
+            onPressed: () => Navigator.pop(context),
+          )
         ],
       ),
-      body: Column(
-        children: [
-          const SizedBox(height:24,),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Row(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 24,
+            ),
+            Row(
               children: [
                 Expanded(
                   child: TextField(
                     focusNode: _focusNode,
-                    controller: _searchController ,
+                    controller: _searchController,
                     decoration: InputDecoration(
-                        prefixIcon:
-                            Container(
-                              width: 24,
-                              height: 24,
-                              padding: EdgeInsets.only(right: 20),
-                              child: SvgPicture.asset(
-                                  "assets/icons/search.svg",),
-                            ),
-                        hintText: '원하는 기사를 검색해봐요',
-                        hintStyle: const TextStyle(
+                      prefixIcon: Container(
+                        width: 24,
+                        height: 24,
+                        padding: EdgeInsets.only(right: 20),
+                        child: SvgPicture.asset(
+                          "assets/icons/search.svg",
+                        ),
+                      ),
+                      hintText: '원하는 기사를 검색해봐요',
+                      hintStyle: const TextStyle(
                           fontSize: 14.0,
                           color: Color(0xff121212),
                           fontWeight: FontWeight.w400),
-                        suffixIcon: GestureDetector(
-                          onTap: _unFocus,
-                          child: const Icon(Icons.cancel_outlined),
-                        ),
+                      suffixIcon: GestureDetector(
+                        onTap: _unFocus,
+                        child: const Icon(Icons.cancel_outlined),
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: const [
-              Padding(padding: EdgeInsets.only(left:16)),
-              Text("지금 사람들이 많이 검색하는 키워드예요",
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xff37474f),
-                ),
+            const SizedBox(height: 21),
+            const Text(
+              "지금 사람들이 많이 검색하는 키워드예요",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Color(0xff37474f),
               ),
-            ],
-          ),
-          const SizedBox(height: 20,),
-
-          Expanded(
-              child: ListView.builder(
-                  itemCount: keyword.length,
-                  itemBuilder: (context, index) {
-                    return Wrap(
-                      direction: Axis.horizontal,
-                      alignment: WrapAlignment.start,
-                      spacing: 20,
-                      runSpacing: 20,
-                      children: [
-                      Container(
-                        margin: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                        child: KeywordBox(
-                          keyword: keyword[index],
-                          position: index,
-                      ),
-                    ),
-                      ],
-                    );
-                  }
-              ),
-            )
-
-        ],
+            ),
+            const SizedBox(
+              height: 22,
+            ),
+            Expanded(
+              child: _searchController.text.isNotEmpty ?
+                  const Text("검색중입니다..")
+                  :
+                  Obx(
+                      () =>
+                        realTimeVogueKeywordController.isLoading.value ?
+                          const Align(
+                            alignment: Alignment.topCenter,
+                            child: CustomCircularProgressIndicator(),
+                          )
+                          :
+                          CustomKeywordButtonGroupView(
+                            keywordRadioModelList: KeywordRadioModel.fromVogueKeywordRequest(
+                                realTimeVogueKeywordController.vogueResponseOnlyKeywordList
+                            ),
+                            clickCb: (KeywordRadioModel clickedValue) {  },
+                          )
+                  ),
+            ),
+          ],
+        ),
       ),
-
     );
   }
 }
