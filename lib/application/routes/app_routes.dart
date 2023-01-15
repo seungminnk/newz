@@ -8,4 +8,6 @@ class AppRoutes {
   static const onboarding = '/onboarding';
   static const onboardingResult = '/onboarding/result';
   static const login = '/login';
+  static const introduction = '/intro';
+  static const introductionFinal = '/intro/fin';
 }

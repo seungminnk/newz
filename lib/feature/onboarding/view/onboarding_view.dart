@@ -1,9 +1,6 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newz/feature/onboarding/controller/keyword_editing_controller.dart';
-
-import 'package:newz/feature/onboarding/view/onboarding_result_view.dart';
 
 import '../../../application/routes/app_routes.dart';
 import '../controller/keyword_list_controller.dart';
@@ -89,32 +86,38 @@ class OnboardingView extends StatelessWidget {
                   child: Container(
                     width: double.infinity,
                     margin: const EdgeInsets.only(left: 20, right: 20),
-                    child: Obx(() => Wrap(
-                      direction: Axis.horizontal,
-                      alignment: WrapAlignment.start,
-                      spacing: 10,
-                      runSpacing: 10,
-                      children: [
-                        for (var keyword in KeywordListController.to.enteredKeywords)
-                          _generateEnteredKeywordTag(keyword)
-                      ],
-                    )),
+                    child: Obx(
+                      () => Wrap(
+                        direction: Axis.horizontal,
+                        alignment: WrapAlignment.start,
+                        spacing: 10,
+                        runSpacing: 10,
+                        children: [
+                          for (var keyword
+                              in KeywordListController.to.enteredKeywords)
+                            _generateEnteredKeywordTag(keyword)
+                        ],
+                      ),
+                    ),
                   ),
                 ),
                 Expanded(
                   child: Container(
                     width: double.infinity,
                     margin: const EdgeInsets.only(left: 20, right: 20),
-                    child: Obx(() => Wrap(
-                      direction: Axis.horizontal,
-                      alignment: WrapAlignment.start,
-                      spacing: 10,
-                      runSpacing: 10,
-                      children: [
-                        for (var fixedKeyword in KeywordListController.to.fixedKeywords)
-                          _generateFixedKeywordTag(fixedKeyword)
-                      ],
-                    )),
+                    child: Obx(
+                      () => Wrap(
+                        direction: Axis.horizontal,
+                        alignment: WrapAlignment.start,
+                        spacing: 10,
+                        runSpacing: 10,
+                        children: [
+                          for (var fixedKeyword
+                              in KeywordListController.to.fixedKeywords)
+                            _generateFixedKeywordTag(fixedKeyword)
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -123,22 +126,28 @@ class OnboardingView extends StatelessWidget {
           SizedBox(
             width: double.infinity,
             height: 56,
-            child: Obx(() => Container(
-              color: KeywordListController.to.enteredKeywords.isEmpty
-                  ? const Color(0xFFC5CAE9)
-                  : const Color(0xFF3F51B5),
-              child: TextButton(
-                onPressed: KeywordListController.to.enteredKeywords.isEmpty
-                    ? null : () => _onTabNextButton(KeywordListController.to.enteredKeywords.toList()),
-                child: Text(
-                  KeywordListController.to.enteredKeywords.isEmpty ? '확인' : '이제 시작해볼까요?',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
+            child: Obx(
+              () => Container(
+                color: KeywordListController.to.enteredKeywords.isEmpty
+                    ? const Color(0xFFC5CAE9)
+                    : const Color(0xFF3F51B5),
+                child: TextButton(
+                  onPressed: KeywordListController.to.enteredKeywords.isEmpty
+                      ? null
+                      : () => _onTabNextButton(
+                          KeywordListController.to.enteredKeywords.toList()),
+                  child: Text(
+                    KeywordListController.to.enteredKeywords.isEmpty
+                        ? '확인'
+                        : '이제 시작해볼까요?',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),
-            )),
+            ),
           ),
         ],
       ),

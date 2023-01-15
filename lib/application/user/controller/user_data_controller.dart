@@ -18,15 +18,15 @@ class UserDataController extends GetxController {
     super.onInit();
 
     final dio = Dio();
-    final response = await dio.get("https://newz.bbear.kr/api/user/?id=1");
+    final response = await dio.get("https://newz.bbear.kr/api/user?userId=1");
 
     var userData = User.fromJson(response.data);
 
-    id = RxInt(userData.id);
-    loginType = RxString(userData.loginType);
-    name = RxString(userData.name);
-    email = RxString(userData.email);
-    didSelectKeywords = RxBool(userData.completeOnboarding);
+    id(userData.id);
+    loginType(userData.loginType);
+    name(userData.name);
+    email(userData.email);
+    didSelectKeywords(userData.completeOnboarding);
   }
 
   void setDidSelectedKeywordsFlag(bool flag) {

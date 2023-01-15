@@ -5,7 +5,7 @@ import 'package:newz/application/user/controller/user_data_controller.dart';
 import 'package:newz/feature/application/controller/application_controller.dart';
 import 'package:newz/feature/home/view/home_view.dart';
 import 'package:newz/feature/mypage/view/mypage_view.dart';
-import 'package:newz/feature/onboarding/view/onboarding_view.dart';
+import 'package:newz/feature/onboarding/view/introduction_view.dart';
 import 'package:newz/feature/search/view/search_view.dart';
 import 'package:newz/feature/test_page/view/test_page_view.dart';
 
@@ -20,7 +20,7 @@ class ApplicationView extends GetView<ApplicationController> {
     return Obx(() => Scaffold(
           body: UserDataController.to.didSelectKeywords.value
               ? _buildPageView()
-              : const OnboardingView(),
+              : const IntroductionView(),
           bottomNavigationBar: UserDataController.to.didSelectKeywords.value
               ? _buildBottomNavigationBar(controller)
               : null,
