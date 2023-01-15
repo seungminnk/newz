@@ -97,15 +97,15 @@ class _SearchViewState extends State<SearchView> {
           )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 24,
-            ),
-            Row(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(
+            height: 24,
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: Row(
               children: [
                 Expanded(
                   child: TextField(
@@ -134,8 +134,11 @@ class _SearchViewState extends State<SearchView> {
                 ),
               ],
             ),
-            const SizedBox(height: 21),
-            const Text(
+          ),
+          const SizedBox(height: 21),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            child: Text(
               "지금 사람들이 많이 검색하는 키워드예요",
               style: TextStyle(
                 fontSize: 16,
@@ -143,45 +146,49 @@ class _SearchViewState extends State<SearchView> {
                 color: Color(0xff37474f),
               ),
             ),
-            const SizedBox(
-              height: 22,
-            ),
-            Expanded(
-              child: _searchController.text.isNotEmpty
-                  ? const Text("검색중입니다..")
-                  : Obx(
-                      () => realTimeVogueKeywordController.isLoading.value
-                          ? const Align(
-                              alignment: Alignment.topCenter,
-                              child: CustomCircularProgressIndicator(),
-                            )
-                          : Column(
-                              children: [
-                                CustomKeywordButtonGroupView(
-                                  keywordRadioModelList: KeywordRadioModel.fromVogueKeywordRequest(realTimeVogueKeywordController.vogueResponseOnlyKeywordList),
-                                  clickCb: (KeywordRadioModel clickedValue) {
-                                    realTimeVogueDataController.requestVogueData(clickedValue.value);
-                                  },
-                                ),
-                                SizedBox(height: 27,),
-                                Obx(
-                                  () => realTimeVogueDataController
-                                          .isLoading.value
-                                      ? const Align(
-                                          alignment: Alignment.topCenter,
-                                          child:
-                                              CustomCircularProgressIndicator(),
-                                        )
-                                      : const Expanded(
-                                          child: RealTimeVogueDataView(),
-                                        ),
-                                ),
-                              ],
+          ),
+          const SizedBox(
+            height: 22,
+          ),
+          Expanded(
+            child: _searchController.text.isNotEmpty
+                ? const Text("검색중입니다..")
+                : Obx(
+                    () => realTimeVogueKeywordController.isLoading.value ?
+                      const Align(
+                        alignment: Alignment.topCenter,
+                        child: CustomCircularProgressIndicator(),
+                      )
+                      :
+                      Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                            child: CustomKeywordButtonGroupView(
+                              keywordRadioModelList: KeywordRadioModel.fromVogueKeywordRequest(realTimeVogueKeywordController.vogueResponseOnlyKeywordList),
+                              clickCb: (KeywordRadioModel clickedValue) {
+                                realTimeVogueDataController.requestVogueData(clickedValue.value);
+                              },
                             ),
-                    ),
-            ),
-          ],
-        ),
+                          ),
+                          SizedBox(height: 27,),
+                          Obx(
+                            () => realTimeVogueDataController
+                                    .isLoading.value
+                                ? const Align(
+                                    alignment: Alignment.topCenter,
+                                    child:
+                                        CustomCircularProgressIndicator(),
+                                  )
+                                : const Expanded(
+                                    child: RealTimeVogueDataView(),
+                                  ),
+                          ),
+                        ],
+                      ),
+                  ),
+          ),
+        ],
       ),
     );
   }

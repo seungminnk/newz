@@ -13,19 +13,18 @@ class RealTimeVogueDataView extends GetView<RealTimeVogueDataController> {
     return controller.vogueResponseOnlyData == null ?
         const SizedBox(width: 0)
         :
-        ListView.separated(
-          physics: const BouncingScrollPhysics(),
-          itemBuilder: (context, index){
+        ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index){
 
-            News responseNews = controller.vogueResponseOnlyData!.news![index];
+              News responseNews = controller.vogueResponseOnlyData!.news![index];
 
-            // return Text(responseNews.title!);
-            return _newComponentView(responseNews);
-          },
-          separatorBuilder: (context, index){
-            return const SizedBox(height: 16);
-          },
-          itemCount: controller.vogueResponseOnlyData!.news!.length
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
+                child: _newComponentView(responseNews),
+              );
+            },
+            itemCount: controller.vogueResponseOnlyData!.news!.length
         );
   }
 
@@ -98,6 +97,32 @@ class RealTimeVogueDataView extends GetView<RealTimeVogueDataController> {
             )
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _newsDetailComponentView(News news){
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      height: 140,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(24.0),
+
+          color: Colors.white,
+          boxShadow: const [
+            BoxShadow(
+              color: Color.fromARGB(76, 0, 0, 0),
+              blurRadius: 10,
+              offset: Offset(1, 2), // changes position of shadow
+            ),
+          ]
+      ),
+      child: Column(
+        children: [
+          Row(
+
+          )
+        ],
       ),
     );
   }
