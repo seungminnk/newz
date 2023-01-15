@@ -152,6 +152,7 @@ class _SearchViewState extends State<SearchView> {
           ),
           Expanded(
             child: _searchController.text.isNotEmpty
+                // TODO 여기서 검색된 컨텐츠들 내용 뿌려주면 될듯 싶습니다.
                 ? const Text("검색중입니다..")
                 : Obx(
                     () => realTimeVogueKeywordController.isLoading.value ?
