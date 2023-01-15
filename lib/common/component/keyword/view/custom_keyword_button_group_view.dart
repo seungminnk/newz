@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:newz/common/component/keyword/model/keyword_radio_model.dart';
-import 'package:newz/common/component/keyword/view/keyword_button_shape_view.dart';
+import 'package:newz/common/component/keyword/view/one_time_use/keyword_button_shape_view.dart';
 
 typedef _ClickedCb = void Function(KeywordRadioModel clickedValue);
 
@@ -8,11 +8,14 @@ class CustomKeywordButtonGroupView extends StatefulWidget {
   const CustomKeywordButtonGroupView({
     required this.keywordRadioModelList,
     required this.clickCb,
+    this.alignment = WrapAlignment.start,
     Key? key,
   }) : super(key: key);
 
   final List<KeywordRadioModel> keywordRadioModelList;
   final _ClickedCb clickCb;
+
+  final WrapAlignment alignment;
 
   @override
   State<CustomKeywordButtonGroupView> createState() => _CustomKeywordButtonGroupViewState();
@@ -23,7 +26,6 @@ class _CustomKeywordButtonGroupViewState extends State<CustomKeywordButtonGroupV
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     for (var element in widget.keywordRadioModelList) {
@@ -35,6 +37,7 @@ class _CustomKeywordButtonGroupViewState extends State<CustomKeywordButtonGroupV
   Widget build(BuildContext context) {
 
     return Wrap(
+      alignment: widget.alignment,
       spacing: 8.0,
       runSpacing: 10.0,
       children: _buildKeywordButtons(sampleData, widget.clickCb),
