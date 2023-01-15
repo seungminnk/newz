@@ -6,7 +6,9 @@ import 'package:newz/common/component/keyword/model/keyword_radio_model.dart';
 import 'package:newz/common/component/keyword/view/custom_keyword_button_group_view.dart';
 import 'package:newz/common/component/loading/view/CustomCircularProgressIndicator.dart';
 import 'package:newz/feature/home/components/keyword_box.dart';
+import 'package:newz/feature/real_time_vogue/controller/real_time_vogue_data_controller.dart';
 import 'package:newz/feature/real_time_vogue/controller/real_time_vogue_keyword_controller.dart';
+import 'package:newz/feature/real_time_vogue/view/real_time_vogue_data_view.dart';
 
 class SearchView extends StatefulWidget {
   const SearchView({Key? key}) : super(key: key);
@@ -17,6 +19,8 @@ class SearchView extends StatefulWidget {
 
 class _SearchViewState extends State<SearchView> {
   RealTimeVogueKeywordController realTimeVogueKeywordController = Get.find();
+  RealTimeVogueDataController realTimeVogueDataController = Get.find();
+
   final _searchController = TextEditingController();
   final List _keywordList = [];
   final List keyword = [
@@ -143,24 +147,38 @@ class _SearchViewState extends State<SearchView> {
               height: 22,
             ),
             Expanded(
-              child: _searchController.text.isNotEmpty ?
-                  const Text("검색중입니다..")
-                  :
-                  Obx(
-                      () =>
-                        realTimeVogueKeywordController.isLoading.value ?
-                          const Align(
-                            alignment: Alignment.topCenter,
-                            child: CustomCircularProgressIndicator(),
-                          )
-                          :
-                          CustomKeywordButtonGroupView(
-                            keywordRadioModelList: KeywordRadioModel.fromVogueKeywordRequest(
-                                realTimeVogueKeywordController.vogueResponseOnlyKeywordList
+              child: _searchController.text.isNotEmpty
+                  ? const Text("검색중입니다..")
+                  : Obx(
+                      () => realTimeVogueKeywordController.isLoading.value
+                          ? const Align(
+                              alignment: Alignment.topCenter,
+                              child: CustomCircularProgressIndicator(),
+                            )
+                          : Column(
+                              children: [
+                                CustomKeywordButtonGroupView(
+                                  keywordRadioModelList: KeywordRadioModel.fromVogueKeywordRequest(realTimeVogueKeywordController.vogueResponseOnlyKeywordList),
+                                  clickCb: (KeywordRadioModel clickedValue) {
+                                    realTimeVogueDataController.requestVogueData(clickedValue.value);
+                                  },
+                                ),
+                                SizedBox(height: 27,),
+                                Obx(
+                                  () => realTimeVogueDataController
+                                          .isLoading.value
+                                      ? const Align(
+                                          alignment: Alignment.topCenter,
+                                          child:
+                                              CustomCircularProgressIndicator(),
+                                        )
+                                      : const Expanded(
+                                          child: RealTimeVogueDataView(),
+                                        ),
+                                ),
+                              ],
                             ),
-                            clickCb: (KeywordRadioModel clickedValue) {  },
-                          )
-                  ),
+                    ),
             ),
           ],
         ),
