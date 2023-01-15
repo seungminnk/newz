@@ -22,14 +22,14 @@ class UserDataController extends GetxController {
 
     var userData = User.fromJson(response.data);
 
-    id(userData.id);
-    loginType(userData.loginType);
-    name(userData.name);
-    email(userData.email);
-    didSelectKeywords(userData.completeOnboarding);
+    id.value = userData.id;
+    loginType.value = userData.loginType;
+    name.value = userData.name;
+    email.value = userData.email;
+    didSelectKeywords.value = userData.completeOnboarding;
   }
 
   void setDidSelectedKeywordsFlag(bool flag) {
-    didSelectKeywords = flag as RxBool;
+    didSelectKeywords.value = flag;
   }
 }

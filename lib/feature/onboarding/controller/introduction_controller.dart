@@ -6,6 +6,6 @@ class IntroductionController extends GetxController {
   RxInt carouselIndex = 0.obs;
 
   void changeCarouselIndex(int index) {
-    carouselIndex(index);
+    carouselIndex.value = index;
   }
 }

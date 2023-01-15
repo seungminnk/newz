@@ -15,7 +15,6 @@ class ApplicationView extends GetView<ApplicationController> {
   @override
   Widget build(BuildContext context) {
     // Get.put(ApplicationController());
-    Get.lazyPut(() => UserDataController());
 
     return Obx(() => Scaffold(
           body: UserDataController.to.didSelectKeywords.value
