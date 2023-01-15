@@ -30,6 +30,7 @@ class ApplicationView extends GetView<ApplicationController> {
   PageView _buildPageView() {
     return PageView(
       controller: controller.applicationPageController,
+      physics: const NeverScrollableScrollPhysics(),
       onPageChanged: controller.pageChanged,
       children: const [
         HomeView(),
