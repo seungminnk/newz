@@ -32,7 +32,6 @@ class _AdsTestViewState extends State<AdsTestView> {
           else{
             return const SizedBox(height: 0);
           }
-
         },
       ),
     );

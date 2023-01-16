@@ -155,23 +155,30 @@ class OnboardingResultView extends StatelessWidget {
   }
 
   _onClickLetsStartBtn() async {
-    final dio = Dio();
 
-    String requestUrl = "https://newz.bbear.kr/api/user/keyword";
-    final response = await dio.post(requestUrl, data: {
-      'userId': UserDataController.to.id.value,
-      'keywords': KeywordListController.to.enteredKeywords.toList()
-    });
+    // FIXME 추후 api 변경될 것임 그전까지 디버그 용도로 사용, 삭제 예정된 코드
+    UserDataController.to.didSelectKeywords(true);
+    Get.offAllNamed(AppRoutes.application);
 
-    if (response.statusCode == 200) {
-      // onboarding complete flag true로 변경하기
-      UserDataController.to.didSelectKeywords(true);
-    } else {
-      // 에러 리턴
-    }
+    // FIXME 원래 로직으로써 나중에 살려야 할 부분이다.
+    // final dio = Dio();
+    //
+    // String requestUrl = "https://newz.bbear.kr/api/user/keyword";
+    // final response = await dio.post(requestUrl, data: {
+    //   'userId': UserDataController.to.id.value,
+    //   'keywords': KeywordListController.to.enteredKeywords.toList()
+    // });
+    //
+    // if (response.statusCode == 200) {
+    //   // onboarding complete flag true로 변경하기
+    //   UserDataController.to.didSelectKeywords(true);
+    // } else {
+    //   // 에러 리턴
+    // }
+    //
+    // if (UserDataController.to.didSelectKeywords.value) {
+    //   Get.offAllNamed(AppRoutes.application);
+    // }
 
-    if (UserDataController.to.didSelectKeywords.value) {
-      Get.offAllNamed(AppRoutes.application);
-    }
   }
 }
