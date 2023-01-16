@@ -40,6 +40,8 @@ class ApplicationView extends GetView<ApplicationController> {
     );
   }
 
+  // FIXME 함수형 위젯 사용 지양
+  // FIXME 네비게이션바 아이콘, 디자인 수정 필요
   Widget _buildBottomNavigationBar(ApplicationController controller) {
     return SizedBox(
       height: 64,

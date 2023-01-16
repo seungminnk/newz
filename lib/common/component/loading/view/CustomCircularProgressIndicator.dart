@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// FIXME class명은 UpperCamelCase, 파일 명은 snake_case로 작성해주세요.
 class CustomCircularProgressIndicator extends StatelessWidget {
   const CustomCircularProgressIndicator({
     this.width = 20.0,

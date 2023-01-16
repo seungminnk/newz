@@ -27,6 +27,7 @@ class IntroductionView extends StatelessWidget {
           ),
           Expanded(
             child: Column(children: [
+              // FIXME 화면이 긴, 넓은 기기에서는 여백이 허전합니다. 이 부분은 디자이너님과 논의가 필요할듯 합니다.
               CarouselSlider(
                 options: CarouselOptions(
                   height: 400,

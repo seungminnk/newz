@@ -4,6 +4,12 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class ApplicationController extends GetxController{
 
+  static Future<ApplicationController> init() async {
+    await MobileAds.instance.initialize();
+    final controller = ApplicationController();
+    return controller;
+  }
+
   RxInt bottomNavigationBarIndex = 0.obs;
 
   PageController applicationPageController = PageController();
@@ -19,12 +25,7 @@ class ApplicationController extends GetxController{
 
   @override
   void onInit() async {
-    await _initGoogleMobileAds();
     super.onInit();
-  }
-
-  Future<InitializationStatus> _initGoogleMobileAds() {
-    return MobileAds.instance.initialize();
   }
 
   @override

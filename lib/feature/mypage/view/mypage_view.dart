@@ -175,6 +175,7 @@ class KeywordListCard extends StatelessWidget {
         width: Get.width,
         height: 40,
         child: ListView.separated(
+          // FIXME 패딩이 있는 횡스크롤은 스크롤중에 항목이 잘립니다. "clipBehavior: Clip.none" 값을 주면, 최종 좌우 여백은 지키면서도, 스크롤중에는 잘려보이지 않습니다.
           scrollDirection: Axis.horizontal,
           itemCount: keywordListController.fixedKeywords.length,
           separatorBuilder: (BuildContext context, int index) {

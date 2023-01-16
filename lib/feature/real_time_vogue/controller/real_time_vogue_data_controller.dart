@@ -29,6 +29,7 @@ class RealTimeVogueDataController extends GetxController{
     isLoading.value = false;
   }
 
+  // FIXME dio는 한군데에서 선언해서 사용하거나, 설정을 공유 할 수 있도록 만들어주세요.
   Dio _getDio(){
     var baseOption = BaseOptions(
         baseUrl: "https://newz.bbear.kr/api",

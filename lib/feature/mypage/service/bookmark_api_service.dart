@@ -57,6 +57,7 @@ class ApiService {
   }
 
   static void removeBookmark(String id) async {
+    // FIXME dio는 한군데에서 선언해서 사용하거나, 설정을 공유 할 수 있도록 만들어주세요.
     await Dio()
         .patch("https://newz.bbear.kr/api/user/bookmark/remove?bookmarkId=$id");
   }

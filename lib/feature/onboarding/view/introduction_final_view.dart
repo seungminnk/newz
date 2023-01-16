@@ -40,6 +40,7 @@ class IntroductionFinalView extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
+              // FIXME 이전 화면과 마찬가지로, 화면이 넓은 기기에서는 허전하지 않은지 디자이너님과 논의가 필요합니다.
               const Expanded(
                 child: Image(
                   image: AssetImage('assets/images/intro_4.png'),
