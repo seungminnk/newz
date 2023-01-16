@@ -163,8 +163,9 @@ class _SearchViewState extends State<SearchView> {
                       :
                       Column(
                         children: [
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20.0),
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: const EdgeInsets.symmetric(horizontal: 20.0),
                             child: CustomKeywordButtonGroupView(
                               keywordRadioModelList: KeywordRadioModel.fromVogueKeywordRequest(realTimeVogueKeywordController.vogueResponseOnlyKeywordList),
                               clickCb: (KeywordRadioModel clickedValue) {
@@ -172,18 +173,18 @@ class _SearchViewState extends State<SearchView> {
                               },
                             ),
                           ),
-                          SizedBox(height: 27,),
+                          const SizedBox(height: 27,),
                           Obx(
-                            () => realTimeVogueDataController
-                                    .isLoading.value
-                                ? const Align(
-                                    alignment: Alignment.topCenter,
-                                    child:
-                                        CustomCircularProgressIndicator(),
-                                  )
-                                : const Expanded(
-                                    child: RealTimeVogueDataView(),
-                                  ),
+                            () => realTimeVogueDataController.isLoading.value
+                                ?
+                                const Align(
+                                  alignment: Alignment.topCenter,
+                                  child: CustomCircularProgressIndicator(),
+                                )
+                                :
+                                const Expanded(
+                                  child: RealTimeVogueDataView(),
+                                ),
                           ),
                         ],
                       ),

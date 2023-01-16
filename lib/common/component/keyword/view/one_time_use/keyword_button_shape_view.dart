@@ -31,7 +31,8 @@ class KeywordButtonShapeView extends StatelessWidget {
         child: Text(
           _item.buttonText,
           style: TextStyle(
-              color: _item.isSelected ? _clickedTextColor : _baseTextColor),
+              color: _item.isSelected ? _clickedTextColor : _baseTextColor,
+          ),
         ),
       ),
     );
