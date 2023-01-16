@@ -20,8 +20,8 @@ class LoginController extends GetxController {
     _googleSignIn.signIn().then((value) {
       isLogin(true);
       userData = value!;
+      Get.back();
     }).catchError((e) {
-      // ignore: avoid_print
       print(e);
     });
   }
