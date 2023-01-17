@@ -17,7 +17,6 @@ class TestPageView extends StatelessWidget {
         child: Column(
           children: [
             _testPageNavigateButton(context, "Native 광고 페이지", (context) => const AdsTestView()),
-            _testPageNavigateButton(context, "인기 페이지", (context) => const RealTimeVogueView()),
             _testPageNavigateButton(context, "뉴스 공통 컴포넌트", (context) => const NewsComponentTestView()),
             _testPageNavigateButton(context, "키워드 공통 컴포넌트", (context) => const KeywordRadioGroupButtonTestView()),
           ],
