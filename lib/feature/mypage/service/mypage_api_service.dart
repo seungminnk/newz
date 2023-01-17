@@ -8,7 +8,7 @@ class ApiService {
       "https://newz.bbear.kr/api/user/bookmark/news?userId=";
 
   // 북마크 condition
-  static const String condition = "&page=1&limit=3";
+  static const String condition = "&page=1&limit=5";
 
   // 북마크 데이터 호출
   static Future<List<BookmarkModel>> getBookmarkListByDio(String id) async {
@@ -45,16 +45,17 @@ class ApiService {
     throw Error();
   }
 
+  // 북마크 삭제 API
   static void removeBookmark(String id) async {
     await Dio()
-        .patch('https://newz.bbear.kr/api/user/bookmark/remove?bookmarkId=$id');
+        .post('https://newz.bbear.kr/api/user/bookmark/remove?bookmarkId=$id');
   }
 
-  static void removeSetKeyword(String id) async {
-    Response respRsk = await Dio()
-        .delete('http://localhost:3001/api/user/keyword', queryParameters: {
-      'userId': id,
+  // 키워드 삭제 API
+  static void removeSetKeyword(String id, String keyword) async {
+    await Dio().post('https://newz.bbear.kr/api/user/keyword/remove', data: {
+      "userId": id,
+      "keywords": [keyword]
     });
-    print(respRsk.data.toString());
   }
 }
