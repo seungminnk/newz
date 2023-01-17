@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:newz/application/user/controller/user_data_controller.dart';
 import 'package:newz/feature/application/controller/application_controller.dart';
 import 'package:newz/feature/home/view/home_view.dart';
 import 'package:newz/feature/mypage/view/mypage_view.dart';
 import 'package:newz/feature/search/view/search_view.dart';
 import 'package:newz/feature/test_page/view/test_page_view.dart';
+
+import '../../../application/user/controller/user_data_controller.dart';
 
 class ApplicationView extends GetView<ApplicationController> {
   const ApplicationView({Key? key}) : super(key: key);
@@ -21,14 +22,14 @@ class ApplicationView extends GetView<ApplicationController> {
       bottomNavigationBar: _buildBottomNavigationBar(controller),
     );
 
-    //  Scaffold(
-    //   body: UserDataController.to.didSelectKeywords.value
-    //       ? _buildPageView()
-    //       : const OnboardingView(),
-    //   bottomNavigationBar: UserDataController.to.didSelectKeywords.value
-    //       ? _buildBottomNavigationBar(controller)
-    //       : null,
-    // )
+    // return Obx(() => Scaffold(
+    //       body: UserDataController.to.didSelectKeywords.value
+    //           ? _buildPageView()
+    //           : const IntroductionView(),
+    //       bottomNavigationBar: UserDataController.to.didSelectKeywords.value
+    //           ? _buildBottomNavigationBar(controller)
+    //           : null,
+    //     ));
   }
 
   PageView _buildPageView() {
