@@ -57,9 +57,9 @@ class _MyPageViewState extends State<MyPageView> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    '내 키워드 9개',
-                    style: TextStyle(fontSize: 15),
+                  Text(
+                    '내 키워드 ${mypageController.keywordlist.length}개',
+                    style: const TextStyle(fontSize: 15),
                   ),
                   GestureDetector(
                       onTap: () {
@@ -174,7 +174,7 @@ class KeywordListCard extends StatelessWidget {
     return Obx(
       () => SizedBox(
         width: Get.width,
-        height: 40,
+        height: 35,
         child: ListView.separated(
           clipBehavior: Clip.none,
           scrollDirection: Axis.horizontal,
@@ -184,34 +184,37 @@ class KeywordListCard extends StatelessWidget {
           },
           itemBuilder: (context, index) {
             return Container(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
-                border: Border.all(
-                  width: 1,
-                  color: Colors.black,
-                ),
-                color: Colors.transparent,
+                color: Colors.grey[200],
               ),
               child: Obx(
                 () => Center(
                   child: mypageController.isBookmark.isFalse
                       ? Row(
                           children: [
-                            Text(mypageController.keywordlist[index]),
+                            Text(
+                              mypageController.keywordlist[index],
+                              style: TextStyle(color: Colors.grey[600]),
+                            ),
                           ],
                         )
                       : Row(
                           children: [
-                            Text(mypageController.keywordlist[index]),
+                            Text(mypageController.keywordlist[index],
+                                style: TextStyle(color: Colors.grey[600])),
                             const SizedBox(width: 5),
                             GestureDetector(
                                 onTap: () {
                                   // 키워드 삭제 구현 필요
                                   mypageController.keywordRemoveBtn('1');
                                 },
-                                child: const Icon(Icons.cancel_outlined,
-                                    size: 18)),
+                                child: Icon(
+                                  Icons.cancel_outlined,
+                                  size: 18,
+                                  color: Colors.grey[600],
+                                )),
                           ],
                         ),
                 ),
