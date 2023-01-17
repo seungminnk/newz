@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 import 'package:newz/application/routes/app_routes.dart';
-import 'package:newz/feature/mypage/controller/bookmark_controller.dart';
+import 'package:newz/feature/mypage/controller/mypage_controller.dart';
 import 'package:get/get.dart';
 import '../../login/controller/login_controller.dart';
 import '../../onboarding/controller/keyword_editing_controller.dart';
@@ -17,14 +17,15 @@ class MyPageView extends StatefulWidget {
 }
 
 class _MyPageViewState extends State<MyPageView> {
-  final bookmarkController = Get.put(Bookmarkcontroller());
+  final mypageController = Get.put(Mypagecontroller());
   final keywordListController = Get.put(KeywordListController());
   final loginController = Get.put(LoginController());
   final keywordEditingController = Get.put(KeywordEditingController());
 
   @override
   void initState() {
-    bookmarkController.fetchBookmark('1');
+    mypageController.fetchBookmark('1');
+    mypageController.fetchKeyword('1');
     super.initState();
   }
 
@@ -62,7 +63,7 @@ class _MyPageViewState extends State<MyPageView> {
                   ),
                   GestureDetector(
                       onTap: () {
-                        bookmarkController.keywordSettingButtonClick();
+                        mypageController.keywordSettingButtonClick();
                       },
                       child: Row(
                         children: [
@@ -75,12 +76,12 @@ class _MyPageViewState extends State<MyPageView> {
               ),
               const SizedBox(height: 20),
               KeywordListCard(
-                bookmarkController: bookmarkController,
+                mypageController: mypageController,
                 keywordListController: keywordListController,
                 keywordEditingController: keywordEditingController,
               ),
               const SizedBox(height: 20),
-              addKeyword(bookmarkController: bookmarkController),
+              addKeyword(mypageController: mypageController),
               const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -107,15 +108,15 @@ class _MyPageViewState extends State<MyPageView> {
 class addKeyword extends StatelessWidget {
   const addKeyword({
     Key? key,
-    required this.bookmarkController,
+    required this.mypageController,
   }) : super(key: key);
 
-  final Bookmarkcontroller bookmarkController;
+  final Mypagecontroller mypageController;
 
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => bookmarkController.isBookmark.isFalse
+      () => mypageController.isBookmark.isFalse
           ? const SizedBox(height: 20)
           : Container(
               height: 40,
@@ -157,12 +158,12 @@ void _enteredKeyword(String text) {
 class KeywordListCard extends StatelessWidget {
   const KeywordListCard(
       {Key? key,
-      required this.bookmarkController,
+      required this.mypageController,
       required this.keywordListController,
       required this.keywordEditingController})
       : super(key: key);
 
-  final Bookmarkcontroller bookmarkController;
+  final Mypagecontroller mypageController;
 
   final KeywordListController keywordListController;
 
@@ -175,8 +176,9 @@ class KeywordListCard extends StatelessWidget {
         width: Get.width,
         height: 40,
         child: ListView.separated(
+          clipBehavior: Clip.none,
           scrollDirection: Axis.horizontal,
-          itemCount: keywordListController.fixedKeywords.length,
+          itemCount: mypageController.keywordlist.length,
           separatorBuilder: (BuildContext context, int index) {
             return const SizedBox(width: 10);
           },
@@ -193,18 +195,21 @@ class KeywordListCard extends StatelessWidget {
               ),
               child: Obx(
                 () => Center(
-                  child: bookmarkController.isBookmark.isFalse
+                  child: mypageController.isBookmark.isFalse
                       ? Row(
                           children: [
-                            Text(keywordListController.fixedKeywords[index]),
+                            Text(mypageController.keywordlist[index]),
                           ],
                         )
                       : Row(
                           children: [
-                            Text(keywordListController.fixedKeywords[index]),
+                            Text(mypageController.keywordlist[index]),
                             const SizedBox(width: 5),
                             GestureDetector(
-                                onTap: () {},
+                                onTap: () {
+                                  // 키워드 삭제 구현 필요
+                                  mypageController.keywordRemoveBtn('1');
+                                },
                                 child: const Icon(Icons.cancel_outlined,
                                     size: 18)),
                           ],
@@ -229,8 +234,9 @@ class ScrapCardWidget extends StatefulWidget {
 }
 
 class _ScrapCardWidgetState extends State<ScrapCardWidget> {
-  final bookmarkController = Get.put(Bookmarkcontroller());
+  final mypageController = Get.put(Mypagecontroller());
 
+  // 스크롤 영역 확장 코드
   final ScrollController _scrollController = ScrollController();
 
   void _scrollToSelectedContent(
@@ -252,9 +258,9 @@ class _ScrapCardWidgetState extends State<ScrapCardWidget> {
       () => ListView.separated(
         shrinkWrap: true,
         scrollDirection: Axis.vertical,
-        itemCount: bookmarkController.bookmarklist.length,
+        itemCount: mypageController.bookmarklist.length,
         itemBuilder: (context, index) {
-          var bookmarks = bookmarkController.bookmarklist[index];
+          var bookmarks = mypageController.bookmarklist[index];
           return ExpansionTileCard(
             baseColor: Colors.grey[200],
             shadowColor: Colors.grey,
@@ -287,7 +293,8 @@ class _ScrapCardWidgetState extends State<ScrapCardWidget> {
                 children: [
                   TextButton(
                     onPressed: () {
-                      bookmarkController.removeButtonClick(bookmarks.userid);
+                      // 북마크 제거 기능
+                      mypageController.bookmarkRemoveBtn(bookmarks.userid);
                     },
                     child: Column(
                       children: const [
