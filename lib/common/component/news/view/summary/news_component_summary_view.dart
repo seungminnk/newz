@@ -26,9 +26,9 @@ class NewsComponentSummaryView extends StatelessWidget {
           color: Colors.white,
           boxShadow: const [
             BoxShadow(
-              color: Color.fromARGB(76, 0, 0, 0),
+              color: Color.fromARGB(76, 11, 15, 53),
               blurRadius: 10,
-              offset: Offset(1, 2), // changes position of shadow
+              offset: Offset(1, 3), // changes position of shadow
             ),
           ]),
       child: InkWell(
