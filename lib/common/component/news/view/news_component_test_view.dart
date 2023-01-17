@@ -9,7 +9,7 @@ class NewsComponentTestView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('뉴스 컴포넌트 테스트')),
       body: Center(
-        child: NewsSummaryComponentView()
+        child: Placeholder(),
       )
     );
   }
