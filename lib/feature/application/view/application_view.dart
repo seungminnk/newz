@@ -11,6 +11,9 @@ import 'package:newz/feature/test_page/view/test_page_view.dart';
 
 class ApplicationView extends GetView<ApplicationController> {
   const ApplicationView({Key? key}) : super(key: key);
+  
+  final Color notActiveColor = const Color.fromARGB(255, 159, 168, 218);
+  final Color activeColor = const Color.fromARGB(255, 48, 63, 159);
 
   @override
   Widget build(BuildContext context) {
@@ -55,26 +58,33 @@ class ApplicationView extends GetView<ApplicationController> {
           items: [
             BottomNavigationBarItem(
               label: "",
-              icon: SvgPicture.asset("assets/icons/home.svg"),
+              icon: SvgPicture.asset(
+                "assets/icons/home.svg",
+                color: notActiveColor,
+              ),
               activeIcon: SvgPicture.asset(
                 "assets/icons/home.svg",
-                color: Colors.lightBlue,
+                color: activeColor,
               ),
             ),
             BottomNavigationBarItem(
               label: "",
-              icon: SvgPicture.asset("assets/icons/search.svg"),
+              icon: SvgPicture.asset("assets/icons/search.svg",
+                color: notActiveColor,
+              ),
               activeIcon: SvgPicture.asset(
                 "assets/icons/search.svg",
-                color: Colors.lightBlue,
+                color: activeColor,
               ),
             ),
             BottomNavigationBarItem(
               label: "",
-              icon: SvgPicture.asset("assets/icons/user.svg"),
+              icon: SvgPicture.asset("assets/icons/user.svg",
+                color: notActiveColor,
+              ),
               activeIcon: SvgPicture.asset(
                 "assets/icons/user.svg",
-                color: Colors.lightBlue,
+                color: activeColor,
               ),
             ),
             BottomNavigationBarItem(
