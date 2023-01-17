@@ -45,59 +45,61 @@ class _MyPageViewState extends State<MyPageView> {
         backgroundColor: Colors.transparent,
         elevation: 0,
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              UserInfoWidget(loginController: loginController),
-              const SizedBox(height: 20),
-              Image.asset('assets/images/Line.png'),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    '내 키워드 ${mypageController.keywordlist.length}개',
-                    style: const TextStyle(fontSize: 15),
-                  ),
-                  GestureDetector(
-                      onTap: () {
-                        mypageController.keywordSettingButtonClick();
-                      },
-                      child: Row(
-                        children: [
-                          const Text('키워드 변경'),
-                          const SizedBox(width: 5),
-                          SvgPicture.asset('assets/icons/mypage_setting.svg'),
-                        ],
-                      )),
-                ],
-              ),
-              const SizedBox(height: 20),
-              KeywordListCard(
-                mypageController: mypageController,
-                keywordListController: keywordListController,
-                keywordEditingController: keywordEditingController,
-              ),
-              const SizedBox(height: 20),
-              addKeyword(mypageController: mypageController),
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
-                    '스크랩',
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w500,
+      body: Obx(
+        () => SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                UserInfoWidget(loginController: loginController),
+                const SizedBox(height: 20),
+                Image.asset('assets/images/Line.png'),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '내 키워드 ${mypageController.keywordlist.length}개',
+                      style: const TextStyle(fontSize: 15),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              const ScrapCardWidget(),
-            ],
+                    GestureDetector(
+                        onTap: () {
+                          mypageController.keywordSettingButtonClick();
+                        },
+                        child: Row(
+                          children: [
+                            const Text('키워드 변경'),
+                            const SizedBox(width: 5),
+                            SvgPicture.asset('assets/icons/mypage_setting.svg'),
+                          ],
+                        )),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                KeywordListCard(
+                  mypageController: mypageController,
+                  keywordListController: keywordListController,
+                  keywordEditingController: keywordEditingController,
+                ),
+                const SizedBox(height: 20),
+                addKeyword(mypageController: mypageController),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: const [
+                    Text(
+                      '스크랩',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10),
+                const ScrapCardWidget(),
+              ],
+            ),
           ),
         ),
       ),
@@ -208,7 +210,8 @@ class KeywordListCard extends StatelessWidget {
                             GestureDetector(
                                 onTap: () {
                                   // 키워드 삭제 구현 필요
-                                  mypageController.keywordRemoveBtn('1');
+                                  mypageController.keywordRemoveBtn(
+                                      '1', mypageController.keywordlist[index]);
                                 },
                                 child: Icon(
                                   Icons.cancel_outlined,
@@ -296,8 +299,10 @@ class _ScrapCardWidgetState extends State<ScrapCardWidget> {
                 children: [
                   TextButton(
                     onPressed: () {
+                      print(bookmarks.bookmarkId.toString());
                       // 북마크 제거 기능
-                      mypageController.bookmarkRemoveBtn(bookmarks.userid);
+                      mypageController
+                          .bookmarkRemoveBtn(bookmarks.bookmarkId.toString());
                     },
                     child: Column(
                       children: const [
