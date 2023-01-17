@@ -41,4 +41,9 @@ class RealTimeVogueKeywordController extends GetxController{
 
     return _dio!;
   }
+
+  void init(){
+    isLoading.value = false;
+    vogueResponseOnlyKeywordList.clear();
+  }
 }

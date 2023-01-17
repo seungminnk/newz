@@ -43,6 +43,9 @@ class _SearchViewState extends State<SearchView> {
   void initState() {
     super.initState();
 
+    realTimeVogueKeywordController.init();
+    realTimeVogueDataController.init();
+
     realTimeVogueKeywordController.requestVogueKeyword();
 
     SystemChannels.textInput.invokeMethod('TextInput.hide');

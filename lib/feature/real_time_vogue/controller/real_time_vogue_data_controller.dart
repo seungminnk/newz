@@ -41,4 +41,9 @@ class RealTimeVogueDataController extends GetxController{
 
     return _dio!;
   }
+
+  void init(){
+    isLoading.value = false;
+    vogueResponseOnlyData = null;
+  }
 }
