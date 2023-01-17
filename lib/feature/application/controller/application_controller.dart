@@ -1,8 +1,17 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class ApplicationController extends GetxController{
+
+  static Future<ApplicationController> init() async {
+    if(!kIsWeb) {
+      await MobileAds.instance.initialize();
+    }
+    final controller = ApplicationController();
+    return controller;
+  }
 
   RxInt bottomNavigationBarIndex = 0.obs;
 
@@ -19,13 +28,7 @@ class ApplicationController extends GetxController{
 
   @override
   void onInit() async {
-    await _initGoogleMobileAds();
     super.onInit();
-  }
-
-  Future<InitializationStatus> _initGoogleMobileAds() {
-    // TODO: Initialize Google Mobile Ads SDK
-    return MobileAds.instance.initialize();
   }
 
   @override

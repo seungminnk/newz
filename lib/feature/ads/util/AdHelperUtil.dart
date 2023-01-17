@@ -1,5 +1,6 @@
 import 'dart:io';
 
+// FIXME class명은 UpperCamelCase, 파일 명은 snake_case로 작성해주세요.
 class AdHelperUtil{
   static String get bannerAdUnitId {
     if (Platform.isAndroid) {

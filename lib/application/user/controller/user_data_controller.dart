@@ -17,19 +17,20 @@ class UserDataController extends GetxController {
   void onInit() async {
     super.onInit();
 
+    // FIXME dio는 한군데에서 선언해서 사용하거나, 설정을 공유 할 수 있도록 만들어주세요.
     final dio = Dio();
-    final response = await dio.get("https://newz.bbear.kr/api/user/?id=1");
+    final response =await dio.get("https://newz.bbear.kr/api/user?userId=1");
 
     var userData = User.fromJson(response.data);
 
-    id = RxInt(userData.id);
-    loginType = RxString(userData.loginType);
-    name = RxString(userData.name);
-    email = RxString(userData.email);
-    didSelectKeywords = RxBool(userData.completeOnboarding);
+    id.value = userData.id;
+    loginType.value = userData.loginType;
+    name.value = userData.name;
+    email.value = userData.email;
+    didSelectKeywords.value = userData.completeOnboarding;
   }
 
   void setDidSelectedKeywordsFlag(bool flag) {
-    didSelectKeywords = flag as RxBool;
+    didSelectKeywords.value = flag;
   }
 }

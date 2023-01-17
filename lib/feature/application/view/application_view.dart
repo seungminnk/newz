@@ -7,15 +7,12 @@ import 'package:newz/feature/mypage/view/mypage_view.dart';
 import 'package:newz/feature/search/view/search_view.dart';
 import 'package:newz/feature/test_page/view/test_page_view.dart';
 
-import '../../../application/user/controller/user_data_controller.dart';
-
 class ApplicationView extends GetView<ApplicationController> {
   const ApplicationView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     // Get.put(ApplicationController());
-    Get.lazyPut(() => UserDataController());
 
     return Scaffold(
       body: _buildPageView(),
@@ -35,6 +32,7 @@ class ApplicationView extends GetView<ApplicationController> {
   PageView _buildPageView() {
     return PageView(
       controller: controller.applicationPageController,
+      physics: const NeverScrollableScrollPhysics(),
       onPageChanged: controller.pageChanged,
       children: const [
         HomeView(),
@@ -45,6 +43,8 @@ class ApplicationView extends GetView<ApplicationController> {
     );
   }
 
+  // FIXME 함수형 위젯 사용 지양
+  // FIXME 네비게이션바 아이콘, 디자인 수정 필요
   Widget _buildBottomNavigationBar(ApplicationController controller) {
     return SizedBox(
       height: 64,
