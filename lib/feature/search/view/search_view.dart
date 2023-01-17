@@ -9,6 +9,7 @@ import 'package:newz/feature/home/components/keyword_box.dart';
 import 'package:newz/feature/real_time_vogue/controller/real_time_vogue_data_controller.dart';
 import 'package:newz/feature/real_time_vogue/controller/real_time_vogue_keyword_controller.dart';
 import 'package:newz/feature/real_time_vogue/view/real_time_vogue_data_view.dart';
+import 'package:newz/feature/real_time_vogue/view/real_time_vogue_view.dart';
 
 class SearchView extends StatefulWidget {
   const SearchView({Key? key}) : super(key: key);
@@ -157,41 +158,8 @@ class _SearchViewState extends State<SearchView> {
             child: _searchController.text.isNotEmpty
                 // TODO 여기서 검색된 컨텐츠들 내용 뿌려주면 될듯 싶습니다.
                 ? const Text("검색중입니다..")
-                : Obx(
-                    () => realTimeVogueKeywordController.isLoading.value ?
-                      const Align(
-                        alignment: Alignment.topCenter,
-                        child: CustomCircularProgressIndicator(),
-                      )
-                      :
-                      Column(
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width,
-                            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                            child: CustomKeywordButtonGroupView(
-                              keywordRadioModelList: KeywordRadioModel.fromVogueKeywordRequest(realTimeVogueKeywordController.vogueResponseOnlyKeywordList),
-                              clickCb: (KeywordRadioModel clickedValue) {
-                                realTimeVogueDataController.requestVogueData(clickedValue.value);
-                              },
-                            ),
-                          ),
-                          const SizedBox(height: 27,),
-                          Obx(
-                            () => realTimeVogueDataController.isLoading.value
-                                ?
-                                const Align(
-                                  alignment: Alignment.topCenter,
-                                  child: CustomCircularProgressIndicator(),
-                                )
-                                :
-                                const Expanded(
-                                  child: RealTimeVogueDataView(),
-                                ),
-                          ),
-                        ],
-                      ),
-                  ),
+                :
+                const RealTimeVogueView()
           ),
         ],
       ),
