@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:newz/common/component/keyword/view/keyword_radio_group_button_test_view.dart';
 import 'package:newz/common/component/news/view/news_component_test_view.dart';
-import 'package:newz/common/component/news/view/news_summary_component_view.dart';
+import 'package:newz/common/component/news/view/news_component_view.dart';
 import 'package:newz/feature/ads/view/ads_test_view.dart';
 import 'package:newz/feature/real_time_vogue/view/real_time_vogue_view.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:newz/common/component/news/view/news_summary_component_view.dart';
+import 'package:newz/common/component/news/view/news_component_view.dart';
 import 'package:newz/feature/mypage/view/webview_page.dart';
 import 'package:newz/feature/real_time_vogue/controller/real_time_vogue_data_controller.dart';
 import 'package:newz/feature/real_time_vogue/model/dto/real_time_vogue_response_only_data_dto.dart';

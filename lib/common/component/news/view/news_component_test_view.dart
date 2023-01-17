@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:newz/common/component/news/view/news_summary_component_view.dart';
+import 'package:newz/common/component/news/view/news_component_view.dart';
 
 class NewsComponentTestView extends StatelessWidget {
   const NewsComponentTestView({Key? key}) : super(key: key);
