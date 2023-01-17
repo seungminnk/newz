@@ -26,7 +26,11 @@ class Mypagecontroller extends GetxController {
     }
   }
 
-  void removeButtonClick(String id) {
+  void keywordRemoveBtn(String id) {
     ApiService.removeSetKeyword(id);
+  }
+
+  void bookmarkRemoveBtn(String id) {
+    ApiService.removeBookmark(id);
   }
 }
