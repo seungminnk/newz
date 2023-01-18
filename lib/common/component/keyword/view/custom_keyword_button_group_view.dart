@@ -10,14 +10,19 @@ class CustomKeywordButtonGroupView extends StatefulWidget {
     required this.clickCb,
     this.alignment = WrapAlignment.start,
     this.isHorizontalListView = false,
+    this.isFirstButtonClickStateOn = false,
     Key? key,
   }) : super(key: key);
 
   final List<KeywordRadioModel> keywordRadioModelList;
   final _ClickedCb clickCb;
 
+
   final WrapAlignment alignment;
+
   final bool isHorizontalListView;
+
+  final bool isFirstButtonClickStateOn;
 
   @override
   State<CustomKeywordButtonGroupView> createState() =>
@@ -28,9 +33,13 @@ class _CustomKeywordButtonGroupViewState
     extends State<CustomKeywordButtonGroupView> {
   List<KeywordRadioModel> sampleData = [];
 
+  bool firstButtonClickState = false;
+
   @override
   void initState() {
     super.initState();
+
+    firstButtonClickState = widget.isFirstButtonClickStateOn;
 
     for (var element in widget.keywordRadioModelList) {
       sampleData.add(element);
@@ -88,6 +97,15 @@ class _CustomKeywordButtonGroupViewState
 
   List<Widget> _buildKeywordButtons(
       List<KeywordRadioModel> keywordRadioModelList, _ClickedCb clickedCb) {
+
+    if(firstButtonClickState){
+
+      firstButtonClickState = false;
+
+      keywordRadioModelList.first.isSelected = true;
+      clickedCb(keywordRadioModelList.first);
+    }
+
     List<Widget> widgetList = [];
 
     for (int index = 0; index < keywordRadioModelList.length; index++) {

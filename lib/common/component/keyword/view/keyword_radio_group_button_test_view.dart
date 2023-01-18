@@ -27,6 +27,7 @@ class KeywordRadioGroupButtonTestView extends StatelessWidget {
             print("중요한 손님 지나갑니다! : ${modelValue.value}");
           },
           isHorizontalListView: true,
+          isFirstButtonClickStateOn: true,
         ),
       ),
     );
