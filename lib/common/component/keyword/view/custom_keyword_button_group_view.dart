@@ -98,7 +98,7 @@ class _CustomKeywordButtonGroupViewState
   List<Widget> _buildKeywordButtons(
       List<KeywordRadioModel> keywordRadioModelList, _ClickedCb clickedCb) {
 
-    if(firstButtonClickState){
+    if(keywordRadioModelList.isNotEmpty && firstButtonClickState){
 
       firstButtonClickState = false;
 
