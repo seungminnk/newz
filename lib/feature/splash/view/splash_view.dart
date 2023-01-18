@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:newz/application/routes/app_routes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({Key? key}) : super(key: key);
@@ -25,11 +26,26 @@ class _SplashViewState extends State<SplashView> {
       SystemUiOverlay.top,
     ]);
     SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+      const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
     );
 
-    Future.delayed(const Duration(milliseconds: 2000), () {
-      Get.offAllNamed(AppRoutes.application,);
+    Future.delayed(const Duration(milliseconds: 2000), () async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      bool? didOnboarding = prefs.getBool("didOnboarding");
+      String? accessToken = prefs.getString("accessToken");
+
+      if (didOnboarding == null || !didOnboarding) {
+        Get.offAllNamed(AppRoutes.introduction);
+      } else {
+        if (accessToken == null) {
+          Get.offAllNamed(AppRoutes.login);
+        } else {
+          Get.offAllNamed(AppRoutes.application);
+        }
+      }
+
+      // Get.offAllNamed(AppRoutes.application);
     });
   }
 

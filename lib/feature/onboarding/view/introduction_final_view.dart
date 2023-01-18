@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../application/routes/app_routes.dart';
 
@@ -62,7 +63,11 @@ class IntroductionFinalView extends StatelessWidget {
                     borderRadius: BorderRadius.circular(25),
                     color: const Color(0xFF3F51B5)),
                 child: TextButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    SharedPreferences prefs =
+                        await SharedPreferences.getInstance();
+                    prefs.setBool("didOnboarding", true);
+
                     Get.toNamed(AppRoutes.keyword);
                   },
                   child: const Text(

@@ -19,7 +19,7 @@ class UserDataController extends GetxController {
 
     // FIXME dio는 한군데에서 선언해서 사용하거나, 설정을 공유 할 수 있도록 만들어주세요.
     final dio = Dio();
-    final response =await dio.get("https://newz.bbear.kr/api/user?userId=1");
+    final response = await dio.get("https://newz.bbear.kr/api/user?userId=1");
 
     var userData = User.fromJson(response.data);
 
