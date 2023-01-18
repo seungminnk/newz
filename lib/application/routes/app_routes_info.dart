@@ -9,10 +9,11 @@ import 'package:newz/feature/onboarding/view/introduction_view.dart';
 import 'package:newz/feature/onboarding/view/onboarding_result_view.dart';
 import 'package:newz/feature/onboarding/view/onboarding_view.dart';
 import 'package:newz/feature/search/view/search_view.dart';
+import 'package:newz/feature/splash/view/splash_view.dart';
 
 class AppRoutesInfo {
   static Map<String, WidgetBuilder> details = {
-    // AppRoutes.splash : (context) => const ApplicationView(),
+    AppRoutes.splash : (context) => const SplashView(),
     AppRoutes.application: (context) => const ApplicationView(),
 
     AppRoutes.home: (context) => const HomeView(),

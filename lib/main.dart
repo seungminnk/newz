@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Pretendard',
         primarySwatch: Colors.blue,
       ),
-      initialRoute: AppRoutes.application,
+      initialRoute: AppRoutes.splash,
       routes: AppRoutesInfo.details,
     );
   }
