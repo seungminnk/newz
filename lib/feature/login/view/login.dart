@@ -26,17 +26,31 @@ class Login extends StatelessWidget {
         () => Center(
           //loginController.login();
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            SvgPicture.asset('assets/images/title.svg'),
+            SvgPicture.asset('assets/images/logo.svg'),
             const SizedBox(height: 50),
             Image.asset('assets/images/IMAGE.png'),
             const SizedBox(height: 60),
-            const Text('SNS 계정으로 간편하게 가입하기'),
+            const Text(
+              'SNS 계정으로 간편하게 가입하기',
+              style: TextStyle(
+                fontFamily: 'Pretendard',
+                fontSize: 12,
+                color: Color(0xff37474f),
+                fontWeight: FontWeight.w400,
+              ),
+            ),
             const SizedBox(height: 20),
             IconButton(
               onPressed: () {
                 loginController.login();
               },
-              icon: Image.asset('assets/icons/googleIcon.png'),
+              icon: SizedBox(
+                  height: 40,
+                  width: 40,
+                  child: Image.asset(
+                    'assets/icons/googleIcon.png',
+                    fit: BoxFit.fill,
+                  )),
             ),
             const SizedBox(height: 20),
             GestureDetector(
@@ -47,11 +61,20 @@ class Login extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                   decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Colors.grey),
+                    border:
+                        Border.all(width: 1, color: const Color(0xFFCFD8DC)),
                     color: Colors.transparent,
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: const Text('로그인에 어려움이 있나요?')),
+                  child: const Text(
+                    '로그인에 어려움이 있나요?',
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: 12,
+                      color: Color(0xff37474f),
+                      fontWeight: FontWeight.w400,
+                    ),
+                  )),
             ),
             const SizedBox(height: 10),
             loginController.isLogin.isTrue
@@ -82,52 +105,83 @@ class Login extends StatelessWidget {
         builder: ((BuildContext context) {
           return AlertDialog(
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
             content: SizedBox(
-              height: Get.height / 7,
-              width: Get.width / 2,
+              height: 200,
+              width: 312,
               child: Center(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                          onPressed: (() {
+                            Get.back();
+                          }),
+                          icon: SvgPicture.asset('assets/icons/cancel.svg'),
+                        )
+                      ],
+                    ),
+                    const Text(
                       "계정 접속에 이상이 있어요",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: 18,
+                        color: Color(0xff37474f),
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
-                    Text(
+                    const Text(
                       "다시 시도해 주세요.",
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: 18,
+                        color: Color(0xff37474f),
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
+                    const SizedBox(height: 16),
+                    GestureDetector(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: Container(
+                        width: 160,
+                        height: 44,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24, vertical: 12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: const Color(0xFF3F51B5),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            '취소',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    const Text(
+                      '문의하기',
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: 14,
+                        color: Color(0xffB0BEC5),
+                        fontWeight: FontWeight.w400,
+                      ),
+                    )
                   ],
                 ),
               ),
             ),
-            actionsPadding: const EdgeInsets.only(bottom: 20),
-            actions: [
-              Center(
-                child: GestureDetector(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.fromLTRB(70, 15, 70, 15),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: const Color(0xFF3F51B5),
-                    ),
-                    child: const Text(
-                      '확인',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            ],
           );
         }));
   }

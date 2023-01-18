@@ -34,7 +34,6 @@ class ApiService {
     List keyWordInstances = [];
     try {
       Response respKL = await Dio().get(keywordBaseUrl + id);
-      print(respKL);
       for (var data in respKL.data) {
         keyWordInstances.add(data);
       }

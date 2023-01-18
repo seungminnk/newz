@@ -1,12 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
+import 'package:flutter/material.dart';
 import 'package:newz/application/routes/app_routes.dart';
+import 'package:newz/common/component/loading/view/CustomCircularProgressIndicator.dart';
 import 'package:newz/feature/mypage/controller/mypage_controller.dart';
 import 'package:get/get.dart';
+import 'package:newz/feature/mypage/view/webview_page.dart';
 import '../../login/controller/login_controller.dart';
 import '../../onboarding/controller/keyword_editing_controller.dart';
 import '../../onboarding/controller/keyword_list_controller.dart';
-import 'webview_page.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class MyPageView extends StatefulWidget {
@@ -120,12 +121,275 @@ class _MyPageViewState extends State<MyPageView> {
                   ],
                 ),
                 const SizedBox(height: 10),
-                const ScrapCardWidget(),
+                //const ScrapCardWidget(),
+                BookmarkCardWidget(mypageController: mypageController),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class BookmarkCardWidget extends StatefulWidget {
+  const BookmarkCardWidget({
+    Key? key,
+    required this.mypageController,
+  }) : super(key: key);
+
+  final Mypagecontroller mypageController;
+
+  @override
+  State<BookmarkCardWidget> createState() => _BookmarkCardWidgetState();
+}
+
+class _BookmarkCardWidgetState extends State<BookmarkCardWidget> {
+  final ScrollController _scrollController = ScrollController();
+
+  void _scrollToSelectedContent(
+      bool isExpanded, double previousOffset, int index, GlobalKey myKey) {
+    final keyContext = myKey.currentContext;
+
+    if (keyContext != null) {
+      final box = keyContext.findRenderObject() as RenderBox;
+      _scrollController.animateTo(
+          isExpanded ? (box.size.height * index) : previousOffset,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.linear);
+    }
+  }
+
+  bool _isExpanded = false;
+
+  void _onTap() {
+    setState(() {
+      _isExpanded = !_isExpanded;
+    });
+  }
+
+  final Color fontColor = const Color.fromARGB(255, 55, 71, 79);
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() => widget.mypageController.isBookmarkLoading.isFalse
+        ? const CustomCircularProgressIndicator()
+        : _isExpanded
+            ? cardExpand()
+            : cardSummary());
+  }
+
+  ListView cardExpand() {
+    return ListView.separated(
+      controller: _scrollController,
+      shrinkWrap: true,
+      itemCount: widget.mypageController.bookmarklist.length,
+      separatorBuilder: (BuildContext context, int index) {
+        return const SizedBox(height: 10);
+      },
+      itemBuilder: ((context, index) {
+        var news = widget.mypageController.bookmarklist[index];
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          height: 286,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(24.0),
+              color: Colors.white,
+              boxShadow: const [
+                BoxShadow(
+                  color: Color.fromARGB(76, 11, 15, 53),
+                  blurRadius: 10,
+                  offset: Offset(1, 3), // changes position of shadow
+                ),
+              ]),
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(top: 24),
+                height: 30,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        news.title ?? "제목 없음",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontSize: 18, color: fontColor),
+                      ),
+                    ),
+                    const SizedBox(width: 18),
+                    InkWell(
+                      onTap: () {
+                        _onTap();
+                      },
+                      child: SizedBox(
+                        width: 21.5,
+                        height: 21.5,
+                        child: SvgPicture.asset("assets/icons/shrink.svg"),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 16.0),
+                width: double.infinity,
+                height: 120,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        news.content ?? "기사 내용 없음..",
+                        maxLines: 5,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          height: 1.5,
+                          fontSize: 16.0,
+                          color: fontColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 16.0),
+                child: const Divider(
+                  thickness: 1.0,
+                  color: Color.fromARGB(255, 120, 144, 156),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 48,
+                    height: 48,
+                    child: Image.asset(
+                      "assets/images/news_source/naver.png",
+                    ),
+                  ),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () => Get.to(WebviewWidget(weburl: news.link!)),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              "자세히보기..",
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                color: fontColor,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: SvgPicture.asset(
+                      "assets/icons/scrap.svg",
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      }),
+    );
+  }
+
+  ListView cardSummary() {
+    return ListView.separated(
+      controller: _scrollController,
+      shrinkWrap: true,
+      itemCount: widget.mypageController.bookmarklist.length,
+      separatorBuilder: (BuildContext context, int index) {
+        return const SizedBox(height: 10);
+      },
+      itemBuilder: ((context, index) {
+        var news = widget.mypageController.bookmarklist[index];
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          height: 81,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(24.0),
+              color: Colors.white,
+              boxShadow: const [
+                BoxShadow(
+                  color: Color.fromARGB(76, 11, 15, 53),
+                  blurRadius: 10,
+                  offset: Offset(1, 3), // changes position of shadow
+                ),
+              ]),
+          child: InkWell(
+            onTap: () {
+              Get.to(WebviewWidget(weburl: news.link!));
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 48,
+                  height: 48,
+                  child: Image.asset("assets/images/news_source/naver.png"),
+                ),
+                Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        news.title ?? "제목 없음",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(
+                            fontSize: 16.0,
+                            color: Color.fromARGB(255, 55, 71, 79)),
+                      ),
+                      const SizedBox(height: 10.0),
+                      Text(
+                        news.content ?? "제목 없음",
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontSize: 12.0,
+                            color: const Color.fromARGB(255, 55, 71, 79)
+                                .withOpacity(0.6)),
+                      )
+                    ],
+                  ),
+                )),
+                InkWell(
+                  onTap: () {
+                    _onTap();
+                  },
+                  child: SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: SvgPicture.asset("assets/icons/expand.svg"),
+                  ),
+                )
+              ],
+            ),
+          ),
+        );
+      }),
     );
   }
 }
@@ -141,7 +405,7 @@ class addKeyword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => mypageController.isBookmark.isFalse
+      () => mypageController.changeKeyword.isFalse
           ? const SizedBox(height: 20)
           : Container(
               height: 40,
@@ -197,58 +461,67 @@ class KeywordListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => SizedBox(
-        width: Get.width,
-        height: 35,
-        child: ListView.separated(
-          clipBehavior: Clip.none,
-          scrollDirection: Axis.horizontal,
-          itemCount: mypageController.keywordlist.length,
-          separatorBuilder: (BuildContext context, int index) {
-            return const SizedBox(width: 10);
-          },
-          itemBuilder: (context, index) {
-            return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.grey[200],
+      () => mypageController.isKeywordLoading.isFalse
+          ? const CustomCircularProgressIndicator()
+          : SizedBox(
+              width: Get.width,
+              height: 35,
+              child: ListView.separated(
+                clipBehavior: Clip.none,
+                scrollDirection: Axis.horizontal,
+                itemCount: mypageController.keywordlist.length,
+                separatorBuilder: (BuildContext context, int index) {
+                  return const SizedBox(width: 10);
+                },
+                itemBuilder: (context, index) {
+                  return Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                      color: const Color.fromARGB(255, 236, 239, 241),
+                    ),
+                    child: Obx(
+                      () => Center(
+                        child: mypageController.changeKeyword.isFalse
+                            ? Row(
+                                children: [
+                                  Text(
+                                    mypageController.keywordlist[index],
+                                    style: const TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 120, 144, 156)),
+                                  ),
+                                ],
+                              )
+                            : Row(
+                                children: [
+                                  Text(mypageController.keywordlist[index],
+                                      style: const TextStyle(
+                                          color: Color.fromARGB(
+                                              255, 120, 144, 156))),
+                                  const SizedBox(width: 5),
+                                  GestureDetector(
+                                      onTap: () {
+                                        // 키워드 삭제 구현 필요
+                                        mypageController.keywordRemoveBtn(
+                                            '1',
+                                            mypageController
+                                                .keywordlist[index]);
+                                      },
+                                      child: const Icon(
+                                        Icons.cancel_outlined,
+                                        size: 18,
+                                        color:
+                                            Color.fromARGB(255, 120, 144, 156),
+                                      )),
+                                ],
+                              ),
+                      ),
+                    ),
+                  );
+                },
               ),
-              child: Obx(
-                () => Center(
-                  child: mypageController.isBookmark.isFalse
-                      ? Row(
-                          children: [
-                            Text(
-                              mypageController.keywordlist[index],
-                              style: TextStyle(color: Colors.grey[600]),
-                            ),
-                          ],
-                        )
-                      : Row(
-                          children: [
-                            Text(mypageController.keywordlist[index],
-                                style: TextStyle(color: Colors.grey[600])),
-                            const SizedBox(width: 5),
-                            GestureDetector(
-                                onTap: () {
-                                  // 키워드 삭제 구현 필요
-                                  mypageController.keywordRemoveBtn(
-                                      '1', mypageController.keywordlist[index]);
-                                },
-                                child: Icon(
-                                  Icons.cancel_outlined,
-                                  size: 18,
-                                  color: Colors.grey[600],
-                                )),
-                          ],
-                        ),
-                ),
-              ),
-            );
-          },
-        ),
-      ),
+            ),
     );
   }
 }
@@ -284,77 +557,85 @@ class _ScrapCardWidgetState extends State<ScrapCardWidget> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => ListView.separated(
-        shrinkWrap: true,
-        scrollDirection: Axis.vertical,
-        itemCount: mypageController.bookmarklist.length,
-        itemBuilder: (context, index) {
-          var bookmarks = mypageController.bookmarklist[index];
-          return ExpansionTileCard(
-            baseColor: Colors.grey[200],
-            shadowColor: Colors.grey,
-            borderRadius: BorderRadius.circular(20),
-            leading: const CircleAvatar(child: Text('N')),
-            title: Text(bookmarks.title),
-            children: [
-              const Divider(
-                thickness: 1.0,
-                height: 5.0,
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16.0,
-                    vertical: 8.0,
+      () => mypageController.isBookmarkLoading.isFalse
+          ? const CustomCircularProgressIndicator()
+          : ListView.separated(
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              itemCount: mypageController.bookmarklist.length,
+              itemBuilder: (context, index) {
+                var bookmarks = mypageController.bookmarklist[index];
+                return ExpansionTileCard(
+                  baseColor: Colors.white,
+                  shadowColor: const Color.fromARGB(76, 11, 15, 53),
+                  borderRadius: BorderRadius.circular(20),
+                  leading: SizedBox(
+                    width: 48,
+                    height: 48,
+                    child: Image.asset("assets/images/news_source/naver.png"),
                   ),
-                  child: Text(
-                    bookmarks.content,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText2!
-                        .copyWith(fontSize: 16),
-                  ),
-                ),
-              ),
-              ButtonBar(
-                alignment: MainAxisAlignment.end,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      print(bookmarks.bookmarkId.toString());
-                      // 북마크 제거 기능
-                      mypageController
-                          .bookmarkRemoveBtn(bookmarks.bookmarkId.toString());
-                    },
-                    child: Column(
-                      children: const [
-                        Icon(Icons.remove_circle_outline),
-                        SizedBox(height: 3),
-                        Text('제거하기'),
+                  title: Text(bookmarks.title),
+                  children: [
+                    const Divider(
+                      thickness: 1.0,
+                      height: 5.0,
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                          vertical: 8.0,
+                        ),
+                        child: Text(
+                          bookmarks.content,
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(fontSize: 16),
+                        ),
+                      ),
+                    ),
+                    ButtonBar(
+                      alignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          onPressed: () {
+                            print(bookmarks.bookmarkId.toString());
+                            // 북마크 제거 기능
+                            mypageController.bookmarkRemoveBtn(
+                                bookmarks.bookmarkId.toString());
+                          },
+                          child: Column(
+                            children: const [
+                              Icon(Icons.remove_circle_outline),
+                              SizedBox(height: 3),
+                              Text('제거하기'),
+                            ],
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () => Get.to(
+                              () => WebviewWidget(weburl: bookmarks.link)),
+                          child: Column(
+                            children: const [
+                              Icon(Icons.list_alt),
+                              SizedBox(height: 3),
+                              Text('원문 읽기'),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
-                  ),
-                  TextButton(
-                    onPressed: () =>
-                        Get.to(() => WebviewWidget(weburl: bookmarks.link)),
-                    child: Column(
-                      children: const [
-                        Icon(Icons.list_alt),
-                        SizedBox(height: 3),
-                        Text('원문 읽기'),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          );
-        },
-        separatorBuilder: (BuildContext context, int index) {
-          return const SizedBox(height: 10);
-        },
-      ),
+                  ],
+                );
+
+                // NewsComponentView(news: bookmarks);
+              },
+              separatorBuilder: (BuildContext context, int index) {
+                return const SizedBox(height: 10);
+              },
+            ),
     );
   }
 }
@@ -382,7 +663,7 @@ class UserInfoWidget extends StatelessWidget {
                         fontFamily: 'Pretendard',
                         fontSize: 20,
                         color: Color(0xff37474f),
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w400,
                       ),
                     )
                   : Text(
@@ -391,7 +672,7 @@ class UserInfoWidget extends StatelessWidget {
                         fontFamily: 'Pretendard',
                         fontSize: 20,
                         color: Color(0xff37474f),
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
               const SizedBox(
@@ -410,7 +691,7 @@ class UserInfoWidget extends StatelessWidget {
                     fontFamily: 'Pretendard',
                     fontSize: 14,
                     color: Color(0xff37474f),
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
               ),
