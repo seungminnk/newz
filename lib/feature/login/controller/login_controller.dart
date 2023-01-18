@@ -7,7 +7,7 @@ class LoginController extends GetxController {
 
   late GoogleSignInAccount userData;
 
-  late GoogleSignInAuthentication googleSignInAuthentication;
+  late final GoogleSignInAuthentication googleSignInAuthentication;
 
   void logout() {
     _googleSignIn.signOut().then((value) {
