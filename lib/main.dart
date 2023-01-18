@@ -8,7 +8,6 @@ import 'package:newz/application/routes/app_routes_info.dart';
 import 'package:newz/application/user/controller/user_data_controller.dart';
 import 'package:newz/feature/application/controller/application_controller.dart';
 import 'package:newz/feature/onboarding/controller/keyword_list_controller.dart';
-import 'package:newz/feature/real_time_vogue/controller/real_time_vogue_controller.dart';
 import 'package:newz/feature/real_time_vogue/controller/real_time_vogue_data_controller.dart';
 import 'package:newz/feature/real_time_vogue/controller/real_time_vogue_keyword_controller.dart';
 
@@ -28,7 +27,6 @@ Future _controllerInit() async {
   // 의존성으로 초기화 순서가 명확해야할때 사용할 수 있습니다.
   await Get.putAsync(() => ApplicationController.init());
 
-  Get.lazyPut(() => RealTimeVogueController());
   Get.lazyPut(() => RealTimeVogueDataController());
   Get.lazyPut(() => RealTimeVogueKeywordController());
 

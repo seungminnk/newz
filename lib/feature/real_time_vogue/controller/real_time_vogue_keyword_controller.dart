@@ -16,8 +16,10 @@ class RealTimeVogueKeywordController extends GetxController{
     var response = await dio.get("/news/vogue/keyword");
 
     vogueResponseOnlyKeywordList.clear();
+
     vogueResponseOnlyKeywordList.addAll(
       (response.data as List)
+          .sublist(0, 10)
           .map((responseData) => RealTimeVogueResponseOnlyKeywordDto.fromJson(responseData))
     );
 
@@ -38,5 +40,10 @@ class RealTimeVogueKeywordController extends GetxController{
     _dio ??= Dio(baseOption);
 
     return _dio!;
+  }
+
+  void init(){
+    isLoading.value = false;
+    vogueResponseOnlyKeywordList.clear();
   }
 }
