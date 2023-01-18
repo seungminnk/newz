@@ -30,13 +30,14 @@ class _NewsComponentExpandViewState extends State<NewsComponentExpandView> {
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24.0),
           color: Colors.white,
-          boxShadow: const [
-            BoxShadow(
-              color: Color.fromARGB(76, 11, 15, 53),
-              blurRadius: 10,
-              offset: Offset(1, 3), // changes position of shadow
-            ),
-          ]),
+          // boxShadow: const [
+          //   BoxShadow(
+          //     color: Color.fromARGB(76, 11, 15, 53),
+          //     blurRadius: 10,
+          //     offset: Offset(1, 3), // changes position of shadow
+          //   ),
+          // ]),
+      ),
       child: Column(
         children: [
           Container(
