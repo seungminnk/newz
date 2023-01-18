@@ -7,6 +7,8 @@ class LoginController extends GetxController {
 
   late GoogleSignInAccount userData;
 
+  late GoogleSignInAuthentication googleSignInAuthentication;
+
   void logout() {
     _googleSignIn.signOut().then((value) {
       isLogin(false);
@@ -17,12 +19,15 @@ class LoginController extends GetxController {
   }
 
   void login() {
-    _googleSignIn.signIn().then((value) {
+    _googleSignIn.signIn().then<void>((value) {
       isLogin(true);
       userData = value!;
       Get.back();
+      print(googleSignInAuthentication.idToken);
+      print(googleSignInAuthentication.accessToken);
     }).catchError((e) {
       print(e);
     });
+    // print(userToken);
   }
 }
