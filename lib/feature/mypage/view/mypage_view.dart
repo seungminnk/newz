@@ -53,14 +53,27 @@ class _MyPageViewState extends State<MyPageView> {
               children: [
                 UserInfoWidget(loginController: loginController),
                 const SizedBox(height: 20),
-                Image.asset('assets/images/Line.png'),
+                Row(
+                  children: [
+                    Expanded(
+                        child: Image.asset(
+                      'assets/images/Line.png',
+                      fit: BoxFit.fill,
+                    )),
+                  ],
+                ),
                 const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       '내 키워드 ${mypageController.keywordlist.length}개',
-                      style: const TextStyle(fontSize: 15),
+                      style: const TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: 12,
+                        color: Color(0xff37474f),
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                     GestureDetector(
                         onTap: () {
@@ -68,8 +81,16 @@ class _MyPageViewState extends State<MyPageView> {
                         },
                         child: Row(
                           children: [
-                            const Text('키워드 변경'),
-                            const SizedBox(width: 5),
+                            const Text(
+                              '키워드 변경',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: 12,
+                                color: Color(0xff37474f),
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            const SizedBox(width: 10),
                             SvgPicture.asset('assets/icons/mypage_setting.svg'),
                           ],
                         )),
@@ -90,8 +111,10 @@ class _MyPageViewState extends State<MyPageView> {
                     Text(
                       '스크랩',
                       style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w500,
+                        fontFamily: 'Pretendard',
+                        fontSize: 20,
+                        color: Color(0xff37474f),
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                   ],
@@ -354,37 +377,41 @@ class UserInfoWidget extends StatelessWidget {
             children: [
               loginController.isLogin.isFalse
                   ? const Text(
-                      '길동님',
+                      '길동님\n관심 기사를 모아놨어요',
                       style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w400,
+                        fontFamily: 'Pretendard',
+                        fontSize: 20,
+                        color: Color(0xff37474f),
+                        fontWeight: FontWeight.w600,
                       ),
                     )
                   : Text(
-                      '${loginController.userData.displayName!}님',
+                      '${loginController.userData.displayName!}님\n관심 기사를 모아놨어요',
                       style: const TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.w400,
+                        fontFamily: 'Pretendard',
+                        fontSize: 20,
+                        color: Color(0xff37474f),
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
               const SizedBox(
                 height: 5,
               ),
-              const Text(
-                '관심 기사를 모아놨어요',
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
               const SizedBox(
                 height: 5,
               ),
+              // Text(loginController.googleSignInAuthentication.idToken
+              //     .toString()),
               GestureDetector(
                 onTap: () {},
-                child: Text(
+                child: const Text(
                   '정보수정',
-                  style: TextStyle(color: Colors.grey[600]),
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontSize: 14,
+                    color: Color(0xff37474f),
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
             ],
