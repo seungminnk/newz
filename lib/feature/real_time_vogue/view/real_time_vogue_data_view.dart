@@ -25,7 +25,9 @@ class RealTimeVogueDataView extends GetView<RealTimeVogueDataController> {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 20.0),
               child: NewsComponentView(
-                news: responseNews,
+                title: responseNews.title,
+                content: responseNews.content,
+                link: responseNews.link,
               ),
             );
           },
