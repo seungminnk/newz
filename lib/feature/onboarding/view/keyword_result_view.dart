@@ -5,8 +5,8 @@ import 'package:newz/application/routes/app_routes.dart';
 import 'package:newz/application/user/controller/user_data_controller.dart';
 import 'package:newz/feature/onboarding/controller/keyword_list_controller.dart';
 
-class OnboardingResultView extends StatelessWidget {
-  const OnboardingResultView({Key? key}) : super(key: key);
+class KeywordResultView extends StatelessWidget {
+  const KeywordResultView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -155,7 +155,6 @@ class OnboardingResultView extends StatelessWidget {
   }
 
   _onClickLetsStartBtn() async {
-
     // FIXME 추후 api 변경될 것임 그전까지 디버그 용도로 사용, 삭제 예정된 코드
     UserDataController.to.didSelectKeywords(true);
     Get.offAllNamed(AppRoutes.application);
@@ -179,6 +178,5 @@ class OnboardingResultView extends StatelessWidget {
     // if (UserDataController.to.didSelectKeywords.value) {
     //   Get.offAllNamed(AppRoutes.application);
     // }
-
   }
 }

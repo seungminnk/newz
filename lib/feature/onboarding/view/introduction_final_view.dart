@@ -8,6 +8,9 @@ class IntroductionFinalView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deviceWidth = MediaQuery.of(context).size.width;
+    const standardDeviceWidth = 360;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -40,15 +43,17 @@ class IntroductionFinalView extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
+              const SizedBox(height: 20),
               // FIXME 이전 화면과 마찬가지로, 화면이 넓은 기기에서는 허전하지 않은지 디자이너님과 논의가 필요합니다.
-              const Expanded(
-                child: Image(
-                  image: AssetImage('assets/images/intro_4.png'),
-                  width: 200,
-                  height: 200,
+              Expanded(
+                child: SizedBox(
+                  width: 200 * (deviceWidth / standardDeviceWidth),
+                  child: const Image(
+                    image: AssetImage('assets/images/intro_4.png'),
+                  ),
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 20),
               Container(
                 margin: const EdgeInsets.all(20),
                 width: double.infinity,
@@ -58,7 +63,7 @@ class IntroductionFinalView extends StatelessWidget {
                     color: const Color(0xFF3F51B5)),
                 child: TextButton(
                   onPressed: () {
-                    Get.toNamed(AppRoutes.onboarding);
+                    Get.toNamed(AppRoutes.keyword);
                   },
                   child: const Text(
                     "NEWZ 시작하기",
