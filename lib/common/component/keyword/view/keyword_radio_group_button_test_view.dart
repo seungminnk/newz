@@ -14,14 +14,20 @@ class KeywordRadioGroupButtonTestView extends StatelessWidget {
     list.add(KeywordRadioModel(false, 'CCCCC', 'April 16'));
     list.add(KeywordRadioModel(false, 'DDDDD', 'April 15'));
     list.add(KeywordRadioModel(false, 'EEEEE', 'April 14'));
+    list.add(KeywordRadioModel(false, 'FFFFF', 'April 13'));
+    list.add(KeywordRadioModel(false, 'GGGGG', 'April 12'));
 
     return Scaffold(
       appBar: AppBar(title: const Text('키워드 그룹 테스트')),
-      body: CustomKeywordButtonGroupView(
-        keywordRadioModelList: list,
-        clickCb: (modelValue){
-          print("중요한 손님 지나갑니다! : ${modelValue.value}");
-        },
+      body: SizedBox(
+        height: 30,
+        child: CustomKeywordButtonGroupView(
+          keywordRadioModelList: list,
+          clickCb: (modelValue){
+            print("중요한 손님 지나갑니다! : ${modelValue.value}");
+          },
+          isHorizontalListView: true,
+        ),
       ),
     );
   }
