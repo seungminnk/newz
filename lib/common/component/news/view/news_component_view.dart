@@ -4,9 +4,18 @@ import 'package:newz/common/component/news/view/summary/news_component_summary_v
 import 'package:newz/feature/real_time_vogue/model/dto/real_time_vogue_response_only_data_dto.dart';
 
 class NewsComponentView extends StatefulWidget {
-  const NewsComponentView({required this.news, Key? key}) : super(key: key);
+  const NewsComponentView({
+    required this.title,
+    required this.content,
+    required this.link,
+    Key? key
+  }) : super(key: key);
 
-  final News news;
+  final String? title;
+  final String? content;
+  final String? link;
+
+  // final News news;
   final Color fontColor = const Color.fromARGB(255, 55, 71, 79);
 
   @override
@@ -14,12 +23,26 @@ class NewsComponentView extends StatefulWidget {
 }
 
 class _NewsComponentViewState extends State<NewsComponentView> {
+
+  News news = News();
+
   bool _isExpanded = false;
 
   void _onTap() {
     setState(() {
       _isExpanded = !_isExpanded;
     });
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    news = News(
+      title: widget.title ?? "제목 없음",
+      content: widget.content ?? "내용 없음",
+      link: widget.link ?? "https://www.naver.com",
+    );
   }
 
   @override
@@ -39,8 +62,8 @@ class _NewsComponentViewState extends State<NewsComponentView> {
           ],
         ),
         child: _isExpanded
-            ? NewsComponentExpandView(news: widget.news, onTap: _onTap)
-            : NewsComponentSummaryView(news: widget.news, onTap: _onTap),
+            ? NewsComponentExpandView(news: news, onTap: _onTap)
+            : NewsComponentSummaryView(news: news, onTap: _onTap),
       ),
     );
   }
