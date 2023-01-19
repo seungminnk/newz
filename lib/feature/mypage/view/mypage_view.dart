@@ -51,7 +51,7 @@ class _MyPageViewState extends State<MyPageView> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
-                UserInfoWidget(loginController: loginController),
+                UserInfoWidget(),
                 const SizedBox(height: 20),
                 Row(
                   children: [
@@ -97,13 +97,9 @@ class _MyPageViewState extends State<MyPageView> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                KeywordListCard(
-                  mypageController: mypageController,
-                  keywordListController: keywordListController,
-                  keywordEditingController: keywordEditingController,
-                ),
+                KeywordListCard(),
                 const SizedBox(height: 20),
-                addKeyword(mypageController: mypageController),
+                addKeyword(),
                 const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -120,7 +116,7 @@ class _MyPageViewState extends State<MyPageView> {
                   ],
                 ),
                 const SizedBox(height: 10),
-                BookmarkCardWidget(mypageController: mypageController),
+                BookmarkCardWidget(),
               ],
             ),
           ),
@@ -130,47 +126,23 @@ class _MyPageViewState extends State<MyPageView> {
   }
 }
 
-class BookmarkCardWidget extends StatefulWidget {
-  const BookmarkCardWidget({
-    Key? key,
-    required this.mypageController,
-  }) : super(key: key);
+class BookmarkCardWidget extends StatelessWidget {
+  BookmarkCardWidget({Key? key}) : super(key: key);
 
-  final Mypagecontroller mypageController;
-
-  @override
-  State<BookmarkCardWidget> createState() => _BookmarkCardWidgetState();
-}
-
-class _BookmarkCardWidgetState extends State<BookmarkCardWidget> {
-  final ScrollController _scrollController = ScrollController();
-
-  void _scrollToSelectedContent(
-      bool isExpanded, double previousOffset, int index, GlobalKey myKey) {
-    final keyContext = myKey.currentContext;
-
-    if (keyContext != null) {
-      final box = keyContext.findRenderObject() as RenderBox;
-      _scrollController.animateTo(
-          isExpanded ? (box.size.height * index) : previousOffset,
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.linear);
-    }
-  }
+  final Mypagecontroller mypageController = Get.find();
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => widget.mypageController.isBookmarkLoading.isFalse
+    return Obx(() => mypageController.isBookmarkLoading.isFalse
         ? const CustomCircularProgressIndicator()
         : ListView.separated(
-            controller: _scrollController,
             shrinkWrap: true,
-            itemCount: widget.mypageController.bookmarklist.length,
+            itemCount: mypageController.bookmarklist.length,
             separatorBuilder: (BuildContext context, int index) {
               return const SizedBox(height: 10);
             },
             itemBuilder: ((context, index) {
-              var news = widget.mypageController.bookmarklist[index];
+              var news = mypageController.bookmarklist[index];
               return GestureDetector(
                 onLongPress: () {
                   bookmarkDialog(context, news);
@@ -224,7 +196,7 @@ class _BookmarkCardWidgetState extends State<BookmarkCardWidget> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            widget.mypageController
+                            mypageController
                                 .bookmarkRemoveBtn(news.bookmarkId.toString());
                             Get.back();
                           },
@@ -293,12 +265,9 @@ class _BookmarkCardWidgetState extends State<BookmarkCardWidget> {
 }
 
 class UserInfoWidget extends StatelessWidget {
-  const UserInfoWidget({
-    Key? key,
-    required this.loginController,
-  }) : super(key: key);
+  UserInfoWidget({Key? key}) : super(key: key);
 
-  final LoginController loginController;
+  final LoginController loginController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -365,12 +334,9 @@ class UserInfoWidget extends StatelessWidget {
 }
 
 class addKeyword extends StatelessWidget {
-  const addKeyword({
-    Key? key,
-    required this.mypageController,
-  }) : super(key: key);
+  addKeyword({Key? key}) : super(key: key);
 
-  final Mypagecontroller mypageController;
+  final Mypagecontroller mypageController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -415,18 +381,13 @@ void _enteredKeyword(String text) {
 }
 
 class KeywordListCard extends StatelessWidget {
-  const KeywordListCard(
-      {Key? key,
-      required this.mypageController,
-      required this.keywordListController,
-      required this.keywordEditingController})
-      : super(key: key);
+  KeywordListCard({Key? key}) : super(key: key);
 
-  final Mypagecontroller mypageController;
+  final Mypagecontroller mypageController = Get.find();
 
-  final KeywordListController keywordListController;
+  final KeywordListController keywordListController = Get.find();
 
-  final KeywordEditingController keywordEditingController;
+  final KeywordEditingController keywordEditingController = Get.find();
 
   @override
   Widget build(BuildContext context) {
