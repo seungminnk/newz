@@ -68,7 +68,7 @@ class IntroductionFinalView extends StatelessWidget {
                         await SharedPreferences.getInstance();
                     prefs.setBool("didOnboarding", true);
 
-                    Get.toNamed(AppRoutes.keyword);
+                    Get.toNamed(AppRoutes.login);
                   },
                   child: const Text(
                     "NEWZ 시작하기",

@@ -156,7 +156,7 @@ class KeywordResultView extends StatelessWidget {
 
   _onClickLetsStartBtn() async {
     // FIXME 추후 api 변경될 것임 그전까지 디버그 용도로 사용, 삭제 예정된 코드
-    UserDataController.to.didSelectKeywords(true);
+    UserDataController.to.setDidSelectedInitialKeywordsFlag(true);
     Get.offAllNamed(AppRoutes.application);
 
     // FIXME 원래 로직으로써 나중에 살려야 할 부분이다.
