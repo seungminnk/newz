@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
-import '../../../application/routes/app_routes.dart';
+import 'package:newz/config/routes/app_routes.dart';
 import '../controller/keyword_list_controller.dart';
 
 class KeywordView extends StatelessWidget {

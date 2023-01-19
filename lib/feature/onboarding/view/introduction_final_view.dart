@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../application/routes/app_routes.dart';
+import 'package:newz/config/routes/app_routes.dart';
 
 class IntroductionFinalView extends StatelessWidget {
   const IntroductionFinalView({Key? key}) : super(key: key);

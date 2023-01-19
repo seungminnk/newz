@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:newz/application/routes/app_routes.dart';
-import 'package:newz/application/user/controller/user_data_controller.dart';
+import 'package:newz/config/routes/app_routes.dart';
+import 'package:newz/config/user/controller/user_data_controller.dart';
 import 'package:newz/feature/onboarding/controller/keyword_list_controller.dart';
 
 class KeywordResultView extends StatelessWidget {
