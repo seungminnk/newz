@@ -10,6 +10,7 @@ import 'package:newz/feature/real_time_vogue/controller/real_time_vogue_data_con
 import 'package:newz/feature/real_time_vogue/controller/real_time_vogue_keyword_controller.dart';
 import 'package:newz/feature/real_time_vogue/view/real_time_vogue_data_view.dart';
 import 'package:newz/feature/real_time_vogue/view/real_time_vogue_view.dart';
+import 'package:newz/feature/search/controller/search_data_controller.dart';
 
 class SearchView extends StatefulWidget {
   const SearchView({Key? key}) : super(key: key);
@@ -19,8 +20,11 @@ class SearchView extends StatefulWidget {
 }
 
 class _SearchViewState extends State<SearchView> {
+
   RealTimeVogueKeywordController realTimeVogueKeywordController = Get.find();
   RealTimeVogueDataController realTimeVogueDataController = Get.find();
+
+  SearchDataController searchDataController = Get.find();
 
   final _searchController = TextEditingController();
   final List _keywordList = [];
@@ -43,6 +47,8 @@ class _SearchViewState extends State<SearchView> {
   @override
   void initState() {
     super.initState();
+
+    searchDataController.requestSearchKeywordData(1);
 
     realTimeVogueKeywordController.init();
     realTimeVogueDataController.init();

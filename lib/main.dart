@@ -10,6 +10,7 @@ import 'package:newz/feature/application/controller/application_controller.dart'
 import 'package:newz/feature/onboarding/controller/keyword_list_controller.dart';
 import 'package:newz/feature/real_time_vogue/controller/real_time_vogue_data_controller.dart';
 import 'package:newz/feature/real_time_vogue/controller/real_time_vogue_keyword_controller.dart';
+import 'package:newz/feature/search/controller/search_data_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // async main 사용을 위한 코드
@@ -29,6 +30,8 @@ Future _controllerInit() async {
 
   Get.lazyPut(() => RealTimeVogueDataController());
   Get.lazyPut(() => RealTimeVogueKeywordController());
+
+  Get.lazyPut(() => SearchDataController());
 
   Get.lazyPut(() => UserDataController());
 }
