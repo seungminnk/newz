@@ -4,6 +4,7 @@ import 'package:newz/common/component/loading/view/CustomCircularProgressIndicat
 import 'package:newz/common/component/news/view/news_component_view.dart';
 import 'package:newz/feature/mypage/controller/mypage_controller.dart';
 import 'package:get/get.dart';
+import 'package:newz/feature/mypage/view/setting_page.dart';
 import '../../login/controller/login_controller.dart';
 import '../../onboarding/controller/keyword_editing_controller.dart';
 import '../../onboarding/controller/keyword_list_controller.dart';
@@ -305,7 +306,9 @@ class UserInfoWidget extends StatelessWidget {
               // Text(loginController.googleSignInAuthentication.idToken
               //     .toString()),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Get.to(const SettingPage());
+                },
                 child: const Text(
                   '정보수정',
                   style: TextStyle(
