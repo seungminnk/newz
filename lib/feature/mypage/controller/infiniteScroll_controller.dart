@@ -6,8 +6,9 @@ import 'package:get/get.dart';
 import 'mypage_controller.dart';
 
 class InfiniteScrollController extends GetxController {
-  final boomarkApi = Get.put(Mypagecontroller());
+  final bookmarkApi = Get.put(Mypagecontroller());
   var scrollController = ScrollController().obs;
+
   // 초기 페이지 설정
   RxInt pages = 1.obs;
 
@@ -18,7 +19,7 @@ class InfiniteScrollController extends GetxController {
     scrollController.value.addListener(() {
       if ((scrollController.value.position.pixels ==
               scrollController.value.position.maxScrollExtent) &&
-          boomarkApi.hasData.isTrue) {
+          bookmarkApi.hasData.isTrue) {
         print('스크롤 영역감지');
         print(pages);
         loadData();
@@ -29,13 +30,13 @@ class InfiniteScrollController extends GetxController {
 
   // 이벤트 감지에 따른 데이터 호출
   void loadData() {
-    boomarkApi.fetchBookmark('1', pages.toString());
+    bookmarkApi.fetchBookmark('1', pages.toString());
     pages++;
   }
 
   // 데이터 호출 초기화
   Future<void> resetData() async {
-    boomarkApi.resetFetchBookmark('1');
+    bookmarkApi.resetFetchBookmark('1');
     pages(2);
   }
 }
