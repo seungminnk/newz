@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:newz/config/routes/app_routes.dart';
 import 'package:newz/common/component/loading/view/CustomCircularProgressIndicator.dart';
 import 'package:newz/common/component/news/view/news_component_view.dart';
+import 'package:newz/feature/mypage/controller/infiniteScroll_controller.dart';
 import 'package:newz/feature/mypage/controller/mypage_controller.dart';
 import 'package:get/get.dart';
 import 'package:newz/feature/mypage/view/setting_page.dart';
@@ -22,10 +23,10 @@ class _MyPageViewState extends State<MyPageView> {
   final keywordListController = Get.put(KeywordListController());
   final loginController = Get.put(LoginController());
   final keywordEditingController = Get.put(KeywordEditingController());
+  final scrollController = Get.put(InfiniteScrollController());
 
   @override
   void initState() {
-    mypageController.fetchBookmark('1', '1');
     mypageController.fetchKeyword('1');
     super.initState();
   }
@@ -63,78 +64,81 @@ class _MyPageViewState extends State<MyPageView> {
         ],
       ),
       body: Obx(
-        () => SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                UserInfoWidget(),
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    Expanded(
-                        child: Image.asset(
-                      'assets/images/Line.png',
-                      fit: BoxFit.fill,
-                    )),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      '내 키워드 ${mypageController.keywordlist.length}개',
-                      style: const TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: 12,
-                        color: Color(0xff37474f),
-                        fontWeight: FontWeight.w400,
-                      ),
+        () => Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              UserInfoWidget(),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                      child: Image.asset(
+                    'assets/images/Line.png',
+                    fit: BoxFit.fill,
+                  )),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '내 키워드 ${mypageController.keywordlist.length}개',
+                    style: const TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: 12,
+                      color: Color(0xff37474f),
+                      fontWeight: FontWeight.w400,
                     ),
-                    GestureDetector(
-                        onTap: () {
-                          mypageController.keywordSettingButtonClick();
-                        },
-                        child: Row(
-                          children: [
-                            const Text(
-                              '키워드 변경',
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: 12,
-                                color: Color(0xff37474f),
-                                fontWeight: FontWeight.w400,
-                              ),
+                  ),
+                  GestureDetector(
+                      onTap: () {
+                        mypageController.keywordSettingButtonClick();
+                      },
+                      child: Row(
+                        children: [
+                          const Text(
+                            '키워드 변경',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: 12,
+                              color: Color(0xff37474f),
+                              fontWeight: FontWeight.w400,
                             ),
-                            const SizedBox(width: 10),
-                            SvgPicture.asset('assets/icons/mypage_setting.svg'),
-                          ],
-                        )),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                KeywordListCard(),
-                const SizedBox(height: 10),
-                addKeyword(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text(
-                      '스크랩',
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: 20,
-                        color: Color(0xff37474f),
-                        fontWeight: FontWeight.w600,
-                      ),
+                          ),
+                          const SizedBox(width: 10),
+                          SvgPicture.asset('assets/icons/mypage_setting.svg'),
+                        ],
+                      )),
+                ],
+              ),
+              const SizedBox(height: 20),
+              KeywordListCard(),
+              const SizedBox(height: 10),
+              addKeyword(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    '스크랩',
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: 20,
+                      color: Color(0xff37474f),
+                      fontWeight: FontWeight.w600,
                     ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                BookmarkCardWidget(),
-              ],
-            ),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        scrollController.resetData();
+                      },
+                      icon: const Icon(Icons.restart_alt_rounded))
+                ],
+              ),
+              const SizedBox(height: 10),
+              Expanded(child: BookmarkCardWidget()),
+            ],
           ),
         ),
       ),
@@ -147,29 +151,37 @@ class BookmarkCardWidget extends StatelessWidget {
 
   final Mypagecontroller mypageController = Get.find();
 
+  final scrollController = Get.put(InfiniteScrollController());
+
   @override
   Widget build(BuildContext context) {
     return Obx(() => mypageController.isBookmarkLoading.isFalse
-        ? const CustomCircularProgressIndicator()
-        : ListView.separated(
-            shrinkWrap: true,
-            itemCount: mypageController.bookmarklist.length,
-            separatorBuilder: (BuildContext context, int index) {
-              return const SizedBox(height: 10);
+        ? const Center(child: CustomCircularProgressIndicator())
+        : RefreshIndicator(
+            onRefresh: () async {
+              scrollController.resetData();
             },
-            itemBuilder: ((context, index) {
-              var news = mypageController.bookmarklist[index];
-              return GestureDetector(
-                onLongPress: () {
-                  bookmarkDialog(context, news);
-                },
-                child: NewsComponentView(
-                  title: news.title,
-                  content: news.content,
-                  link: news.link,
-                ),
-              );
-            }),
+            child: ListView.separated(
+              controller: scrollController.scrollController.value,
+              shrinkWrap: true,
+              itemCount: mypageController.bookmarklist.length,
+              separatorBuilder: (BuildContext context, int index) {
+                return const SizedBox(height: 10);
+              },
+              itemBuilder: ((context, index) {
+                var news = mypageController.bookmarklist[index];
+                return GestureDetector(
+                  onLongPress: () {
+                    bookmarkDialog(context, news);
+                  },
+                  child: NewsComponentView(
+                    title: news.title,
+                    content: news.content,
+                    link: news.link,
+                  ),
+                );
+              }),
+            ),
           ));
   }
 

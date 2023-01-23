@@ -11,7 +11,7 @@ class ApiService {
   static Future<List<BookmarkModel>> getBookmarkListByDio(
       String id, String page) async {
     // 북마크 condition
-    String condition = "&page=$page&limit=4";
+    String condition = "&page=$page&limit=5";
 
     List<BookmarkModel> bookmarkInstances = [];
     try {
