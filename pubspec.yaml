@@ -49,6 +49,7 @@ dependencies:
   firebase_core: ^2.4.1
   firebase_auth: ^4.2.5
   carousel_slider: ^4.2.1
+  infinite_scroll_pagination: ^3.2.0
 
 
 dev_dependencies:
@@ -82,6 +83,7 @@ flutter:
    - assets/icons/
    - assets/images/
    - assets/images/news_source/
+   - assets/images/splash/
    - assets/fonts/
 
   # An image asset can refer to one or more resolution-specific "variants", see

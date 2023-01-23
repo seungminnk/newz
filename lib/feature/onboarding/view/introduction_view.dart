@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
-import 'package:newz/application/routes/app_routes.dart';
+import 'package:newz/config/routes/app_routes.dart';
 
 import '../controller/introduction_controller.dart';
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:newz/application/routes/app_routes.dart';
+import 'package:newz/config/routes/app_routes.dart';
 import 'package:newz/common/component/loading/view/CustomCircularProgressIndicator.dart';
 import 'package:newz/common/component/news/view/news_component_view.dart';
 import 'package:newz/feature/mypage/controller/mypage_controller.dart';

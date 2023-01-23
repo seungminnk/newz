@@ -3,13 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:newz/application/routes/app_routes.dart';
-import 'package:newz/application/routes/app_routes_info.dart';
-import 'package:newz/application/user/controller/user_data_controller.dart';
+import 'package:newz/config/routes/app_routes.dart';
+import 'package:newz/config/routes/app_routes_info.dart';
+import 'package:newz/config/user/controller/user_data_controller.dart';
 import 'package:newz/feature/application/controller/application_controller.dart';
 import 'package:newz/feature/onboarding/controller/keyword_list_controller.dart';
 import 'package:newz/feature/real_time_vogue/controller/real_time_vogue_data_controller.dart';
 import 'package:newz/feature/real_time_vogue/controller/real_time_vogue_keyword_controller.dart';
+import 'package:newz/feature/search/controller/search_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // async main 사용을 위한 코드
@@ -30,6 +31,8 @@ Future _controllerInit() async {
   Get.lazyPut(() => RealTimeVogueDataController());
   Get.lazyPut(() => RealTimeVogueKeywordController());
 
+  Get.lazyPut(() => SearchController());
+
   Get.lazyPut(() => UserDataController());
 }
 
@@ -44,7 +47,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Pretendard',
         primarySwatch: Colors.blue,
       ),
-      initialRoute: AppRoutes.application,
+      initialRoute: AppRoutes.splash,
       routes: AppRoutesInfo.details,
     );
   }

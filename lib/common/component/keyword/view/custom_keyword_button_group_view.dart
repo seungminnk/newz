@@ -9,24 +9,37 @@ class CustomKeywordButtonGroupView extends StatefulWidget {
     required this.keywordRadioModelList,
     required this.clickCb,
     this.alignment = WrapAlignment.start,
+    this.isHorizontalListView = false,
+    this.isFirstButtonClickStateOn = false,
     Key? key,
   }) : super(key: key);
 
   final List<KeywordRadioModel> keywordRadioModelList;
   final _ClickedCb clickCb;
 
+
   final WrapAlignment alignment;
 
+  final bool isHorizontalListView;
+
+  final bool isFirstButtonClickStateOn;
+
   @override
-  State<CustomKeywordButtonGroupView> createState() => _CustomKeywordButtonGroupViewState();
+  State<CustomKeywordButtonGroupView> createState() =>
+      _CustomKeywordButtonGroupViewState();
 }
 
-class _CustomKeywordButtonGroupViewState extends State<CustomKeywordButtonGroupView> {
+class _CustomKeywordButtonGroupViewState
+    extends State<CustomKeywordButtonGroupView> {
   List<KeywordRadioModel> sampleData = [];
+
+  bool firstButtonClickState = false;
 
   @override
   void initState() {
     super.initState();
+
+    firstButtonClickState = widget.isFirstButtonClickStateOn;
 
     for (var element in widget.keywordRadioModelList) {
       sampleData.add(element);
@@ -35,16 +48,38 @@ class _CustomKeywordButtonGroupViewState extends State<CustomKeywordButtonGroupV
 
   @override
   Widget build(BuildContext context) {
-
-    return Wrap(
-      alignment: widget.alignment,
-      spacing: 8.0,
-      runSpacing: 10.0,
-      children: _buildKeywordButtons(sampleData, widget.clickCb),
-    );
+    return _handleWidgetView(isHorizontalListView: widget.isHorizontalListView);
   }
 
-  Widget _keywordButtonWrappedView(List<KeywordRadioModel> keywordRadioModelList, _ClickedCb clickedCb, index){
+  Widget _handleWidgetView({bool isHorizontalListView = false}) {
+    List<Widget> buttonListWidget =
+        _buildKeywordButtons(sampleData, widget.clickCb);
+
+    if (isHorizontalListView) {
+      return ListView.separated(
+        scrollDirection: Axis.horizontal,
+          itemBuilder: (context, index) {
+            return buttonListWidget[index];
+          },
+          separatorBuilder: (context, index) {
+            return const SizedBox(width: 8.0);
+          },
+          itemCount: buttonListWidget.length,
+      );
+    } else {
+      return Wrap(
+        alignment: widget.alignment,
+        spacing: 8.0,
+        runSpacing: 10.0,
+        children: buttonListWidget,
+      );
+    }
+  }
+
+  Widget _keywordButtonWrappedView(
+      List<KeywordRadioModel> keywordRadioModelList,
+      _ClickedCb clickedCb,
+      index) {
     return InkWell(
       borderRadius: BorderRadius.circular(8.0),
       onTap: () {
@@ -55,20 +90,27 @@ class _CustomKeywordButtonGroupViewState extends State<CustomKeywordButtonGroupV
           keywordRadioModelList[index].isSelected = true;
           clickedCb(keywordRadioModelList[index]);
         });
-
       },
       child: KeywordButtonShapeView(keywordRadioModelList[index]),
     );
   }
 
-  List<Widget> _buildKeywordButtons(List<KeywordRadioModel> keywordRadioModelList, _ClickedCb clickedCb){
-    List<Widget> widgetList = [];
-    int lastIndex = keywordRadioModelList.length - 1;
+  List<Widget> _buildKeywordButtons(
+      List<KeywordRadioModel> keywordRadioModelList, _ClickedCb clickedCb) {
 
-    for(int index = 0; index < keywordRadioModelList.length; index++){
+    if(keywordRadioModelList.isNotEmpty && firstButtonClickState){
+
+      firstButtonClickState = false;
+
+      keywordRadioModelList.first.isSelected = true;
+      clickedCb(keywordRadioModelList.first);
+    }
+
+    List<Widget> widgetList = [];
+
+    for (int index = 0; index < keywordRadioModelList.length; index++) {
       widgetList.add(
-          _keywordButtonWrappedView(keywordRadioModelList, clickedCb, index)
-      );
+          _keywordButtonWrappedView(keywordRadioModelList, clickedCb, index));
     }
 
     return widgetList;
