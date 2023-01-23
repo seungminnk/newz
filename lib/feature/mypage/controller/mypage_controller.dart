@@ -11,8 +11,8 @@ class Mypagecontroller extends GetxController {
   RxList keywordlist = [].obs;
 
   // 북마크 호출 데이터 Rx화 및 loading bool set
-  void fetchBookmark(String id) async {
-    var items = await ApiService.getBookmarkListByDio(id);
+  void fetchBookmark(String id, String page) async {
+    var items = await ApiService.getBookmarkListByDio(id, page);
     if (items.isNotEmpty) {
       isBookmarkLoading(true);
     }

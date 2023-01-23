@@ -7,11 +7,12 @@ class ApiService {
   static const String bookmarkBaseUrl =
       "https://newz.bbear.kr/api/user/bookmark/news?userId=";
 
-  // 북마크 condition
-  static const String condition = "&page=1&limit=5";
-
   // 북마크 데이터 호출
-  static Future<List<BookmarkModel>> getBookmarkListByDio(String id) async {
+  static Future<List<BookmarkModel>> getBookmarkListByDio(
+      String id, String page) async {
+    // 북마크 condition
+    String condition = "&page=$page&limit=4";
+
     List<BookmarkModel> bookmarkInstances = [];
     try {
       Response respBL = await Dio().get(bookmarkBaseUrl + id + condition);

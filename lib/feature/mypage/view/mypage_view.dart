@@ -25,7 +25,7 @@ class _MyPageViewState extends State<MyPageView> {
 
   @override
   void initState() {
-    mypageController.fetchBookmark('1');
+    mypageController.fetchBookmark('1', '1');
     mypageController.fetchKeyword('1');
     super.initState();
   }
