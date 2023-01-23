@@ -45,6 +45,22 @@ class _MyPageViewState extends State<MyPageView> {
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
+        actions: const [
+          Padding(
+            padding: EdgeInsets.all(18),
+            child: Center(
+              child: Text(
+                '문의하기',
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontSize: 12,
+                  color: Color(0xff37474f),
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+          )
+        ],
       ),
       body: Obx(
         () => SingleChildScrollView(
@@ -99,9 +115,8 @@ class _MyPageViewState extends State<MyPageView> {
                 ),
                 const SizedBox(height: 20),
                 KeywordListCard(),
-                const SizedBox(height: 20),
-                addKeyword(),
                 const SizedBox(height: 10),
+                addKeyword(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: const [
@@ -111,7 +126,7 @@ class _MyPageViewState extends State<MyPageView> {
                         fontFamily: 'Pretendard',
                         fontSize: 20,
                         color: Color(0xff37474f),
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ],
@@ -285,7 +300,7 @@ class UserInfoWidget extends StatelessWidget {
                         fontFamily: 'Pretendard',
                         fontSize: 20,
                         color: Color(0xff37474f),
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w600,
                       ),
                     )
                   : Text(
