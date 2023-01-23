@@ -1,10 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:newz/application/routes/app_routes.dart';
-import 'package:newz/application/user/controller/user_data_controller.dart';
-
-import '../../../application/user/model/user.dart';
+import 'package:newz/config/routes/app_routes.dart';
+import 'package:newz/config/user/controller/user_data_controller.dart';
+import 'package:newz/config/user/model/user.dart';
 
 class LoginController extends GetxController {
   RxBool isLogin = false.obs;

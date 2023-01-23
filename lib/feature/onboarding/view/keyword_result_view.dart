@@ -1,6 +1,6 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:newz/config/network/dio_manager.dart';
 import 'package:newz/config/routes/app_routes.dart';
 import 'package:newz/config/user/controller/user_data_controller.dart';
 import 'package:newz/feature/onboarding/controller/keyword_list_controller.dart';
@@ -156,27 +156,25 @@ class KeywordResultView extends StatelessWidget {
 
   _onClickLetsStartBtn() async {
     // FIXME 추후 api 변경될 것임 그전까지 디버그 용도로 사용, 삭제 예정된 코드
-    UserDataController.to.setDidSelectedInitialKeywordsFlag(true);
-    Get.offAllNamed(AppRoutes.application);
+    // UserDataController.to.setDidSelectedInitialKeywordsFlag(true);
+    // Get.offAllNamed(AppRoutes.application);
 
     // FIXME 원래 로직으로써 나중에 살려야 할 부분이다.
-    // final dio = Dio();
-    //
-    // String requestUrl = "https://newz.bbear.kr/api/user/keyword";
-    // final response = await dio.post(requestUrl, data: {
-    //   'userId': UserDataController.to.id.value,
-    //   'keywords': KeywordListController.to.enteredKeywords.toList()
-    // });
-    //
-    // if (response.statusCode == 200) {
-    //   // onboarding complete flag true로 변경하기
-    //   UserDataController.to.didSelectKeywords(true);
-    // } else {
-    //   // 에러 리턴
-    // }
-    //
-    // if (UserDataController.to.didSelectKeywords.value) {
-    //   Get.offAllNamed(AppRoutes.application);
-    // }
+    final response =
+        await DioManager.instance.dio.post("/user/keyword/add", data: {
+      'userId': UserDataController.to.id.value,
+      'keywords': KeywordListController.to.enteredKeywords.toList()
+    });
+
+    if (response.statusCode == 200) {
+      // onboarding complete flag true로 변경하기
+      UserDataController.to.setDidSelectedInitialKeywordsFlag(true);
+    } else {
+      // 에러 리턴
+    }
+
+    if (UserDataController.to.didSelectInitialKeywords.value) {
+      Get.offAllNamed(AppRoutes.application);
+    }
   }
 }

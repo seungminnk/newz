@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:newz/application/user/model/token.dart';
+import 'package:newz/config/user/model/token.dart';
 
 part 'user.g.dart';
 
