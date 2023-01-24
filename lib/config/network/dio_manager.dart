@@ -1,12 +1,10 @@
 import 'package:dio/dio.dart';
 
-class DioManager{
-
+class DioManager {
   static DioInstance get instance => DioInstance();
-
 }
 
-class DioInstance{
+class DioInstance {
   factory DioInstance() => _dioInstance ??= const DioInstance._();
 
   const DioInstance._();
@@ -17,9 +15,8 @@ class DioInstance{
 
   static Dio? _dio;
 
-  Dio _newDio(){
-
-    const String baseUrl = "https://newz.bbear.kr/api";
+  Dio _newDio() {
+    const String baseUrl = "http://10.0.2.2:3001/api";
 
     var baseOption = BaseOptions(
       baseUrl: baseUrl,
