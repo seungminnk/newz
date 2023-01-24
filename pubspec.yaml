@@ -50,6 +50,7 @@ dependencies:
   firebase_auth: ^4.2.5
   carousel_slider: ^4.2.1
   infinite_scroll_pagination: ^3.2.0
+  url_launcher: ^6.1.8
 
 
 dev_dependencies:
