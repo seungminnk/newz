@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:newz/feature/login/controller/login_controller.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class SettingPage extends StatelessWidget {
   SettingPage({super.key});
@@ -31,17 +32,20 @@ class SettingPage extends StatelessWidget {
             fontWeight: FontWeight.w600,
           ),
         ),
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.all(18),
+            padding: const EdgeInsets.all(18),
             child: Center(
-              child: Text(
-                '문의하기',
-                style: TextStyle(
-                  fontFamily: 'Pretendard',
-                  fontSize: 12,
-                  color: Color(0xff37474f),
-                  fontWeight: FontWeight.w400,
+              child: GestureDetector(
+                onTap: _sendEmail,
+                child: const Text(
+                  '문의하기',
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontSize: 12,
+                    color: Color(0xff37474f),
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
             ),
@@ -168,4 +172,12 @@ class SettingPage extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> _sendEmail() async {
+  final Uri emailLaunchUri = Uri(
+    scheme: 'mailto',
+    path: "newmoa.newz@gmail.com",
+  );
+  launchUrl(emailLaunchUri);
 }
