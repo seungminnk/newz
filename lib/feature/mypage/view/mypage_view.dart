@@ -6,6 +6,7 @@ import 'package:newz/feature/mypage/controller/infiniteScroll_controller.dart';
 import 'package:newz/feature/mypage/controller/mypage_controller.dart';
 import 'package:get/get.dart';
 import 'package:newz/feature/mypage/view/setting_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../login/controller/login_controller.dart';
 import '../../onboarding/controller/keyword_editing_controller.dart';
 import '../../onboarding/controller/keyword_list_controller.dart';
@@ -46,17 +47,20 @@ class _MyPageViewState extends State<MyPageView> {
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.all(18),
+            padding: const EdgeInsets.all(18),
             child: Center(
-              child: Text(
-                '문의하기',
-                style: TextStyle(
-                  fontFamily: 'Pretendard',
-                  fontSize: 12,
-                  color: Color(0xff37474f),
-                  fontWeight: FontWeight.w400,
+              child: GestureDetector(
+                onTap: _sendEmail,
+                child: const Text(
+                  '문의하기',
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontSize: 12,
+                    color: Color(0xff37474f),
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
             ),
@@ -116,7 +120,7 @@ class _MyPageViewState extends State<MyPageView> {
               const SizedBox(height: 20),
               KeywordListCard(),
               const SizedBox(height: 10),
-              addKeyword(),
+              AddKeyword(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -144,6 +148,14 @@ class _MyPageViewState extends State<MyPageView> {
       ),
     );
   }
+}
+
+Future<void> _sendEmail() async {
+  final Uri emailLaunchUri = Uri(
+    scheme: 'mailto',
+    path: "newmoa.newz@gmail.com",
+  );
+  launchUrl(emailLaunchUri);
 }
 
 class BookmarkCardWidget extends StatelessWidget {
@@ -363,8 +375,8 @@ class UserInfoWidget extends StatelessWidget {
   }
 }
 
-class addKeyword extends StatelessWidget {
-  addKeyword({Key? key}) : super(key: key);
+class AddKeyword extends StatelessWidget {
+  AddKeyword({Key? key}) : super(key: key);
 
   final Mypagecontroller mypageController = Get.find();
 
@@ -384,7 +396,10 @@ class addKeyword extends StatelessWidget {
               ),
               child: TextField(
                 textAlignVertical: TextAlignVertical.center,
-                onSubmitted: _enteredKeyword,
+                onSubmitted: (String text) {
+                  KeywordListController.to.addKeyword(text);
+                  KeywordEditingController.to.clear();
+                },
                 style: const TextStyle(
                   fontSize: 14,
                 ),
@@ -403,11 +418,6 @@ class addKeyword extends StatelessWidget {
             ),
     );
   }
-}
-
-void _enteredKeyword(String text) {
-  KeywordListController.to.addKeyword(text);
-  KeywordEditingController.to.clear();
 }
 
 class KeywordListCard extends StatelessWidget {
