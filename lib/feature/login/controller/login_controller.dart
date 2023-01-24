@@ -23,8 +23,6 @@ class LoginController extends GetxController {
       isLogin(true);
       userData = value!;
       Get.back();
-      print(googleSignInAuthentication.idToken);
-      print(googleSignInAuthentication.accessToken);
     }).catchError((e) {
       print(e);
     });
