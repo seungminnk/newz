@@ -19,89 +19,82 @@ class IntroductionView extends StatelessWidget {
       {"id": 3, "text1": "관심있는 기사는", "text2": "스크랩해서 저장해볼까요"},
     ];
 
+    final deviceWidth = MediaQuery.of(context).size.width;
+    const standardDeviceWidth = 360;
+
     return Scaffold(
       body: Column(
         children: [
           Container(
             height: 56,
           ),
-          Expanded(
-            child: Column(children: [
-              // FIXME 화면이 긴, 넓은 기기에서는 여백이 허전합니다. 이 부분은 디자이너님과 논의가 필요할듯 합니다.
-              CarouselSlider(
-                options: CarouselOptions(
-                  height: 400,
-                  enableInfiniteScroll: false,
-                  onPageChanged: (index, changeReason) {
-                    IntroductionController.to.changeCarouselIndex(index);
-                  },
+          const SizedBox(height: 20),
+          Obx(
+            () => Column(
+              children: [
+                Text(
+                  carouselItem[IntroductionController.to.carouselIndex.value]
+                      ['text1'],
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-                carouselController: carouselController,
-                items: carouselItem.map((item) {
-                  return Builder(
-                    builder: (BuildContext context) {
-                      return Container(
-                        width: MediaQuery.of(context).size.width,
-                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 20),
-                            Text(
-                              item['text1'],
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              item['text2'],
-                              style: const TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            const SizedBox(height: 40),
-                            Obx(
-                              () => Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  IntroductionController
-                                              .to.carouselIndex.value ==
-                                          0
-                                      ? rectangleIndicator()
-                                      : dotIndicator(),
-                                  IntroductionController
-                                              .to.carouselIndex.value ==
-                                          1
-                                      ? rectangleIndicator()
-                                      : dotIndicator(),
-                                  IntroductionController
-                                              .to.carouselIndex.value ==
-                                          2
-                                      ? rectangleIndicator()
-                                      : dotIndicator(),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 40),
-                            Expanded(
-                              child: Image(
-                                image: AssetImage(
-                                    'assets/images/intro_${item['id']}.png'),
-                                width: 200,
-                                height: 200,
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                }).toList(),
-              ),
-            ]),
+                const SizedBox(height: 5),
+                Text(
+                  carouselItem[IntroductionController.to.carouselIndex.value]
+                      ['text2'],
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IntroductionController.to.carouselIndex.value == 0
+                        ? rectangleIndicator()
+                        : dotIndicator(),
+                    IntroductionController.to.carouselIndex.value == 1
+                        ? rectangleIndicator()
+                        : dotIndicator(),
+                    IntroductionController.to.carouselIndex.value == 2
+                        ? rectangleIndicator()
+                        : dotIndicator(),
+                  ],
+                ),
+              ],
+            ),
           ),
+          const SizedBox(height: 20),
+          Expanded(
+            child: CarouselSlider(
+              options: CarouselOptions(
+                viewportFraction: 1,
+                enableInfiniteScroll: false,
+                onPageChanged: (index, changeReason) {
+                  IntroductionController.to.changeCarouselIndex(index);
+                },
+              ),
+              carouselController: carouselController,
+              items: carouselItem.map((item) {
+                return Builder(
+                  builder: (BuildContext context) {
+                    return Container(
+                      width: 200 * (deviceWidth / standardDeviceWidth),
+                      margin: const EdgeInsets.symmetric(horizontal: 5.0),
+                      child: Image(
+                        image:
+                            AssetImage('assets/images/intro_${item['id']}.png'),
+                      ),
+                    );
+                  },
+                );
+              }).toList(),
+            ),
+          ),
+          const SizedBox(height: 20),
           Obx(
             () => Container(
               margin: const EdgeInsets.all(20),

@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:newz/config/routes/app_routes.dart';
 import '../controller/keyword_list_controller.dart';
 
-class OnboardingView extends StatelessWidget {
-  const OnboardingView({Key? key}) : super(key: key);
+class KeywordView extends StatelessWidget {
+  const KeywordView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -176,7 +176,7 @@ class OnboardingView extends StatelessWidget {
   }
 
   void _onTabNextButton(List<String> enteredKeyword) {
-    Get.toNamed(AppRoutes.onboardingResult);
+    Get.toNamed(AppRoutes.keywordResult);
   }
 }
 

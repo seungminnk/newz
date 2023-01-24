@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/user.dart';
 
@@ -11,26 +12,20 @@ class UserDataController extends GetxController {
   RxString name = "".obs;
   RxString email = "".obs;
 
-  RxBool didSelectKeywords = false.obs;
+  RxBool didSelectInitialKeywords = false.obs;
 
-  @override
-  void onInit() async {
-    super.onInit();
-
-    // FIXME dio는 한군데에서 선언해서 사용하거나, 설정을 공유 할 수 있도록 만들어주세요.
-    final dio = Dio();
-    final response =await dio.get("https://newz.bbear.kr/api/user?userId=1");
-
-    var userData = User.fromJson(response.data);
-
+  Future<void> setUserData(User userData) async {
     id.value = userData.id;
-    loginType.value = userData.loginType;
     name.value = userData.name;
     email.value = userData.email;
-    didSelectKeywords.value = userData.completeOnboarding;
+    didSelectInitialKeywords.value = !userData.haveKeywords;
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("accessToken", userData.tokens.accessToken);
+    prefs.setString("refreshToken", userData.tokens.refreshToken);
   }
 
-  void setDidSelectedKeywordsFlag(bool flag) {
-    didSelectKeywords.value = flag;
+  void setDidSelectedInitialKeywordsFlag(bool flag) {
+    didSelectInitialKeywords.value = flag;
   }
 }
