@@ -59,9 +59,9 @@ android {
     }
     signingConfigs{
         release{
-            storeFile file("upload-keystore.jks") // or key.jks
+            storeFile file("upload-keystore.jks")
             storePassword "newmoaz1217!"
-            keyAlias "upload" // or key
+            keyAlias "upload"
             keyPassword "newmoaz1217!"
         }
     }
