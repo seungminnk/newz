@@ -316,7 +316,7 @@ class UserInfoWidget extends StatelessWidget {
                       ),
                     )
                   : Text(
-                      '${loginController.userData.displayName!}님\n관심 기사를 모아놨어요',
+                      '${loginController.userData.displayName!}\n관심 기사를 모아놨어요',
                       style: const TextStyle(
                         fontFamily: 'Pretendard',
                         fontSize: 20,
@@ -334,7 +334,7 @@ class UserInfoWidget extends StatelessWidget {
               //     .toString()),
               GestureDetector(
                 onTap: () {
-                  Get.to(const SettingPage());
+                  Get.to(SettingPage());
                 },
                 child: const Text(
                   '정보수정',

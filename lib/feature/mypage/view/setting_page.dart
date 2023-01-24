@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:newz/feature/login/controller/login_controller.dart';
 
 class SettingPage extends StatelessWidget {
-  const SettingPage({super.key});
-
+  SettingPage({super.key});
+  final LoginController loginController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,9 +54,9 @@ class SettingPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const Text(
-              "ID: user 2023",
-              style: TextStyle(
+            Text(
+              "ID: ${loginController.userData.id}",
+              style: const TextStyle(
                 fontFamily: 'Pretendard',
                 fontSize: 20,
                 color: Color(0xff37474f),
@@ -65,8 +66,8 @@ class SettingPage extends StatelessWidget {
             const SizedBox(height: 24),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                Text(
+              children: [
+                const Text(
                   "연결된 계정",
                   style: TextStyle(
                     fontFamily: 'Pretendard',
@@ -76,8 +77,8 @@ class SettingPage extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Google",
-                  style: TextStyle(
+                  loginController.isLogin.isTrue ? "Google" : "연결된 계정 없음",
+                  style: const TextStyle(
                     fontFamily: 'Pretendard',
                     fontSize: 12,
                     color: Color(0xff3F51B5),
@@ -148,13 +149,18 @@ class SettingPage extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 24),
-            const Text(
-              "로그아웃",
-              style: TextStyle(
-                fontFamily: 'Pretendard',
-                fontSize: 16,
-                color: Color(0xff37474F),
-                fontWeight: FontWeight.w400,
+            GestureDetector(
+              onTap: () {
+                loginController.logout();
+              },
+              child: const Text(
+                "로그아웃",
+                style: TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontSize: 16,
+                  color: Color(0xff37474F),
+                  fontWeight: FontWeight.w400,
+                ),
               ),
             ),
           ],
