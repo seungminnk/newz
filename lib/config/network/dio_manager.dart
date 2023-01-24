@@ -23,8 +23,8 @@ class DioInstance{
 
     var baseOption = BaseOptions(
       baseUrl: baseUrl,
-      connectTimeout: 8000,
-      receiveTimeout: 6000,
+      connectTimeout: 12000,
+      receiveTimeout: 10000,
     );
 
     return Dio(baseOption);
