@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 import 'package:newz/config/routes/app_routes.dart';
+import 'package:newz/config/user/controller/user_data_controller.dart';
 import '../controller/keyword_list_controller.dart';
 
 class KeywordView extends StatelessWidget {
@@ -29,25 +30,28 @@ class KeywordView extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     Text(
-                      "길동님이 관심있는",
-                      style: TextStyle(
+                      "${UserDataController.to.name}님이 관심있는",
+                      style: const TextStyle(
+                        fontFamily: 'Pretendard',
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Text(
+                    const Text(
                       "키워드를 입력해주세요",
                       style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    SizedBox(height: 10),
-                    Text(
+                    const SizedBox(height: 10),
+                    const Text(
                       "최대 9개까지 입력할 수 있어요",
                       style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontSize: 14,
                       ),
                     ),
@@ -71,6 +75,7 @@ class KeywordView extends StatelessWidget {
                     textEditingController.clear();
                   },
                   style: const TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: 14,
                   ),
                   decoration: InputDecoration(
@@ -160,6 +165,7 @@ class KeywordView extends StatelessWidget {
                             ? '확인'
                             : '이제 시작해볼까요?',
                         style: const TextStyle(
+                          fontFamily: 'Pretendard',
                           fontSize: 16,
                           color: Colors.white,
                         ),
@@ -208,6 +214,7 @@ class EnteredKeywordTag extends StatelessWidget {
               enteredKeyword,
               textAlign: TextAlign.center,
               style: const TextStyle(
+                fontFamily: 'Pretendard',
                 fontSize: 12,
               ),
             ),
@@ -259,6 +266,7 @@ class FixedKeywordTag extends StatelessWidget {
         child: Text(
           fixedKeyword,
           style: const TextStyle(
+            fontFamily: 'Pretendard',
             fontSize: 12,
             color: Color(0xFF607D8B),
           ),

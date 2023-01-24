@@ -16,7 +16,7 @@ class DioInstance {
   static Dio? _dio;
 
   Dio _newDio() {
-    const String baseUrl = "http://10.0.2.2:3001/api";
+    const String baseUrl = "https://newz.bbear.kr/api";
 
     var baseOption = BaseOptions(
       baseUrl: baseUrl,

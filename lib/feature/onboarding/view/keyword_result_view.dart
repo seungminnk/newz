@@ -1,9 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:newz/config/network/dio_manager.dart';
 import 'package:newz/config/routes/app_routes.dart';
 import 'package:newz/config/user/controller/user_data_controller.dart';
 import 'package:newz/feature/onboarding/controller/keyword_list_controller.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class KeywordResultView extends StatelessWidget {
   const KeywordResultView({Key? key}) : super(key: key);
@@ -48,6 +50,7 @@ class KeywordResultView extends StatelessWidget {
                   Text(
                     "흥미로운 키워드에요",
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
@@ -57,6 +60,7 @@ class KeywordResultView extends StatelessWidget {
                   Text(
                     "키워드를 토대로",
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       color: Colors.white,
                       fontSize: 14,
                     ),
@@ -65,6 +69,7 @@ class KeywordResultView extends StatelessWidget {
                   Text(
                     "기사를 요약해드릴게요!",
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       color: Colors.white,
                       fontSize: 14,
                     ),
@@ -116,6 +121,7 @@ class KeywordResultView extends StatelessWidget {
                     child: const Text(
                       '이제 시작해볼까요?',
                       style: TextStyle(
+                        fontFamily: 'Pretendard',
                         fontSize: 16,
                         color: Colors.white,
                       ),
@@ -147,6 +153,7 @@ class KeywordResultView extends StatelessWidget {
       child: Text(
         keyword,
         style: const TextStyle(
+          fontFamily: 'Pretendard',
           fontSize: 12,
           color: Colors.white,
         ),
@@ -155,16 +162,15 @@ class KeywordResultView extends StatelessWidget {
   }
 
   _onClickLetsStartBtn() async {
-    // FIXME 추후 api 변경될 것임 그전까지 디버그 용도로 사용, 삭제 예정된 코드
-    // UserDataController.to.setDidSelectedInitialKeywordsFlag(true);
-    // Get.offAllNamed(AppRoutes.application);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accessToken = prefs.getString("accessToken");
 
-    // FIXME 원래 로직으로써 나중에 살려야 할 부분이다.
-    final response =
-        await DioManager.instance.dio.post("/user/keyword/add", data: {
-      'userId': UserDataController.to.id.value,
-      'keywords': KeywordListController.to.enteredKeywords.toList()
-    });
+    final response = await DioManager.instance.dio.post("/user/keyword/add",
+        data: {
+          'userId': UserDataController.to.id.value,
+          'keywords': KeywordListController.to.enteredKeywords.toList()
+        },
+        options: Options(headers: {'x-newz-access-token': accessToken}));
 
     if (response.statusCode == 200) {
       // onboarding complete flag true로 변경하기
