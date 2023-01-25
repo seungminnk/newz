@@ -36,6 +36,7 @@ class IntroductionView extends StatelessWidget {
                   carouselItem[IntroductionController.to.carouselIndex.value]
                       ['text1'],
                   style: const TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
                   ),
@@ -45,6 +46,7 @@ class IntroductionView extends StatelessWidget {
                   carouselItem[IntroductionController.to.carouselIndex.value]
                       ['text2'],
                   style: const TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: 20,
                     fontWeight: FontWeight.w600,
                   ),
@@ -115,6 +117,7 @@ class IntroductionView extends StatelessWidget {
                 child: const Text(
                   "시작하기",
                   style: TextStyle(
+                    fontFamily: 'Pretendard',
                     fontSize: 15,
                     color: Colors.white,
                   ),

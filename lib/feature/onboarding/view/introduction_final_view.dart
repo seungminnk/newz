@@ -30,6 +30,7 @@ class IntroductionFinalView extends StatelessWidget {
               const Text(
                 "수많은 뉴스 기사를 한번에",
                 style: TextStyle(
+                  fontFamily: 'Pretendard',
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
@@ -39,6 +40,7 @@ class IntroductionFinalView extends StatelessWidget {
               const Text(
                 "NEWZ에 오신 걸 환영해요!",
                 style: TextStyle(
+                  fontFamily: 'Pretendard',
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
@@ -73,6 +75,7 @@ class IntroductionFinalView extends StatelessWidget {
                   child: const Text(
                     "NEWZ 시작하기",
                     style: TextStyle(
+                      fontFamily: 'Pretendard',
                       fontSize: 15,
                       color: Colors.white,
                     ),
