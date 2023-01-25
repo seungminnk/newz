@@ -25,6 +25,7 @@ class Mypagecontroller extends GetxController {
     bookmarklist.addAll(items);
   }
 
+  // 마이페이지 이동시 최초 1회 데이터 호출용
   void resetFetchBookmark(String id) async {
     bookmarklist.clear();
     isBookmarkLoading(false);
@@ -52,11 +53,20 @@ class Mypagecontroller extends GetxController {
 
   // 키워드 삭제 아이콘 클릭 함수
   void keywordRemoveBtn(String id, String keyword) {
-    ApiService.removeSetKeyword(id, keyword);
+    ApiService.removeKeyword(id, keyword);
   }
 
   // 북마크 삭제 아이콘 클릭 함수
   void bookmarkRemoveBtn(String id) {
     ApiService.removeBookmark(id);
+  }
+
+  // 웹뷰 페이지 내 북마크 버튼 함수
+  void webViewScapBtn(String url, String id) {
+    if (id.isNotEmpty) {
+      bookmarkRemoveBtn(id);
+    } else {
+      ApiService.addBookmark(url);
+    }
   }
 }
