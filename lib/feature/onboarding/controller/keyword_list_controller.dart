@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:newz/config/network/dio_manager.dart';
 
 class KeywordListController extends GetxController {
   static KeywordListController get to => Get.find<KeywordListController>();
@@ -12,8 +13,7 @@ class KeywordListController extends GetxController {
     super.onInit();
 
     final dio = Dio();
-    final response =
-        await dio.get("https://newz.bbear.kr/api/fixed-keyword/list");
+    final response = await DioManager.instance.dio.get("/keyword/fixed/list");
 
     for (var keyword in response.data) {
       fixedKeywords.add(keyword);

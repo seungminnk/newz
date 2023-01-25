@@ -5,8 +5,8 @@ class AppRoutes {
   static const home = '/home';
   static const search = '/search';
   static const mypage = '/mypage';
-  static const onboarding = '/onboarding';
-  static const onboardingResult = '/onboarding/result';
+  static const keyword = '/keyword';
+  static const keywordResult = '/keyword/result';
   static const login = '/login';
   static const introduction = '/intro';
   static const introductionFinal = '/intro/fin';

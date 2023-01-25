@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:newz/config/routes/app_routes.dart';
 import 'package:newz/common/component/loading/view/CustomCircularProgressIndicator.dart';
 import 'package:newz/common/component/news/view/news_component_view.dart';
+import 'package:newz/feature/mypage/controller/infiniteScroll_controller.dart';
 import 'package:newz/feature/mypage/controller/mypage_controller.dart';
 import 'package:get/get.dart';
+import 'package:newz/feature/mypage/view/setting_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../login/controller/login_controller.dart';
 import '../../onboarding/controller/keyword_editing_controller.dart';
 import '../../onboarding/controller/keyword_list_controller.dart';
@@ -21,10 +24,10 @@ class _MyPageViewState extends State<MyPageView> {
   final keywordListController = Get.put(KeywordListController());
   final loginController = Get.put(LoginController());
   final keywordEditingController = Get.put(KeywordEditingController());
+  final scrollController = Get.put(InfiniteScrollController());
 
   @override
   void initState() {
-    mypageController.fetchBookmark('1');
     mypageController.fetchKeyword('1');
     super.initState();
   }
@@ -44,85 +47,102 @@ class _MyPageViewState extends State<MyPageView> {
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(18),
+            child: Center(
+              child: GestureDetector(
+                onTap: _sendEmail,
+                child: const Text(
+                  '문의하기',
+                  style: TextStyle(
+                    fontFamily: 'Pretendard',
+                    fontSize: 12,
+                    color: Color(0xff37474f),
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
       ),
       body: Obx(
-        () => SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                UserInfoWidget(loginController: loginController),
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    Expanded(
-                        child: Image.asset(
-                      'assets/images/Line.png',
-                      fit: BoxFit.fill,
-                    )),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      '내 키워드 ${mypageController.keywordlist.length}개',
-                      style: const TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: 12,
-                        color: Color(0xff37474f),
-                        fontWeight: FontWeight.w400,
-                      ),
+        () => Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            children: [
+              UserInfoWidget(),
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  Expanded(
+                      child: Image.asset(
+                    'assets/images/Line.png',
+                    fit: BoxFit.fill,
+                  )),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    '내 키워드 ${mypageController.keywordlist.length}개',
+                    style: const TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: 12,
+                      color: Color(0xff37474f),
+                      fontWeight: FontWeight.w400,
                     ),
-                    GestureDetector(
-                        onTap: () {
-                          mypageController.keywordSettingButtonClick();
-                        },
-                        child: Row(
-                          children: [
-                            const Text(
-                              '키워드 변경',
-                              style: TextStyle(
-                                fontFamily: 'Pretendard',
-                                fontSize: 12,
-                                color: Color(0xff37474f),
-                                fontWeight: FontWeight.w400,
-                              ),
+                  ),
+                  GestureDetector(
+                      onTap: () {
+                        mypageController.keywordSettingButtonClick();
+                      },
+                      child: Row(
+                        children: [
+                          const Text(
+                            '키워드 변경',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: 12,
+                              color: Color(0xff37474f),
+                              fontWeight: FontWeight.w400,
                             ),
-                            const SizedBox(width: 10),
-                            SvgPicture.asset('assets/icons/mypage_setting.svg'),
-                          ],
-                        )),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                KeywordListCard(
-                  mypageController: mypageController,
-                  keywordListController: keywordListController,
-                  keywordEditingController: keywordEditingController,
-                ),
-                const SizedBox(height: 20),
-                addKeyword(mypageController: mypageController),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text(
-                      '스크랩',
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: 20,
-                        color: Color(0xff37474f),
-                        fontWeight: FontWeight.w400,
-                      ),
+                          ),
+                          const SizedBox(width: 10),
+                          SvgPicture.asset('assets/icons/mypage_setting.svg'),
+                        ],
+                      )),
+                ],
+              ),
+              const SizedBox(height: 20),
+              KeywordListCard(),
+              const SizedBox(height: 10),
+              AddKeyword(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    '스크랩',
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: 20,
+                      color: Color(0xff37474f),
+                      fontWeight: FontWeight.w600,
                     ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                BookmarkCardWidget(mypageController: mypageController),
-              ],
-            ),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        scrollController.resetData();
+                      },
+                      icon: const Icon(Icons.restart_alt_rounded))
+                ],
+              ),
+              const SizedBox(height: 10),
+              Expanded(child: BookmarkCardWidget()),
+            ],
           ),
         ),
       ),
@@ -130,58 +150,50 @@ class _MyPageViewState extends State<MyPageView> {
   }
 }
 
-class BookmarkCardWidget extends StatefulWidget {
-  const BookmarkCardWidget({
-    Key? key,
-    required this.mypageController,
-  }) : super(key: key);
-
-  final Mypagecontroller mypageController;
-
-  @override
-  State<BookmarkCardWidget> createState() => _BookmarkCardWidgetState();
+Future<void> _sendEmail() async {
+  final Uri emailLaunchUri = Uri(
+    scheme: 'mailto',
+    path: "newmoa.newz@gmail.com",
+  );
+  launchUrl(emailLaunchUri);
 }
 
-class _BookmarkCardWidgetState extends State<BookmarkCardWidget> {
-  final ScrollController _scrollController = ScrollController();
+class BookmarkCardWidget extends StatelessWidget {
+  BookmarkCardWidget({Key? key}) : super(key: key);
 
-  void _scrollToSelectedContent(
-      bool isExpanded, double previousOffset, int index, GlobalKey myKey) {
-    final keyContext = myKey.currentContext;
+  final Mypagecontroller mypageController = Get.find();
 
-    if (keyContext != null) {
-      final box = keyContext.findRenderObject() as RenderBox;
-      _scrollController.animateTo(
-          isExpanded ? (box.size.height * index) : previousOffset,
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.linear);
-    }
-  }
+  final scrollController = Get.put(InfiniteScrollController());
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => widget.mypageController.isBookmarkLoading.isFalse
-        ? const CustomCircularProgressIndicator()
-        : ListView.separated(
-            controller: _scrollController,
-            shrinkWrap: true,
-            itemCount: widget.mypageController.bookmarklist.length,
-            separatorBuilder: (BuildContext context, int index) {
-              return const SizedBox(height: 10);
+    return Obx(() => mypageController.isBookmarkLoading.isFalse
+        ? const Center(child: CustomCircularProgressIndicator())
+        : RefreshIndicator(
+            onRefresh: () async {
+              scrollController.resetData();
             },
-            itemBuilder: ((context, index) {
-              var news = widget.mypageController.bookmarklist[index];
-              return GestureDetector(
-                onLongPress: () {
-                  bookmarkDialog(context, news);
-                },
-                child: NewsComponentView(
-                  title: news.title,
-                  content: news.content,
-                  link: news.link,
-                ),
-              );
-            }),
+            child: ListView.separated(
+              controller: scrollController.scrollController.value,
+              shrinkWrap: true,
+              itemCount: mypageController.bookmarklist.length,
+              separatorBuilder: (BuildContext context, int index) {
+                return const SizedBox(height: 10);
+              },
+              itemBuilder: ((context, index) {
+                var news = mypageController.bookmarklist[index];
+                return GestureDetector(
+                  onLongPress: () {
+                    bookmarkDialog(context, news);
+                  },
+                  child: NewsComponentView(
+                    title: news.title,
+                    content: news.content,
+                    link: news.link,
+                  ),
+                );
+              }),
+            ),
           ));
   }
 
@@ -224,7 +236,7 @@ class _BookmarkCardWidgetState extends State<BookmarkCardWidget> {
                       children: [
                         GestureDetector(
                           onTap: () {
-                            widget.mypageController
+                            mypageController
                                 .bookmarkRemoveBtn(news.bookmarkId.toString());
                             Get.back();
                           },
@@ -293,12 +305,9 @@ class _BookmarkCardWidgetState extends State<BookmarkCardWidget> {
 }
 
 class UserInfoWidget extends StatelessWidget {
-  const UserInfoWidget({
-    Key? key,
-    required this.loginController,
-  }) : super(key: key);
+  UserInfoWidget({Key? key}) : super(key: key);
 
-  final LoginController loginController;
+  final LoginController loginController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -315,7 +324,7 @@ class UserInfoWidget extends StatelessWidget {
                         fontFamily: 'Pretendard',
                         fontSize: 20,
                         color: Color(0xff37474f),
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w600,
                       ),
                     )
                   : Text(
@@ -336,7 +345,9 @@ class UserInfoWidget extends StatelessWidget {
               // Text(loginController.googleSignInAuthentication.idToken
               //     .toString()),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Get.to(SettingPage());
+                },
                 child: const Text(
                   '정보수정',
                   style: TextStyle(
@@ -364,13 +375,10 @@ class UserInfoWidget extends StatelessWidget {
   }
 }
 
-class addKeyword extends StatelessWidget {
-  const addKeyword({
-    Key? key,
-    required this.mypageController,
-  }) : super(key: key);
+class AddKeyword extends StatelessWidget {
+  AddKeyword({Key? key}) : super(key: key);
 
-  final Mypagecontroller mypageController;
+  final Mypagecontroller mypageController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -388,7 +396,10 @@ class addKeyword extends StatelessWidget {
               ),
               child: TextField(
                 textAlignVertical: TextAlignVertical.center,
-                onSubmitted: _enteredKeyword,
+                onSubmitted: (String text) {
+                  KeywordListController.to.addKeyword(text);
+                  KeywordEditingController.to.clear();
+                },
                 style: const TextStyle(
                   fontSize: 14,
                 ),
@@ -409,24 +420,14 @@ class addKeyword extends StatelessWidget {
   }
 }
 
-void _enteredKeyword(String text) {
-  KeywordListController.to.addKeyword(text);
-  KeywordEditingController.to.clear();
-}
-
 class KeywordListCard extends StatelessWidget {
-  const KeywordListCard(
-      {Key? key,
-      required this.mypageController,
-      required this.keywordListController,
-      required this.keywordEditingController})
-      : super(key: key);
+  KeywordListCard({Key? key}) : super(key: key);
 
-  final Mypagecontroller mypageController;
+  final Mypagecontroller mypageController = Get.find();
 
-  final KeywordListController keywordListController;
+  final KeywordListController keywordListController = Get.find();
 
-  final KeywordEditingController keywordEditingController;
+  final KeywordEditingController keywordEditingController = Get.find();
 
   @override
   Widget build(BuildContext context) {
