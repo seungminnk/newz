@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class WebviewWidget extends StatefulWidget {
   final String weburl;
-  const WebviewWidget({
-    super.key,
-    required this.weburl,
-  });
+  const WebviewWidget({super.key, required this.weburl});
 
   @override
   State<WebviewWidget> createState() => _WebviewWidgetState();
@@ -30,6 +28,11 @@ class _WebviewWidgetState extends State<WebviewWidget> {
         ),
         backgroundColor: Colors.transparent,
         elevation: 0,
+        actions: [
+          IconButton(
+              onPressed: () {},
+              icon: SvgPicture.asset("assets/icons/scrap.svg"))
+        ],
       ),
       body: SafeArea(
         child: InAppWebView(
