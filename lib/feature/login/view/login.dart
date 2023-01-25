@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:newz/feature/login/controller/login_controller.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Login extends StatelessWidget {
   Login({super.key});
@@ -169,13 +170,16 @@ class Login extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    const Text(
-                      '문의하기',
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: 14,
-                        color: Color(0xffB0BEC5),
-                        fontWeight: FontWeight.w400,
+                    GestureDetector(
+                      onTap: _sendEmail,
+                      child: const Text(
+                        '문의하기',
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: 14,
+                          color: Color(0xffB0BEC5),
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     )
                   ],
@@ -185,4 +189,12 @@ class Login extends StatelessWidget {
           );
         }));
   }
+}
+
+Future<void> _sendEmail() async {
+  final Uri emailLaunchUri = Uri(
+    scheme: 'mailto',
+    path: "newmoa.newz@gmail.com",
+  );
+  launchUrl(emailLaunchUri);
 }
