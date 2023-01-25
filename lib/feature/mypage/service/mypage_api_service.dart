@@ -51,10 +51,24 @@ class ApiService {
         .post('https://newz.bbear.kr/api/user/bookmark/remove?bookmarkId=$id');
   }
 
+  // 북마크 추가 API
+  static void addBookmark(String url) async {
+    await Dio().post('https://newz.bbear.kr/api/user/bookmark/add', data: {
+      "newsUrl": url,
+    });
+  }
+
   // 키워드 삭제 API
-  static void removeSetKeyword(String id, String keyword) async {
+  static void removeKeyword(String id, String keyword) async {
     await Dio().post('https://newz.bbear.kr/api/user/keyword/remove', data: {
       "userId": id,
+      "keywords": [keyword]
+    });
+  }
+
+  // 키워드 추가 API
+  static void addKeyword(String keyword) async {
+    await Dio().post('https://newz.bbear.kr/api/user/keyword/add', data: {
       "keywords": [keyword]
     });
   }
