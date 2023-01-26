@@ -1,0 +1,91 @@
+name: android
+
+on:
+  push:
+    branches:
+      - release
+
+jobs:
+  build_flutter_android_self_runner:
+    runs-on: linux
+    continue-on-error: true
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+
+      - name: parseVersionCode
+        run: |
+          code=($(cat pubspec.yaml | grep version: | grep -o -m1 "[0-9.]\+" | head -n 1 | tr '.' '\n'))
+          versionNumber=$(git rev-list --count --all)
+          echo versionNumber=${versionNumber} >> $GITHUB_ENV
+          echo versionCode=${code[0]}.${code[1]}.${versionNumber} >> $GITHUB_ENV
+
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 12.x
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: 3.3.4
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Build the release APK
+        run: flutter build apk --release --build-number "${{ env.versionNumber }}" --build-name "${{ env.versionCode }}"
+
+      - name: Build the AAB
+        run: flutter build appbundle --release --build-number "${{ env.versionNumber }}" --build-name "${{ env.versionCode }}"
+
+      # 현재시간 https://stackoverflow.com/a/65287555
+      - name: Get current date
+        run: echo "now=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+
+      # apk 정보 https://github.com/marketplace/actions/get-apk-version#outputs
+      - name: Get Apk Info
+        id: apk
+        uses: JantHsueh/get-apk-info-action@1.0
+        with:
+          apkPath: build/app/outputs/flutter-apk/app-release.apk
+
+      # Release 생성
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.apk.outputs.versionNum }}-${{ env.now }}
+          release_name: Release v${{ steps.apk.outputs.versionNum }}-${{ env.now }}
+          draft: false
+          prerelease: false
+
+      # Github Release apk 업로드
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/app/outputs/flutter-apk/app-release.apk
+          asset_name: app-release.apk
+          asset_content_type: application/zip
+
+      - name: Upload Release AAB Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: build/app/outputs/bundle/release/app-release.aab
+          asset_name: app-release.aab
+          asset_content_type: application/zip
