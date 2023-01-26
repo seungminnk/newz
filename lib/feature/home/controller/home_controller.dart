@@ -5,6 +5,11 @@ class HomeController extends GetxController {
   List<String> keywordList = [];
   int selectedKeywordIndex = -1;
 
+  changeIndex(int page) {
+    selectedKeywordIndex = page;
+    update();
+  }
+
   @override
   void onInit() {
     super.onInit();
