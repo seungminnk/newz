@@ -363,15 +363,10 @@ class UserInfoWidget extends StatelessWidget {
               ),
             ],
           ),
-          loginController.isLogin.isFalse
-              ? const CircleAvatar(
-                  radius: 50,
-                  backgroundImage: AssetImage('assets/images/userprofil.png'),
-                )
-              : Container(
-                  clipBehavior: Clip.hardEdge,
-                  decoration: const BoxDecoration(shape: BoxShape.circle),
-                  child: Image.network(loginController.userData.photoUrl!)),
+          const CircleAvatar(
+            radius: 50,
+            backgroundImage: AssetImage('assets/images/userprofil.png'),
+          ),
         ],
       ),
     );
