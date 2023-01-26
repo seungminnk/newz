@@ -365,6 +365,7 @@ class UserInfoWidget extends StatelessWidget {
           ),
           const CircleAvatar(
             radius: 50,
+            backgroundColor: Color(0xffd7deff),
             backgroundImage: AssetImage('assets/images/userprofil.png'),
           ),
         ],
