@@ -1,21 +1,23 @@
 // ignore_for_file: avoid_print
 import 'package:dio/dio.dart';
+import 'package:newz/config/network/dio_manager.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'bookmark_api_model.dart';
 
 class ApiService {
-  // 북마크 baseUrl
-  static const String bookmarkBaseUrl =
-      "https://newz.bbear.kr/api/user/bookmark/news?userId=";
-
   // 북마크 데이터 호출
-  static Future<List<BookmarkModel>> getBookmarkListByDio(
-      String id, String page) async {
-    // 북마크 condition
-    String condition = "&page=$page&limit=5";
-
+  static Future<List<BookmarkModel>> getBookmarkListByDio(String page) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accessToken = prefs.getString("accessToken");
+    print(accessToken);
     List<BookmarkModel> bookmarkInstances = [];
     try {
-      Response respBL = await Dio().get(bookmarkBaseUrl + id + condition);
+      Response respBL = await DioManager.instance.dio.get("/user/bookmark/news",
+          options: Options(headers: {'x-newz-access-token': accessToken}),
+          queryParameters: {
+            'page': page,
+            'limit': 5,
+          });
       for (var data in respBL.data['news']) {
         bookmarkInstances.add(BookmarkModel.fromJson(data));
       }
@@ -26,15 +28,17 @@ class ApiService {
     throw Error();
   }
 
-  // 키워드 baseUrl
-  static const String keywordBaseUrl =
-      "https://newz.bbear.kr/api/user/keyword/list?userId=";
-
   // 키워드 데이터 호출
-  static Future<List> getKeywordListByDio(String id) async {
+  static Future<List> getKeywordListByDio() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accessToken = prefs.getString("accessToken");
+    print(accessToken);
     List keyWordInstances = [];
     try {
-      Response respKL = await Dio().get(keywordBaseUrl + id);
+      Response respKL = await DioManager.instance.dio.get(
+        "/user/keyword/list",
+        options: Options(headers: {'x-newz-access-token': accessToken}),
+      );
       for (var data in respKL.data) {
         keyWordInstances.add(data);
       }
@@ -46,30 +50,62 @@ class ApiService {
   }
 
   // 북마크 삭제 API
-  static void removeBookmark(String id) async {
-    await Dio()
-        .post('https://newz.bbear.kr/api/user/bookmark/remove?bookmarkId=$id');
+  static void removeBookmark(String url) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accessToken = prefs.getString("accessToken");
+    try {
+      await DioManager.instance.dio.post("/user/bookmark/removelist",
+          options: Options(headers: {'x-newz-access-token': accessToken}),
+          data: {
+            "newsUrl": url,
+          });
+    } catch (e) {
+      print(e);
+    }
   }
 
   // 북마크 추가 API
   static void addBookmark(String url) async {
-    await Dio().post('https://newz.bbear.kr/api/user/bookmark/add', data: {
-      "newsUrl": url,
-    });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accessToken = prefs.getString("accessToken");
+    try {
+      await DioManager.instance.dio.post("/user/bookmark/add",
+          options: Options(headers: {'x-newz-access-token': accessToken}),
+          data: {
+            "newsUrl": url,
+          });
+    } catch (e) {
+      print(e);
+    }
   }
 
   // 키워드 삭제 API
   static void removeKeyword(String id, String keyword) async {
-    await Dio().post('https://newz.bbear.kr/api/user/keyword/remove', data: {
-      "userId": id,
-      "keywords": [keyword]
-    });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accessToken = prefs.getString("accessToken");
+    try {
+      await DioManager.instance.dio.post("/user/keyword/remove",
+          options: Options(headers: {'x-newz-access-token': accessToken}),
+          data: {
+            "keywords": [keyword],
+          });
+    } catch (e) {
+      print(e);
+    }
   }
 
   // 키워드 추가 API
   static void addKeyword(String keyword) async {
-    await Dio().post('https://newz.bbear.kr/api/user/keyword/add', data: {
-      "keywords": [keyword]
-    });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accessToken = prefs.getString("accessToken");
+    try {
+      await DioManager.instance.dio.post("/user/keyword/add",
+          options: Options(headers: {'x-newz-access-token': accessToken}),
+          data: {
+            "keywords": [keyword],
+          });
+    } catch (e) {
+      print(e);
+    }
   }
 }

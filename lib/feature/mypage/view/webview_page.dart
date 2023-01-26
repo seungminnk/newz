@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:newz/feature/mypage/controller/mypage_controller.dart';
 
 class WebviewWidget extends StatefulWidget {
   final String weburl;
@@ -12,6 +13,7 @@ class WebviewWidget extends StatefulWidget {
 }
 
 class _WebviewWidgetState extends State<WebviewWidget> {
+  final mypageController = Get.put(Mypagecontroller());
   @override
   Widget build(BuildContext context) {
     // TODO:
@@ -30,7 +32,9 @@ class _WebviewWidgetState extends State<WebviewWidget> {
         elevation: 0,
         actions: [
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                mypageController.webViewScapBtn(widget.weburl);
+              },
               icon: SvgPicture.asset("assets/icons/scrap.svg"))
         ],
       ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:newz/config/routes/app_routes.dart';
 import 'package:newz/common/component/loading/view/CustomCircularProgressIndicator.dart';
 import 'package:newz/common/component/news/view/news_component_view.dart';
+import 'package:newz/config/user/controller/user_data_controller.dart';
 import 'package:newz/feature/mypage/controller/infiniteScroll_controller.dart';
 import 'package:newz/feature/mypage/controller/mypage_controller.dart';
 import 'package:get/get.dart';
@@ -25,10 +26,11 @@ class _MyPageViewState extends State<MyPageView> {
   final loginController = Get.put(LoginController());
   final keywordEditingController = Get.put(KeywordEditingController());
   final scrollController = Get.put(InfiniteScrollController());
+  final userDataController = Get.put(UserDataController());
 
   @override
   void initState() {
-    mypageController.fetchKeyword('1');
+    mypageController.fetchKeyword;
     super.initState();
   }
 
@@ -308,6 +310,7 @@ class UserInfoWidget extends StatelessWidget {
   UserInfoWidget({Key? key}) : super(key: key);
 
   final LoginController loginController = Get.find();
+  final UserDataController userDataController = Get.find();
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -328,7 +331,7 @@ class UserInfoWidget extends StatelessWidget {
                       ),
                     )
                   : Text(
-                      '${loginController.userData.displayName!}님\n관심 기사를 모아놨어요',
+                      '${userDataController.name.toString()}님\n관심 기사를 모아놨어요',
                       style: const TextStyle(
                         fontFamily: 'Pretendard',
                         fontSize: 20,

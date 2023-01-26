@@ -14,8 +14,8 @@ class Mypagecontroller extends GetxController {
   RxList keywordlist = [].obs;
 
   // 북마크 호출 데이터 Rx화 및 loading bool set, 무산스크롤 데이터 감지
-  void fetchBookmark(String id, String page) async {
-    var items = await ApiService.getBookmarkListByDio(id, page);
+  void fetchBookmark(String page) async {
+    var items = await ApiService.getBookmarkListByDio(page);
     if (items.isNotEmpty) {
       hasData(true);
       isBookmarkLoading(true);
@@ -30,12 +30,12 @@ class Mypagecontroller extends GetxController {
     bookmarklist.clear();
     isBookmarkLoading(false);
 
-    fetchBookmark('1', '1');
+    fetchBookmark('1');
   }
 
   // 키워드 호출 데이터 Rx화 및 loading bool set
-  void fetchKeyword(String id) async {
-    var items = await ApiService.getKeywordListByDio(id);
+  void fetchKeyword() async {
+    var items = await ApiService.getKeywordListByDio();
     if (items.isNotEmpty) {
       isKeywordLoading(true);
     }
@@ -62,11 +62,5 @@ class Mypagecontroller extends GetxController {
   }
 
   // 웹뷰 페이지 내 북마크 버튼 함수
-  void webViewScapBtn(String url, String id) {
-    if (id.isNotEmpty) {
-      bookmarkRemoveBtn(id);
-    } else {
-      ApiService.addBookmark(url);
-    }
-  }
+  void webViewScapBtn(String url) {}
 }
