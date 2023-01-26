@@ -6,8 +6,8 @@ on:
       - release
 
 jobs:
-  build_flutter_android_self_runner:
-    runs-on: linux
+  build_flutter_android_app:
+    runs-on: ubuntu-latest
     continue-on-error: true
     steps:
 
