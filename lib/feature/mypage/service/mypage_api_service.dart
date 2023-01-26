@@ -9,15 +9,17 @@ class ApiService {
   static Future<List<BookmarkModel>> getBookmarkListByDio(String page) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? accessToken = prefs.getString("accessToken");
-    print(accessToken);
+    var dio = DioManager.instance.dio;
+    dio.options.headers = {'x-newz-access-token': accessToken};
     List<BookmarkModel> bookmarkInstances = [];
     try {
-      Response respBL = await DioManager.instance.dio.get("/user/bookmark/news",
-          options: Options(headers: {'x-newz-access-token': accessToken}),
-          queryParameters: {
-            'page': page,
-            'limit': 5,
-          });
+      Response respBL = await dio.get(
+        "/user/bookmark/news",
+        queryParameters: {
+          'page': page,
+          'limit': 5,
+        },
+      );
       for (var data in respBL.data['news']) {
         bookmarkInstances.add(BookmarkModel.fromJson(data));
       }
@@ -32,13 +34,11 @@ class ApiService {
   static Future<List> getKeywordListByDio() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? accessToken = prefs.getString("accessToken");
-    print(accessToken);
+    var dio = DioManager.instance.dio;
+    dio.options.headers = {'x-newz-access-token': accessToken};
     List keyWordInstances = [];
     try {
-      Response respKL = await DioManager.instance.dio.get(
-        "/user/keyword/list",
-        options: Options(headers: {'x-newz-access-token': accessToken}),
-      );
+      Response respKL = await dio.get("/user/keyword/list");
       for (var data in respKL.data) {
         keyWordInstances.add(data);
       }
@@ -53,12 +53,15 @@ class ApiService {
   static void removeBookmark(String url) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? accessToken = prefs.getString("accessToken");
+    var dio = DioManager.instance.dio;
+    dio.options.headers = {'x-newz-access-token': accessToken};
     try {
-      await DioManager.instance.dio.post("/user/bookmark/removelist",
-          options: Options(headers: {'x-newz-access-token': accessToken}),
-          data: {
-            "newsUrl": url,
-          });
+      await dio.post(
+        "/user/bookmark/removelist",
+        data: {
+          "newsUrl": url,
+        },
+      );
     } catch (e) {
       print(e);
     }
@@ -68,12 +71,15 @@ class ApiService {
   static void addBookmark(String url) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? accessToken = prefs.getString("accessToken");
+    var dio = DioManager.instance.dio;
+    dio.options.headers = {'x-newz-access-token': accessToken};
     try {
-      await DioManager.instance.dio.post("/user/bookmark/add",
-          options: Options(headers: {'x-newz-access-token': accessToken}),
-          data: {
-            "newsUrl": url,
-          });
+      await dio.post(
+        "/user/bookmark/add",
+        data: {
+          "newsUrl": url,
+        },
+      );
     } catch (e) {
       print(e);
     }
@@ -83,12 +89,15 @@ class ApiService {
   static void removeKeyword(String id, String keyword) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? accessToken = prefs.getString("accessToken");
+    var dio = DioManager.instance.dio;
+    dio.options.headers = {'x-newz-access-token': accessToken};
     try {
-      await DioManager.instance.dio.post("/user/keyword/remove",
-          options: Options(headers: {'x-newz-access-token': accessToken}),
-          data: {
-            "keywords": [keyword],
-          });
+      await dio.post(
+        "/user/keyword/remove",
+        data: {
+          "keywords": [keyword],
+        },
+      );
     } catch (e) {
       print(e);
     }
@@ -98,12 +107,15 @@ class ApiService {
   static void addKeyword(String keyword) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? accessToken = prefs.getString("accessToken");
+    var dio = DioManager.instance.dio;
+    dio.options.headers = {'x-newz-access-token': accessToken};
     try {
-      await DioManager.instance.dio.post("/user/keyword/add",
-          options: Options(headers: {'x-newz-access-token': accessToken}),
-          data: {
-            "keywords": [keyword],
-          });
+      await dio.post(
+        "/user/keyword/add",
+        data: {
+          "keywords": [keyword],
+        },
+      );
     } catch (e) {
       print(e);
     }
