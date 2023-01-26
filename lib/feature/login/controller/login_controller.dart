@@ -5,9 +5,10 @@ import 'package:newz/config/network/dio_manager.dart';
 import 'package:newz/config/routes/app_routes.dart';
 import 'package:newz/config/user/controller/user_data_controller.dart';
 import 'package:newz/config/user/model/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends GetxController {
-  RxBool isLogin = false.obs;
+  // RxBool isLogin = false.obs;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   late GoogleSignInAccount userData;
@@ -19,9 +20,11 @@ class LoginController extends GetxController {
   final dio = Dio();
 
   void logout() {
-    _googleSignIn.signOut().then((value) {
+    _googleSignIn.signOut().then((value) async {
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setBool("isLogin", false);
       userDataController.removeUserData();
-      isLogin(false);
+      //  isLogin(false);
     }).catchError((e) {
       // ignore: avoid_print
       print(e);
@@ -30,7 +33,9 @@ class LoginController extends GetxController {
 
   void login() {
     _googleSignIn.signIn().then<void>((value) async {
-      isLogin(true);
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setBool("isLogin", true);
+      //    isLogin(true);
       userData = value!;
 
       // GoogleSignInAuthentication googleAuth = await userData.authentication;
