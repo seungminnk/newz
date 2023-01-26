@@ -17,8 +17,12 @@ default_platform(:android)
 
 platform :android do
   desc "Deploy a new version to the Google Play internal"
-  lane :internal do
-    upload_to_play_store_internal_app_sharing
+  lane :internal do |options|
+    upload_to_play_store(
+      track: "internal",
+      json_key_data: options[:json_key_data],
+      aab: options[:aab],
+    )
   end
 
   desc "Runs all the tests"

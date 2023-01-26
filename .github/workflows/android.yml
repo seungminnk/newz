@@ -63,11 +63,5 @@ jobs:
           bundler-cache: true
           working-directory: 'android'
 
-      - uses: maierj/fastlane-action@v3.0.0
-        with:
-          lane: internal
-          subdirectory: 'android'
-        env:
-          UPLOAD_TO_PLAY_STORE_INTERNAL_APP_SHARING_JSON_KEY_DATA: '${{ secrets.JSON_KEY }}'
-          UPLOAD_TO_PLAY_STORE_INTERNAL_APP_SHARING_AAB: build/app/outputs/bundle/release/app-release.aab
-           
+      - name: Run fastlane
+        run: cd android && fastlane internal json_key_data:${{ secrets.JSON_KEY }} aab:../build/app/outputs/bundle/release/app-release.aab
