@@ -3,7 +3,7 @@ name: android
 on:
   push:
     branches:
-      - release
+      - master
 
 jobs:
   build_flutter_android_app:
@@ -94,10 +94,11 @@ jobs:
         with:
           ruby-version: '3.0'
           bundler-cache: true
+
       - uses: maierj/fastlane-action@v3.0.0
         with:
-         lane: internal
-         env: 
-           UPLOAD_TO_PLAY_STORE_INTERNAL_APP_SHARING_JSON_KEY_DATA: '${{ secrets.JSON_KEY }}'
-           UPLOAD_TO_PLAY_STORE_INTERNAL_APP_SHARING_AAB: build/app/outputs/bundle/release/app-release.aab
+          lane: internal
+          env:
+            UPLOAD_TO_PLAY_STORE_INTERNAL_APP_SHARING_JSON_KEY_DATA: '${{ secrets.JSON_KEY }}'
+            UPLOAD_TO_PLAY_STORE_INTERNAL_APP_SHARING_AAB: build/app/outputs/bundle/release/app-release.aab
            
