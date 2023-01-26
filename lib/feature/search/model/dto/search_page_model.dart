@@ -1,8 +1,9 @@
-import 'package:newz/feature/search/model/dto/search_response_only_data_dto.dart';
+import 'package:get/get.dart';
 
 class SearchPageModel{
 
-  bool isLoading = false;
+  RxString searchKeyword = RxString("");
+  RxBool isLoading = RxBool(false);
   bool isLastPage = false;
   int page = 1;
   int size = 10;
@@ -13,7 +14,7 @@ class SearchPageModel{
       isLoading : ${isLoading},
       isLastPage : ${isLastPage},
       page : ${page},
-      size : ${size},
+      size : ${size}
     """;
   }
 }

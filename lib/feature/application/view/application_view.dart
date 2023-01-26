@@ -41,7 +41,7 @@ class ApplicationView extends GetView<ApplicationController> {
         HomeView(),
         SearchView(),
         MyPageView(),
-        TestPageView(),
+        // TestPageView(),
       ],
     );
   }
@@ -92,21 +92,21 @@ class ApplicationView extends GetView<ApplicationController> {
                 color: activeColor,
               ),
             ),
-            BottomNavigationBarItem(
-              label: "",
-              icon: SizedBox(
-                width: 23,
-                height: 23,
-                child: SvgPicture.asset("assets/icons/experiment.svg"),
-              ),
-              activeIcon: SizedBox(
-                  width: 23,
-                  height: 23,
-                  child: SvgPicture.asset(
-                    "assets/icons/experiment.svg",
-                    color: Colors.lightBlue,
-                  )),
-            ),
+            // BottomNavigationBarItem(
+            //   label: "",
+            //   icon: SizedBox(
+            //     width: 23,
+            //     height: 23,
+            //     child: SvgPicture.asset("assets/icons/experiment.svg"),
+            //   ),
+            //   activeIcon: SizedBox(
+            //       width: 23,
+            //       height: 23,
+            //       child: SvgPicture.asset(
+            //         "assets/icons/experiment.svg",
+            //         color: Colors.lightBlue,
+            //       )),
+            // ),
           ],
         ),
       ),
