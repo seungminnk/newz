@@ -7,7 +7,7 @@ on:
 
 jobs:
   build_flutter_android_self_runner:
-    runs-on: linux
+    runs-on: ubunut-latest
     continue-on-error: true
     steps:
 
