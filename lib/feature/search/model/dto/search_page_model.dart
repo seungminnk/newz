@@ -6,11 +6,12 @@ class SearchPageModel{
   RxBool isLoading = RxBool(false);
   bool isLastPage = false;
   int page = 1;
-  int size = 10;
+  int size = 15;
 
   @override
   String toString() {
     return """
+      searchKeyword : ${searchKeyword},
       isLoading : ${isLoading},
       isLastPage : ${isLastPage},
       page : ${page},
