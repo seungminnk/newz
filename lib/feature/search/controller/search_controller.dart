@@ -1,55 +1,57 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:newz/config/network/dio_manager.dart';
-import 'package:newz/feature/search/model/dto/search_page_model.dart';
-import 'package:newz/feature/search/model/dto/search_response_only_data_dto.dart' as SearchNewsData;
+import 'package:newz/feature/real_time_vogue/controller/real_time_vogue_data_controller.dart';
+import 'package:newz/feature/real_time_vogue/controller/real_time_vogue_keyword_controller.dart';
+import 'package:newz/feature/search/controller/search_result_controller.dart';
 
 class SearchController extends GetxController{
 
-  final PagingController<int, SearchNewsData.News> pagingController = PagingController(firstPageKey: 1);
-  final SearchPageModel _searchPageModel = SearchPageModel();
+  final SearchResultController searchResultController = Get.find();
 
-  void requestSearchData() async{
+  final RealTimeVogueKeywordController realTimeVogueKeywordController = Get.find();
+  final RealTimeVogueDataController realTimeVogueDataController = Get.find();
 
-    _searchPageModel.isLoading = true;
+  late TextEditingController searchTextEditingController;
 
-    var response = await DioManager.instance.dio.get(
-      "/news/list",
-      queryParameters: {
-        'query': '손흥민',
-        'page': _searchPageModel.page,
-        'limit': _searchPageModel.size,
+  RxBool isTextEmpty = RxBool(true);
+
+  void setTextAndStateOfTextWhenSubmitted(searchKeyword){
+    searchResultController.searchPageModel.searchKeyword(searchKeyword);
+    isTextEmpty(searchResultController.searchPageModel.searchKeyword.isEmpty);
+    // searchResultController.requestSearchKeywordDataToServer();
+  }
+
+  void resetSearchTextField(){
+    searchTextEditingController.text = "";
+  }
+
+  void initTextEditingController(){
+
+    searchTextEditingController = TextEditingController();
+
+    searchTextEditingController.addListener(() {
+      if(searchTextEditingController.text.isEmpty){
+        searchResultController.searchPageModel.searchKeyword("");
+        isTextEmpty(searchResultController.searchPageModel.searchKeyword.isEmpty);
       }
-    );
-
-    SearchNewsData.SearchResponseOnlyDataDto searchResponseOnlyDataDto = SearchNewsData.SearchResponseOnlyDataDto.fromJson(response.data);
-
-    _searchPageModel.isLastPage = searchResponseOnlyDataDto.news!.length < _searchPageModel.size;
-
-    if(_searchPageModel.isLastPage){
-      pagingController.appendLastPage(searchResponseOnlyDataDto.news ?? []);
-    }
-    else{
-      pagingController.appendPage(searchResponseOnlyDataDto.news!, _searchPageModel.page);
-      _searchPageModel.page += 1;
-    }
-
-    print("검색 페이지 데이터 확인 : ${_searchPageModel.toString()}");
-
-    _searchPageModel.isLoading = false;
+    });
   }
 
   @override
   void onInit() {
     super.onInit();
-    pagingController.addPageRequestListener((pageKey) {
-      requestSearchData();
-    });
+
+    initTextEditingController();
+
+    realTimeVogueKeywordController.init();
+    realTimeVogueDataController.init();
+
+    realTimeVogueKeywordController.requestVogueKeyword();
   }
 
   @override
   void dispose() {
     super.dispose();
-    pagingController.dispose();
+    searchTextEditingController.dispose();
   }
 }
