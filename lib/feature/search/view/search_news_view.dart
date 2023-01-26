@@ -7,9 +7,14 @@ import 'package:newz/feature/search/controller/search_result_controller.dart';
 import 'package:newz/feature/search/model/dto/search_response_only_data_dto.dart' as SearchNewsData;
 
 class SearchNewsView extends GetView<SearchResultController> {
-  const SearchNewsView({Key? key}) : super(key: key);
+  const SearchNewsView({Key? key, String? tag})
+      : this.tag = tag,
+        super(key: key);
 
-@override
+  @override
+  final String? tag;
+
+  @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () => Future.sync(() => controller.requestSearchKeywordDataToServer()),
