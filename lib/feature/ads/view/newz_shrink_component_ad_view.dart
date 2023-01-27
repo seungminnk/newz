@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:newz/feature/ads/util/AdHelperUtil.dart';
+import 'package:skeletons/skeletons.dart';
 
 class NewzShrinkComponentAdView extends StatefulWidget {
   const NewzShrinkComponentAdView({Key? key}) : super(key: key);
@@ -17,12 +18,10 @@ class _NewzShrinkComponentAdViewState extends State<NewzShrinkComponentAdView> {
   Widget build(BuildContext context) {
     return _ad == null
         ? Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 7.0, horizontal: 20.0),
+            padding: const EdgeInsets.symmetric(vertical: 7.0, horizontal: 20.0),
             child: Container(
               height: 81,
-              padding:
-                  const EdgeInsets.symmetric(vertical: 5.0, horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 16.0),
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(24.0)),
                 color: Colors.white,
@@ -34,9 +33,7 @@ class _NewzShrinkComponentAdViewState extends State<NewzShrinkComponentAdView> {
                   ),
                 ],
               ),
-              child: const Center(
-                child: CircularProgressIndicator(),
-              ),
+              child: SkeletonListTile(hasSubtitle: true,),
             ),
           )
         : Padding(

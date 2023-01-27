@@ -61,10 +61,10 @@ class SearchNewsView extends GetView<SearchResultController> {
             }
         ),
         separatorBuilder: (context, index){
-          if(index != 0 && index % 5 == 0){
-            return NewzShrinkComponentAdView();
+          if(index != 0 && index % 8 == 0){
+            return const NewzShrinkComponentAdView();
           }
-          return SizedBox(height: 0,);
+          return const SizedBox(height: 0,);
         },
       ),
     );
