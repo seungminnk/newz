@@ -6,6 +6,7 @@ import 'package:newz/config/user/controller/user_data_controller.dart';
 import 'package:newz/feature/mypage/controller/infiniteScroll_controller.dart';
 import 'package:newz/feature/mypage/controller/mypage_controller.dart';
 import 'package:get/get.dart';
+import 'package:newz/feature/mypage/service/mypage_api_service.dart';
 import 'package:newz/feature/mypage/view/setting_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../login/controller/login_controller.dart';
@@ -30,9 +31,10 @@ class _MyPageViewState extends State<MyPageView> {
 
   @override
   void initState() {
-    mypageController.fetchKeyword;
+    // mypageController.fetchKeyword();
     setState(() {
       loginController.loadUserData();
+      mypageController.fetchKeyword();
     });
     super.initState();
   }
@@ -372,7 +374,7 @@ class UserInfoWidget extends StatelessWidget {
 
 class AddKeyword extends StatelessWidget {
   AddKeyword({Key? key}) : super(key: key);
-
+  TextEditingController textController = TextEditingController();
   final Mypagecontroller mypageController = Get.find();
 
   @override
@@ -390,10 +392,13 @@ class AddKeyword extends StatelessWidget {
                 right: 20,
               ),
               child: TextField(
+                controller: textController,
                 textAlignVertical: TextAlignVertical.center,
-                onSubmitted: (String text) {
-                  KeywordListController.to.addKeyword(text);
-                  KeywordEditingController.to.clear();
+                onSubmitted: (String keyword) {
+                  print("Call data");
+                  ApiService.addKeyword(keyword);
+                  mypageController.fetchKeyword();
+                  textController.clear();
                 },
                 style: const TextStyle(
                   fontSize: 14,
@@ -470,9 +475,9 @@ class KeywordListCard extends StatelessWidget {
                                       onTap: () {
                                         // 키워드 삭제 구현 필요
                                         mypageController.keywordRemoveBtn(
-                                            '1',
                                             mypageController
                                                 .keywordlist[index]);
+                                        mypageController.fetchKeyword();
                                       },
                                       child: const Icon(
                                         Icons.cancel_outlined,

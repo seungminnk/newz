@@ -47,11 +47,13 @@ class Mypagecontroller extends GetxController {
 
   // 키워드 호출 데이터 Rx화 및 loading bool set
   void fetchKeyword() async {
-    var items = await ApiService.getKeywordListByDio();
-    if (items.isNotEmpty) {
-      isKeywordLoading(true);
-    }
-    keywordlist.assignAll(items);
+    Future.delayed(const Duration(seconds: 1), () async {
+      var items = await ApiService.getKeywordListByDio();
+      if (items.isNotEmpty) {
+        isKeywordLoading(true);
+      }
+      keywordlist.assignAll(items);
+    });
   }
 
   // 키워드 세팅 버튼 클릭 함수
@@ -61,11 +63,12 @@ class Mypagecontroller extends GetxController {
     } else {
       changeKeyword(true);
     }
+    fetchKeyword();
   }
 
   // 키워드 삭제 아이콘 클릭 함수
-  void keywordRemoveBtn(String id, String keyword) {
-    ApiService.removeKeyword(id, keyword);
+  void keywordRemoveBtn(String keyword) {
+    ApiService.removeKeyword(keyword);
   }
 
   // 북마크 삭제 아이콘 클릭 함수
