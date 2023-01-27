@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:newz/feature/mypage/controller/mypage_controller.dart';
 import 'package:newz/feature/mypage/view/webview_page.dart';
 import 'package:newz/feature/real_time_vogue/model/dto/real_time_vogue_response_only_data_dto.dart';
 
@@ -22,6 +23,9 @@ class NewsComponentExpandView extends StatefulWidget {
 }
 
 class _NewsComponentExpandViewState extends State<NewsComponentExpandView> {
+
+  Mypagecontroller mypageController = Get.put(Mypagecontroller());
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -134,8 +138,13 @@ class _NewsComponentExpandViewState extends State<NewsComponentExpandView> {
               SizedBox(
                 width: 24,
                 height: 24,
-                child: SvgPicture.asset(
-                  "assets/icons/scrap.svg",
+                child: InkWell(
+                  onTap: (){
+                    mypageController.webViewScrapBtn(widget.news.link!);
+                  },
+                  child: SvgPicture.asset(
+                    "assets/icons/scrap.svg",
+                  ),
                 ),
               ),
             ],
