@@ -64,4 +64,4 @@ jobs:
           working-directory: 'android'
 
       - name: Run fastlane
-        run: cd android && fastlane internal json_key_data:${{ secrets.JSON_KEY }} aab:../build/app/outputs/bundle/release/app-release.aab
+        run: cd android && fastlane internal json_key_data:'${{ secrets.JSON_KEY }}' aab:../build/app/outputs/bundle/release/app-release.aab
