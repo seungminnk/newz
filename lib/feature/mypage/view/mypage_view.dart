@@ -239,7 +239,8 @@ class BookmarkCardWidget extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             mypageController
-                                .bookmarkRemoveBtn(news.bookmarkId.toString());
+                                .bookmarkRemoveBtn(news.link.toString());
+                            scrollController.resetData();
                             Get.back();
                           },
                           child: Container(

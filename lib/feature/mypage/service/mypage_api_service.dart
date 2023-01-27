@@ -57,7 +57,7 @@ class ApiService {
     dio.options.headers = {'x-newz-access-token': accessToken};
     try {
       await dio.post(
-        "/user/bookmark/removelist",
+        "/user/bookmark/remove",
         data: {
           "newsUrl": url,
         },
