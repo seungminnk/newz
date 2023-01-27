@@ -8,7 +8,7 @@ import 'package:newz/config/user/model/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends GetxController {
-  // RxBool isLogin = false.obs;
+  RxBool isLogin = false.obs;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   late GoogleSignInAccount userData;
@@ -24,7 +24,7 @@ class LoginController extends GetxController {
       final prefs = await SharedPreferences.getInstance();
       prefs.setBool("isLogin", false);
       userDataController.removeUserData();
-      //  isLogin(false);
+      isLogin(false);
     }).catchError((e) {
       // ignore: avoid_print
       print(e);
@@ -35,7 +35,7 @@ class LoginController extends GetxController {
     _googleSignIn.signIn().then<void>((value) async {
       final prefs = await SharedPreferences.getInstance();
       prefs.setBool("isLogin", true);
-      //    isLogin(true);
+      isLogin(true);
       userData = value!;
 
       // GoogleSignInAuthentication googleAuth = await userData.authentication;
