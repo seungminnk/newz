@@ -27,20 +27,21 @@ class Mypagecontroller extends GetxController {
 
   // 북마크 호출 데이터 Rx화 및 loading bool set, 무산스크롤 데이터 감지
   void fetchBookmark(String page) async {
+    isBookmarkLoading(true);
     var items = await ApiService.getBookmarkListByDio(page);
     if (items.isNotEmpty) {
       hasData(true);
-      isBookmarkLoading(true);
     } else {
       hasData(false);
     }
     bookmarklist.addAll(items);
+    isBookmarkLoading(false);
   }
 
   // 마이페이지 이동시 최초 1회 데이터 호출용
   void resetFetchBookmark(String id) async {
     bookmarklist.clear();
-    isBookmarkLoading(false);
+    // isBookmarkLoading(false);
 
     fetchBookmark('1');
   }

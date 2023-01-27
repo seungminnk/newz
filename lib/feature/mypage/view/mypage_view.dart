@@ -174,34 +174,48 @@ class BookmarkCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => mypageController.isBookmarkLoading.isFalse
-        ? const Center(child: CustomCircularProgressIndicator())
-        : RefreshIndicator(
-            onRefresh: () async {
-              scrollController.resetData();
-            },
-            child: ListView.separated(
-              controller: scrollController.scrollController.value,
-              shrinkWrap: true,
-              itemCount: mypageController.bookmarklist.length,
-              separatorBuilder: (BuildContext context, int index) {
-                return const SizedBox(height: 10);
-              },
-              itemBuilder: ((context, index) {
-                var news = mypageController.bookmarklist[index];
-                return GestureDetector(
-                  onLongPress: () {
-                    bookmarkDialog(context, news);
-                  },
-                  child: NewsComponentView(
-                    title: news.title,
-                    content: news.content,
-                    link: news.link,
-                  ),
-                );
-              }),
+    return Obx(
+      () => mypageController.isBookmarkLoading.value
+          ? const Center(child: CustomCircularProgressIndicator())
+          : Obx(
+              () => mypageController.hasData.value
+                  ? RefreshIndicator(
+                      onRefresh: () async {
+                        scrollController.resetData();
+                      },
+                      child: ListView.separated(
+                        controller: scrollController.scrollController.value,
+                        shrinkWrap: true,
+                        itemCount: mypageController.bookmarklist.length,
+                        separatorBuilder: (BuildContext context, int index) {
+                          return const SizedBox(height: 10);
+                        },
+                        itemBuilder: ((context, index) {
+                          var news = mypageController.bookmarklist[index];
+                          return GestureDetector(
+                            onLongPress: () {
+                              bookmarkDialog(context, news);
+                            },
+                            child: NewsComponentView(
+                              title: news.title,
+                              content: news.content,
+                              link: news.link,
+                            ),
+                          );
+                        }),
+                      ),
+                    )
+                  : Center(
+                      child: const Text(
+                        '현재 스크랩된 내용이 없습니다.',
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 55, 71, 79),
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
             ),
-          ));
+    );
   }
 
   Future<dynamic> bookmarkDialog(BuildContext context, news) {
