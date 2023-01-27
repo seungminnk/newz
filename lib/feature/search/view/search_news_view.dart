@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:newz/common/component/loading/view/CustomCircularProgressIndicator.dart';
 import 'package:newz/common/component/news/view/news_component_view.dart';
+import 'package:newz/feature/ads/view/newz_shrink_component_ad_view.dart';
 import 'package:newz/feature/search/controller/search_result_controller.dart';
 import 'package:newz/feature/search/model/dto/search_response_only_data_dto.dart' as SearchNewsData;
 
@@ -18,7 +19,7 @@ class SearchNewsView extends GetView<SearchResultController> {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: () => Future.sync(() => controller.requestSearchKeywordDataToServer()),
-      child: PagedListView<int, SearchNewsData.News>(
+      child: PagedListView.separated(
         physics: const BouncingScrollPhysics(),
         pagingController: controller.pagingController,
         builderDelegate: PagedChildBuilderDelegate<SearchNewsData.News>(
@@ -59,6 +60,12 @@ class SearchNewsView extends GetView<SearchResultController> {
               );
             }
         ),
+        separatorBuilder: (context, index){
+          if(index != 0 && index % 5 == 0){
+            return NewzShrinkComponentAdView();
+          }
+          return SizedBox(height: 0,);
+        },
       ),
     );
   }
