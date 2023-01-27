@@ -39,7 +39,7 @@ class _WebviewWidgetState extends State<WebviewWidget> {
                   errorScrapDialog(context);
                 } else {
                   scrapDialog(context);
-                  mypageController.webViewScapBtn(widget.weburl);
+                  mypageController.webViewScrapBtn(widget.weburl);
                 }
               },
               icon: SvgPicture.asset("assets/icons/scrap.svg"))

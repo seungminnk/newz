@@ -77,7 +77,7 @@ class Mypagecontroller extends GetxController {
   }
 
   // 웹뷰 페이지 내 북마크 버튼 함수
-  void webViewScapBtn(String url) {
+  void webViewScrapBtn(String url) {
     ApiService.addBookmark(url);
   }
 }
