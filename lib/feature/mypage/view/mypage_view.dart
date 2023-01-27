@@ -31,6 +31,9 @@ class _MyPageViewState extends State<MyPageView> {
   @override
   void initState() {
     mypageController.fetchKeyword;
+    setState(() {
+      loginController.loadUserData();
+    });
     super.initState();
   }
 
@@ -311,7 +314,9 @@ class UserInfoWidget extends StatelessWidget {
   UserInfoWidget({Key? key}) : super(key: key);
 
   final LoginController loginController = Get.find();
+
   final UserDataController userDataController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -321,25 +326,15 @@ class UserInfoWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              loginController.isLogin.isFalse
-                  ? const Text(
-                      '길동님\n관심 기사를 모아놨어요',
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: 20,
-                        color: Color(0xff37474f),
-                        fontWeight: FontWeight.w600,
-                      ),
-                    )
-                  : Text(
-                      '${userDataController.name.toString()}님\n관심 기사를 모아놨어요',
-                      style: const TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: 20,
-                        color: Color(0xff37474f),
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
+              Text(
+                '${loginController.userName.toString()}님\n관심 기사를 모아놨어요',
+                style: const TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontSize: 20,
+                  color: Color(0xff37474f),
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
               const SizedBox(
                 height: 5,
               ),

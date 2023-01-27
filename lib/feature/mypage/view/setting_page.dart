@@ -63,9 +63,7 @@ class SettingPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
-                loginController.isLogin.isFalse
-                    ? "ID: 로그인 필요"
-                    : "ID: ${userDataController.email.toString()}",
+                "ID: ${loginController.userEmail.toString()}",
                 style: const TextStyle(
                   fontFamily: 'Pretendard',
                   fontSize: 20,
@@ -87,7 +85,9 @@ class SettingPage extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    loginController.isLogin.isTrue ? "Google" : "연결된 계정 없음",
+                    loginController.userEmail.isNotEmpty
+                        ? "Google"
+                        : "연결된 계정 없음",
                     style: const TextStyle(
                       fontFamily: 'Pretendard',
                       fontSize: 12,
@@ -161,17 +161,19 @@ class SettingPage extends StatelessWidget {
               const SizedBox(height: 24),
               GestureDetector(
                 onTap: () {
-                  loginController.isLogin.isFalse
+                  loginController.userEmail.isEmpty
                       ? loginController.login()
                       : loginController.logout();
                 },
-                child: Text(
-                  loginController.isLogin.isFalse ? "로그인" : "로그아웃",
-                  style: const TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: 16,
-                    color: Color(0xff37474F),
-                    fontWeight: FontWeight.w400,
+                child: Obx(
+                  () => Text(
+                    loginController.userEmail.isEmpty ? "로그인" : "로그아웃",
+                    style: const TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: 16,
+                      color: Color(0xff37474F),
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                 ),
               ),
