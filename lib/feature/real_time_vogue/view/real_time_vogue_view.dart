@@ -50,6 +50,7 @@ class RealTimeVogueView extends StatelessWidget {
                             child: CustomKeywordButtonGroupView(
                               keywordRadioModelList: keywordRadioModelList,
                               clickCb: (KeywordRadioModel clickedValue) {
+                                realTimeVogueDataController.vogueKeyword(clickedValue.value);
                                 realTimeVogueDataController.requestVogueData(clickedValue.value);
                               },
                             ),
