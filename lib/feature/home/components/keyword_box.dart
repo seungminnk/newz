@@ -20,7 +20,7 @@ class KeywordBox extends StatelessWidget {
         ),
         child: Text(keyword,
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 12,
             color: Color(0xff78909c),
           ),

@@ -104,6 +104,9 @@ class _HomeViewState extends State<HomeView> {
                           ),
                         ),
                         onTap: () {
+                          setState((){
+                            color : const Color(0xFF3F51B5);
+                          });
                           homeController.changeIndex(index);
                         },
                       );

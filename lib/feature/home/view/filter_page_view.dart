@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:newz/feature/home/components/keyword_box.dart';
 import 'package:newz/feature/onboarding/controller/keyword_list_controller.dart';
 import 'package:newz/feature/onboarding/controller/keyword_editing_controller.dart';
 import '../../../common/component/loading/view/CustomCircularProgressIndicator.dart';
 import '../../mypage/controller/mypage_controller.dart';
+import '../../mypage/service/mypage_api_service.dart';
 
 class FilterPageView extends StatefulWidget {
   const FilterPageView({Key? key}) : super(key: key);
@@ -57,7 +57,7 @@ class _FilterPageViewState extends State<FilterPageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0x4f37474F),
+      backgroundColor: const Color(0x6637474F),
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
@@ -111,9 +111,10 @@ class _FilterPageViewState extends State<FilterPageView> {
                 child: TextField(
                   focusNode: _focusNode,
                   controller: _searchController,
-                  onSubmitted: (String text) {
-                    KeywordListController.to.addKeyword(text);
-                    KeywordEditingController.to.clear();
+                  onSubmitted: (String keyword) {
+                    ApiService.addKeyword(keyword);
+                    mypageController.fetchKeyword();
+                    _searchController.clear();
                   },
                   style: const TextStyle(
                     fontSize: 14,
@@ -132,7 +133,7 @@ class _FilterPageViewState extends State<FilterPageView> {
                         color: const Color(0xffffffff),
                       ),
                     ),
-                    hintText: '원하는 기사를 검색해봐요',
+                    hintText: '원하는 키워드를 적어보아요',
                     hintStyle: const TextStyle(
                         fontSize: 14.0,
                         color: Colors.white,
@@ -153,66 +154,57 @@ class _FilterPageViewState extends State<FilterPageView> {
         const SizedBox(
           height: 18,
         ),
-        Obx(
-          () => mypageController.isKeywordLoading.isFalse
-              ? const CustomCircularProgressIndicator()
-              : SizedBox(
-                  width: Get.width,
-                  height: 35,
-                  child: ListView.separated(
-                    clipBehavior: Clip.none,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: mypageController.keywordlist.length,
-                    separatorBuilder: (BuildContext context, int index) {
-                      return const SizedBox(width: 10);
-                    },
-                    itemBuilder: (context, index) {
-                      return Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8.0),
-                          color: const Color.fromARGB(255, 236, 239, 241),
-                        ),
-                        child: Obx(
-                          () => Center(
-                            child: mypageController.changeKeyword.isFalse
-                                ? Row(
-                                    children: [
-                                      Text(
-                                        mypageController.keywordlist[index],
-                                        style: const TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 120, 144, 156)),
-                                      ),
-                                    ],
-                                  )
-                                : Row(
-                                    children: [
-                                      Text(mypageController.keywordlist[index],
-                                          style: const TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 120, 144, 156))),
-                                      const SizedBox(width: 5),
-                                      GestureDetector(
-                                          onTap: () {
-                                            mypageController.keywordRemoveBtn(
-                                                mypageController
-                                                    .keywordlist[index]);
-                                          },
-                                          child: const Icon(
-                                            Icons.cancel_outlined,
-                                            size: 18,
-                                            color: Color.fromARGB(
-                                                255, 120, 144, 156),
-                                          )),
-                                    ],
-                                  ),
+        Padding(
+          padding: const EdgeInsets.only(left: 20.0),
+          child: Obx(
+            () => mypageController.isKeywordLoading.isFalse
+                ? const CustomCircularProgressIndicator()
+                : SizedBox(
+                    width: Get.width,
+                    height: 35,
+                    child: ListView.separated(
+                      clipBehavior: Clip.none,
+                      scrollDirection: Axis.horizontal,
+                      itemCount: mypageController.keywordlist.length,
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const SizedBox(width: 10);
+                      },
+                      itemBuilder: (context, index) {
+                        return Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            color: const Color(0xffffffff),
                           ),
-                        ),
-                      );
-                    },
+                          child: Obx(
+                            () => Center(
+                              child: Row(
+                                      children: [
+                                        Text(mypageController.keywordlist[index],
+                                            style: const TextStyle(
+                                                color: Color(0xff37474f))),
+                                        const SizedBox(width: 5),
+                                        GestureDetector(
+                                            onTap: () {
+                                              mypageController.keywordRemoveBtn(
+                                                  mypageController
+                                                      .keywordlist[index]);
+                                              mypageController.fetchKeyword();
+                                            },
+                                            child: const Icon(
+                                              Icons.cancel_outlined,
+                                              size: 18,
+                                              color: Color(0xff37474f),
+                                            )),
+                                      ],
+                                    ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
+          ),
         ),
       ]),
     );
