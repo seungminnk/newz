@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:newz/feature/login/controller/login_controller.dart';
 import 'package:newz/feature/mypage/controller/mypage_controller.dart';
 
 class WebviewWidget extends StatefulWidget {
@@ -14,6 +15,7 @@ class WebviewWidget extends StatefulWidget {
 
 class _WebviewWidgetState extends State<WebviewWidget> {
   final mypageController = Get.put(Mypagecontroller());
+  final loginController = Get.put(LoginController());
   @override
   Widget build(BuildContext context) {
     // TODO:
@@ -33,8 +35,12 @@ class _WebviewWidgetState extends State<WebviewWidget> {
         actions: [
           IconButton(
               onPressed: () {
-                scrapDialog(context);
-                mypageController.webViewScapBtn(widget.weburl);
+                if (loginController.userName.isEmpty) {
+                  errorScrapDialog(context);
+                } else {
+                  scrapDialog(context);
+                  mypageController.webViewScapBtn(widget.weburl);
+                }
               },
               icon: SvgPicture.asset("assets/icons/scrap.svg"))
         ],
@@ -47,6 +53,64 @@ class _WebviewWidgetState extends State<WebviewWidget> {
         ),
       ),
     );
+  }
+
+  Future<dynamic> errorScrapDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: ((BuildContext context) {
+          return AlertDialog(
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+            content: SizedBox(
+              height: 100,
+              width: 312,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "로그인이 필요한 서비스입니다.",
+                      style: TextStyle(
+                        fontFamily: 'Pretendard',
+                        fontSize: 18,
+                        color: Color(0xff37474f),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () {
+                        Get.back();
+                      },
+                      child: Container(
+                        width: 128,
+                        height: 44,
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 24, vertical: 12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: const Color(0xFF3F51B5),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            '확인',
+                            style: TextStyle(
+                              fontFamily: 'Pretendard',
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }));
   }
 
   Future<dynamic> scrapDialog(BuildContext context) {
