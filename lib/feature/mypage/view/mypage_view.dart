@@ -43,15 +43,15 @@ class _MyPageViewState extends State<MyPageView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: (() {
-            Get.toNamed(AppRoutes.login);
-          }),
-          icon: const Icon(
-            Icons.arrow_back_ios_new_outlined,
-            color: Colors.black,
-          ),
-        ),
+        // leading: IconButton(
+        //   onPressed: (() {
+        //     Get.toNamed(AppRoutes.login);
+        //   }),
+        //   icon: const Icon(
+        //     Icons.arrow_back_ios_new_outlined,
+        //     color: Colors.black,
+        //   ),
+        // ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
