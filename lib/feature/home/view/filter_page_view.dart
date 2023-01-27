@@ -18,42 +18,13 @@ class _FilterPageViewState extends State<FilterPageView> {
   final keywordEditingController = Get.put(KeywordEditingController());
   final mypageController = Get.put(Mypagecontroller());
   final _searchController = TextEditingController();
-  final List keyword = [
-    'Text',
-    'Text',
-    'Text',
-    'Text',
-    'Text',
-    'Text',
-    'Text',
-    'Text',
-    'Text'
-  ];
-  final List<String> title = <String>['title', 'title'];
-  final List<String> content = <String>['content', 'content'];
+
   final FocusNode _focusNode = FocusNode();
   bool isFocus = false;
-  String _searchText = "";
-
-  void _onFocusChange() {
-    setState(() {
-      isFocus = !isFocus;
-    });
-  }
-
   void _unFocus() {
     _focusNode.unfocus();
     _searchController.clear();
   }
-
-  _SearchViewState() {
-    _searchController.addListener(() {
-      setState(() {
-        _searchText = _searchController.text;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
