@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,6 +22,11 @@ class UserDataController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("accessToken", userData.tokens.accessToken);
     prefs.setString("refreshToken", userData.tokens.refreshToken);
+  }
+
+  Future<void> removeUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
   }
 
   void setDidSelectedInitialKeywordsFlag(bool flag) {

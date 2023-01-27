@@ -30,7 +30,7 @@ class InfiniteScrollController extends GetxController {
 
   // 이벤트 감지에 따른 데이터 호출
   void loadData() {
-    bookmarkApi.fetchBookmark('1', pages.toString());
+    bookmarkApi.fetchBookmark(pages.toString());
     pages++;
   }
 

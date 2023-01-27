@@ -14,10 +14,13 @@ class LoginController extends GetxController {
 
   late final GoogleSignInAuthentication googleSignInAuthentication;
 
+  final UserDataController userDataController = Get.find();
+
   final dio = Dio();
 
   void logout() {
     _googleSignIn.signOut().then((value) {
+      userDataController.removeUserData();
       isLogin(false);
     }).catchError((e) {
       // ignore: avoid_print
