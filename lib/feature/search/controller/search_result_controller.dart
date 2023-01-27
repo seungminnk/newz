@@ -7,8 +7,7 @@ import 'package:newz/feature/search/model/dto/search_response_only_data_dto.dart
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SearchResultController extends GetxController {
-  final PagingController<int, SearchNewsData.News> pagingController =
-      PagingController(firstPageKey: 1);
+  final PagingController<int, SearchNewsData.News> pagingController = PagingController(firstPageKey: 1);
 
   final SearchPageModel searchPageModel = SearchPageModel();
 
