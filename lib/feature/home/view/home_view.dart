@@ -19,8 +19,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   final loginController = Get.put(LoginController());
   final HomeController homeController = Get.put(HomeController());
-  final SearchResultController searchResultController =
-      Get.put(SearchResultController(), tag: 'home');
+  final SearchResultController searchResultController = Get.put(SearchResultController(), tag: 'home');
 
   @override
   void initState() {
@@ -48,24 +47,23 @@ class _HomeViewState extends State<HomeView> {
       builder: (HomeController homeController) {
         return Scaffold(
           appBar: AppBar(
-            title: Container(
-              child: SvgPicture.asset(
-                "assets/icons/logo.svg",
-                width: 88,
-                height: 40,
-              ),
+            title: SvgPicture.asset(
+              "assets/icons/logo.svg",
+              width: 88,
+              height: 40,
             ),
             backgroundColor: Colors.transparent,
             elevation: 0.0,
-            actions: [
-              IconButton(
-                icon: SvgPicture.asset("assets/icons/mypage_setting.svg"),
-                onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const FilterPageView())),
-              )
-            ],
+            // FIXME 현재는 기능이 동작하지 않음으로 숨김 처리해 두었다.
+            // actions: [
+            //   IconButton(
+            //     icon: SvgPicture.asset("assets/icons/mypage_setting.svg"),
+            //     onPressed: () => Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //             builder: (context) => const FilterPageView())),
+            //   )
+            // ],
           ),
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,25 +87,7 @@ class _HomeViewState extends State<HomeView> {
                 height: 18,
               ),
               SizedBox(
-                height: 35,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: homeController.keywordList.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        child: Container(
-                          alignment: Alignment.center,
-                          // TODO 선택 키워드 스타일 지정
-                          child: KeywordBox(
-                            keyword: homeController.keywordList[index],
-                            position: index,
-                          ),
-                        ),
-                        onTap: () {
-                          homeController.changeIndex(index);
-                        },
-                      );
-                    }),
+
               ),
               const Expanded(
                 child: SearchNewsView(
