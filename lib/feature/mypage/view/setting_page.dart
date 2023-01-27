@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:newz/config/user/controller/user_data_controller.dart';
 import 'package:newz/feature/login/controller/login_controller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingPage extends StatelessWidget {
   SettingPage({super.key});
   final LoginController loginController = Get.find();
+  final UserDataController userDataController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,122 +55,128 @@ class SettingPage extends StatelessWidget {
           )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 80, 20, 314),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              "ID: ${loginController.userData.id}",
-              style: const TextStyle(
-                fontFamily: 'Pretendard',
-                fontSize: 20,
-                color: Color(0xff37474f),
-                fontWeight: FontWeight.w600,
+      body: Obx(
+        () => Padding(
+          padding: const EdgeInsets.fromLTRB(20, 80, 20, 314),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                loginController.isLogin.isFalse
+                    ? "ID: 로그인 필요"
+                    : "ID: ${userDataController.email.toString()}",
+                style: const TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontSize: 20,
+                  color: Color(0xff37474f),
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-            ),
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  "연결된 계정",
-                  style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: 16,
-                    color: Color(0xff37474f),
-                    fontWeight: FontWeight.w400,
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "연결된 계정",
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: 16,
+                      color: Color(0xff37474f),
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
-                ),
-                Text(
-                  loginController.isLogin.isTrue ? "Google" : "연결된 계정 없음",
+                  Text(
+                    loginController.isLogin.isTrue ? "Google" : "연결된 계정 없음",
+                    style: const TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: 12,
+                      color: Color(0xff3F51B5),
+                      fontWeight: FontWeight.w400,
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  Expanded(
+                    child: SvgPicture.asset(
+                      "assets/icons/settingLine.svg",
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  SvgPicture.asset(
+                    "assets/icons/settingPage_setting.svg",
+                  ),
+                  const SizedBox(width: 16),
+                  const Text(
+                    "관심분야 설정",
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: 16,
+                      color: Color(0xff37474F),
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        "assets/icons/check.svg",
+                      ),
+                      const SizedBox(width: 16),
+                      const Text(
+                        "버전",
+                        style: TextStyle(
+                          fontFamily: 'Pretendard',
+                          fontSize: 16,
+                          color: Color(0xff37474F),
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const Text(
+                    "최신버전입니다.",
+                    style: TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: 12,
+                      color: Color(0xffB0BEC5),
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 24),
+              GestureDetector(
+                onTap: () {
+                  loginController.isLogin.isFalse
+                      ? loginController.login()
+                      : loginController.logout();
+                },
+                child: Text(
+                  loginController.isLogin.isFalse ? "로그인" : "로그아웃",
                   style: const TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: 12,
-                    color: Color(0xff3F51B5),
-                    fontWeight: FontWeight.w400,
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(height: 24),
-            Row(
-              children: [
-                Expanded(
-                  child: SvgPicture.asset(
-                    "assets/icons/settingLine.svg",
-                    fit: BoxFit.fill,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            Row(
-              children: [
-                SvgPicture.asset(
-                  "assets/icons/settingPage_setting.svg",
-                ),
-                const SizedBox(width: 16),
-                const Text(
-                  "관심분야 설정",
-                  style: TextStyle(
                     fontFamily: 'Pretendard',
                     fontSize: 16,
                     color: Color(0xff37474F),
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    SvgPicture.asset(
-                      "assets/icons/check.svg",
-                    ),
-                    const SizedBox(width: 16),
-                    const Text(
-                      "버전",
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: 16,
-                        color: Color(0xff37474F),
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
-                ),
-                const Text(
-                  "최신버전입니다.",
-                  style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: 12,
-                    color: Color(0xffB0BEC5),
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            GestureDetector(
-              onTap: () {
-                loginController.logout();
-              },
-              child: const Text(
-                "로그아웃",
-                style: TextStyle(
-                  fontFamily: 'Pretendard',
-                  fontSize: 16,
-                  color: Color(0xff37474F),
-                  fontWeight: FontWeight.w400,
-                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

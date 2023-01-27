@@ -1,0 +1,67 @@
+name: android
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build_flutter_android_app:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+
+      - name: parseVersionCode
+        run: |
+          code=($(cat pubspec.yaml | grep version: | grep -o -m1 "[0-9.]\+" | head -n 1 | tr '.' '\n'))
+          versionNumber=$(git rev-list --count --all)
+          echo versionNumber=${versionNumber} >> $GITHUB_ENV
+          echo versionCode=${code[0]}.${code[1]}.${versionNumber} >> $GITHUB_ENV
+
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 12.x
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v1
+        with:
+          flutter-version: 3.3.10
+
+      - name: Install Flutter dependencies
+        run: flutter pub get
+
+      - name: Build the release APK
+        run: flutter build apk --release --build-number "${{ env.versionNumber }}" --build-name "${{ env.versionCode }}"
+
+      - name: Build the AAB
+        run: flutter build appbundle --release --build-number "${{ env.versionNumber }}" --build-name "${{ env.versionCode }}"
+
+      # 현재시간 https://stackoverflow.com/a/65287555
+      - name: Get current date
+        run: echo "now=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/flutter-apk/app-release.apk,build/app/outputs/bundle/release/app-release.aab"
+          artifactContentType: application/zip
+          makeLatest: true
+          tag: v${{ env.versionCode }}-${{ env.now }}
+          name: Release v${{ env.versionCode }}-${{ env.now }}
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
+          working-directory: 'android'
+
+      - name: Run fastlane
+        run: cd android && fastlane internal json_key_data:'${{ secrets.JSON_KEY }}' aab:../build/app/outputs/bundle/release/app-release.aab
