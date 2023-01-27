@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:newz/feature/mypage/service/bookmark_api_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../service/mypage_api_service.dart';
 
@@ -10,8 +11,19 @@ class Mypagecontroller extends GetxController {
   // 무한스크롤 데이터 감지
   final RxBool hasData = true.obs;
 
+  final RxString userName = "".obs;
+  final RxString userEmail = "".obs;
+  final RxInt userId = 0.obs;
+
   RxList bookmarklist = <BookmarkModel>[].obs;
   RxList keywordlist = [].obs;
+
+  void fetchUserdata() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userName(prefs.getString("userName"));
+    userEmail(prefs.getString("userEmail"));
+    userId(prefs.getInt("userId"));
+  }
 
   // 북마크 호출 데이터 Rx화 및 loading bool set, 무산스크롤 데이터 감지
   void fetchBookmark(String page) async {
@@ -35,11 +47,13 @@ class Mypagecontroller extends GetxController {
 
   // 키워드 호출 데이터 Rx화 및 loading bool set
   void fetchKeyword() async {
-    var items = await ApiService.getKeywordListByDio();
-    if (items.isNotEmpty) {
-      isKeywordLoading(true);
-    }
-    keywordlist.assignAll(items);
+    Future.delayed(const Duration(seconds: 1), () async {
+      var items = await ApiService.getKeywordListByDio();
+      if (items.isNotEmpty) {
+        isKeywordLoading(true);
+      }
+      keywordlist.assignAll(items);
+    });
   }
 
   // 키워드 세팅 버튼 클릭 함수
@@ -49,18 +63,21 @@ class Mypagecontroller extends GetxController {
     } else {
       changeKeyword(true);
     }
+    fetchKeyword();
   }
 
   // 키워드 삭제 아이콘 클릭 함수
-  void keywordRemoveBtn(String id, String keyword) {
-    ApiService.removeKeyword(id, keyword);
+  void keywordRemoveBtn(String keyword) {
+    ApiService.removeKeyword(keyword);
   }
 
   // 북마크 삭제 아이콘 클릭 함수
-  void bookmarkRemoveBtn(String id) {
-    ApiService.removeBookmark(id);
+  void bookmarkRemoveBtn(String url) {
+    ApiService.removeBookmark(url);
   }
 
   // 웹뷰 페이지 내 북마크 버튼 함수
-  void webViewScapBtn(String url) {}
+  void webViewScapBtn(String url) {
+    ApiService.addBookmark(url);
+  }
 }

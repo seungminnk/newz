@@ -34,11 +34,12 @@ class _SplashViewState extends State<SplashView> {
 
       bool? didOnboarding = prefs.getBool("didOnboarding");
       String? accessToken = prefs.getString("accessToken");
+      String? userName = prefs.getString("userName");
 
       if (didOnboarding == null || !didOnboarding) {
         Get.offAllNamed(AppRoutes.introduction);
       } else {
-        if (accessToken == null) {
+        if (accessToken == null || userName == null) {
           Get.offAllNamed(AppRoutes.login);
         } else {
           Get.offAllNamed(AppRoutes.application);

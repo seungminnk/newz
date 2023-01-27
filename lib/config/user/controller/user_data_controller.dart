@@ -22,6 +22,9 @@ class UserDataController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("accessToken", userData.tokens.accessToken);
     prefs.setString("refreshToken", userData.tokens.refreshToken);
+    prefs.setInt("userId", userData.id);
+    prefs.setString("userName", userData.name);
+    prefs.setString("userEmail", userData.email);
   }
 
   Future<void> removeUserData() async {

@@ -37,6 +37,8 @@ class InfiniteScrollController extends GetxController {
   // 데이터 호출 초기화
   Future<void> resetData() async {
     bookmarkApi.resetFetchBookmark('1');
+    bookmarkApi.fetchKeyword();
+    bookmarkApi.changeKeyword(false);
     pages(2);
   }
 }

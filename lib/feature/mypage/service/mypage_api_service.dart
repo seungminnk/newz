@@ -57,7 +57,7 @@ class ApiService {
     dio.options.headers = {'x-newz-access-token': accessToken};
     try {
       await dio.post(
-        "/user/bookmark/removelist",
+        "/user/bookmark/remove",
         data: {
           "newsUrl": url,
         },
@@ -86,7 +86,7 @@ class ApiService {
   }
 
   // 키워드 삭제 API
-  static void removeKeyword(String id, String keyword) async {
+  static void removeKeyword(String keyword) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? accessToken = prefs.getString("accessToken");
     var dio = DioManager.instance.dio;
@@ -105,6 +105,7 @@ class ApiService {
 
   // 키워드 추가 API
   static void addKeyword(String keyword) async {
+    print('add keyword in');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? accessToken = prefs.getString("accessToken");
     var dio = DioManager.instance.dio;
@@ -116,6 +117,7 @@ class ApiService {
           "keywords": [keyword],
         },
       );
+      print('add keyword end');
     } catch (e) {
       print(e);
     }

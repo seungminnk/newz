@@ -9,7 +9,6 @@ import 'package:newz/feature/search/view/search_news_view.dart';
 
 import '../../login/controller/login_controller.dart';
 
-
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
 
@@ -20,15 +19,17 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   final loginController = Get.put(LoginController());
   final HomeController homeController = Get.put(HomeController());
-  final SearchResultController searchResultController = Get.put(SearchResultController(), tag: 'home');
+  final SearchResultController searchResultController =
+      Get.put(SearchResultController(), tag: 'home');
 
   @override
   void initState() {
     super.initState();
-    searchResultController.searchPageModel.searchKeyword.value = homeController.keywordList[0];
+    searchResultController.searchPageModel.searchKeyword.value =
+        homeController.keywordList[0];
     homeController.addListener(pageChangeEvent);
+    loginController.loadUserData();
   }
-
 
   @override
   void dispose() {
@@ -37,7 +38,8 @@ class _HomeViewState extends State<HomeView> {
   }
 
   void pageChangeEvent() {
-    searchResultController.searchPageModel.searchKeyword.value = homeController.keywordList[homeController.selectedKeywordIndex];
+    searchResultController.searchPageModel.searchKeyword.value =
+        homeController.keywordList[homeController.selectedKeywordIndex];
   }
 
   @override
@@ -47,8 +49,8 @@ class _HomeViewState extends State<HomeView> {
         return Scaffold(
           appBar: AppBar(
             title: Container(
-              child:
-              SvgPicture.asset("assets/icons/logo.svg",
+              child: SvgPicture.asset(
+                "assets/icons/logo.svg",
                 width: 88,
                 height: 40,
               ),
@@ -56,12 +58,13 @@ class _HomeViewState extends State<HomeView> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             actions: [
-              IconButton(icon: SvgPicture.asset("assets/icons/mypage_setting.svg"),
-                onPressed: () =>
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const FilterPageView())),)
+              IconButton(
+                icon: SvgPicture.asset("assets/icons/mypage_setting.svg"),
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const FilterPageView())),
+              )
             ],
           ),
           body: Column(
@@ -69,30 +72,24 @@ class _HomeViewState extends State<HomeView> {
             children: [
               const SizedBox(height: 24),
               Padding(
-                padding: EdgeInsets.only(left: 20),
-                child: loginController.isLogin.isFalse
-                    ? const Text(
-                  '길동 님의 관련 기사를 가져왔어요!',
-                  style: TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: 20,
-                    color: Color(0xff37474f),
-                    fontWeight: FontWeight.w600,
-
-                  ),
-                )
-                    : Text(
-                  '${loginController.userData.displayName!} 님의 관련 기사를 가져왔어요!',
-                  style: const TextStyle(
-                    fontFamily: 'Pretendard',
-                    fontSize: 20,
-                    color: Color(0xff37474f),
-                    fontWeight: FontWeight.w400,
+                padding: const EdgeInsets.only(left: 20),
+                child: Obx(
+                  () => Text(
+                    '${loginController.userName}님의 관련 기사를 가져왔어요!',
+                    style: const TextStyle(
+                      fontFamily: 'Pretendard',
+                      fontSize: 20,
+                      color: Color(0xff37474f),
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                 ),
               ),
-              const SizedBox(height: 18,),
-              SizedBox(height: 35,
+              const SizedBox(
+                height: 18,
+              ),
+              SizedBox(
+                height: 35,
                 child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: homeController.keywordList.length,
@@ -110,8 +107,7 @@ class _HomeViewState extends State<HomeView> {
                           homeController.changeIndex(index);
                         },
                       );
-                    }
-                ),
+                    }),
               ),
               const Expanded(
                 child: SearchNewsView(

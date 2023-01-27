@@ -6,6 +6,7 @@ import 'package:newz/config/user/controller/user_data_controller.dart';
 import 'package:newz/feature/mypage/controller/infiniteScroll_controller.dart';
 import 'package:newz/feature/mypage/controller/mypage_controller.dart';
 import 'package:get/get.dart';
+import 'package:newz/feature/mypage/service/mypage_api_service.dart';
 import 'package:newz/feature/mypage/view/setting_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../login/controller/login_controller.dart';
@@ -30,7 +31,11 @@ class _MyPageViewState extends State<MyPageView> {
 
   @override
   void initState() {
-    mypageController.fetchKeyword;
+    // mypageController.fetchKeyword();
+    setState(() {
+      loginController.loadUserData();
+      mypageController.fetchKeyword();
+    });
     super.initState();
   }
 
@@ -239,7 +244,8 @@ class BookmarkCardWidget extends StatelessWidget {
                         GestureDetector(
                           onTap: () {
                             mypageController
-                                .bookmarkRemoveBtn(news.bookmarkId.toString());
+                                .bookmarkRemoveBtn(news.link.toString());
+                            scrollController.resetData();
                             Get.back();
                           },
                           child: Container(
@@ -310,7 +316,9 @@ class UserInfoWidget extends StatelessWidget {
   UserInfoWidget({Key? key}) : super(key: key);
 
   final LoginController loginController = Get.find();
+
   final UserDataController userDataController = Get.find();
+
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -320,25 +328,15 @@ class UserInfoWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              loginController.isLogin.isFalse
-                  ? const Text(
-                      '길동님\n관심 기사를 모아놨어요',
-                      style: TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: 20,
-                        color: Color(0xff37474f),
-                        fontWeight: FontWeight.w600,
-                      ),
-                    )
-                  : Text(
-                      '${userDataController.name.toString()}님\n관심 기사를 모아놨어요',
-                      style: const TextStyle(
-                        fontFamily: 'Pretendard',
-                        fontSize: 20,
-                        color: Color(0xff37474f),
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
+              Text(
+                '${loginController.userName.toString()}님\n관심 기사를 모아놨어요',
+                style: const TextStyle(
+                  fontFamily: 'Pretendard',
+                  fontSize: 20,
+                  color: Color(0xff37474f),
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
               const SizedBox(
                 height: 5,
               ),
@@ -376,7 +374,7 @@ class UserInfoWidget extends StatelessWidget {
 
 class AddKeyword extends StatelessWidget {
   AddKeyword({Key? key}) : super(key: key);
-
+  TextEditingController textController = TextEditingController();
   final Mypagecontroller mypageController = Get.find();
 
   @override
@@ -394,10 +392,13 @@ class AddKeyword extends StatelessWidget {
                 right: 20,
               ),
               child: TextField(
+                controller: textController,
                 textAlignVertical: TextAlignVertical.center,
-                onSubmitted: (String text) {
-                  KeywordListController.to.addKeyword(text);
-                  KeywordEditingController.to.clear();
+                onSubmitted: (String keyword) {
+                  print("Call data");
+                  ApiService.addKeyword(keyword);
+                  mypageController.fetchKeyword();
+                  textController.clear();
                 },
                 style: const TextStyle(
                   fontSize: 14,
@@ -474,9 +475,9 @@ class KeywordListCard extends StatelessWidget {
                                       onTap: () {
                                         // 키워드 삭제 구현 필요
                                         mypageController.keywordRemoveBtn(
-                                            '1',
                                             mypageController
                                                 .keywordlist[index]);
+                                        mypageController.fetchKeyword();
                                       },
                                       child: const Icon(
                                         Icons.cancel_outlined,
