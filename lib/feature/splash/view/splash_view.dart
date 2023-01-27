@@ -26,7 +26,9 @@ class _SplashViewState extends State<SplashView> {
       SystemUiOverlay.top,
     ]);
     SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+      ),
     );
 
     Future.delayed(const Duration(milliseconds: 2000), () async {
@@ -56,6 +58,13 @@ class _SplashViewState extends State<SplashView> {
       SystemUiOverlay.top,
       SystemUiOverlay.bottom,
     ]);
+
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(
+        statusBarColor: Colors.black38,
+      ),
+    );
+
     super.dispose();
   }
 
