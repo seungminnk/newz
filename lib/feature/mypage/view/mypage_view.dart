@@ -407,9 +407,9 @@ class AddKeyword extends StatelessWidget {
               child: TextField(
                 controller: textController,
                 textAlignVertical: TextAlignVertical.center,
-                onSubmitted: (String keyword) {
+                onSubmitted: (String keyword) async {
                   print("Call data");
-                  ApiService.addKeyword(keyword);
+                  await ApiService.addKeyword(keyword);
                   mypageController.fetchKeyword();
                   textController.clear();
                 },

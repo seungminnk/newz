@@ -104,7 +104,7 @@ class ApiService {
   }
 
   // 키워드 추가 API
-  static void addKeyword(String keyword) async {
+  static Future<void> addKeyword(String keyword) async {
     print('add keyword in');
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? accessToken = prefs.getString("accessToken");
