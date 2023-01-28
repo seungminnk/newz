@@ -44,6 +44,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    homeController.load();
     return GetBuilder(
       builder: (HomeController homeController) {
         return Scaffold(
