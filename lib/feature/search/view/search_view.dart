@@ -29,12 +29,12 @@ class SearchView extends GetView<SearchController> {
           ),
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: SvgPicture.asset("assets/icons/sort.svg"),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ],
+        // actions: [
+        //   IconButton(
+        //     icon: SvgPicture.asset("assets/icons/sort.svg"),
+        //     onPressed: () => Navigator.pop(context),
+        //   ),
+        // ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
