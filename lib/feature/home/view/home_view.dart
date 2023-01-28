@@ -102,6 +102,7 @@ class _HomeViewState extends State<HomeView> {
                           child: KeywordBox(
                             keyword: homeController.keywordList[index],
                             position: index,
+                            selected: index == homeController.selectedKeywordIndex,
                           ),
                         ),
                         onTap: () {
