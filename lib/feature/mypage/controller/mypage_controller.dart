@@ -47,14 +47,14 @@ class Mypagecontroller extends GetxController {
   }
 
   // 키워드 호출 데이터 Rx화 및 loading bool set
-  void fetchKeyword() async {
-    Future.delayed(const Duration(seconds: 1), () async {
+  Future fetchKeyword() async {
+    // Future.delayed(const Duration(seconds: 1), () async {
       var items = await ApiService.getKeywordListByDio();
       if (items.isNotEmpty) {
         isKeywordLoading(true);
       }
       keywordlist.assignAll(items);
-    });
+    // });
   }
 
   // 키워드 세팅 버튼 클릭 함수

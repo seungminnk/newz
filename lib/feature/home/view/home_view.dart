@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:newz/common/component/loading/view/CustomCircularProgressIndicator.dart';
 import 'package:newz/feature/home/components/keyword_box.dart';
 import 'package:newz/feature/home/controller/home_controller.dart';
 import 'package:newz/feature/home/view/filter_page_view.dart';
@@ -65,7 +66,9 @@ class _HomeViewState extends State<HomeView> {
             //   )
             // ],
           ),
-          body: Column(
+          body:
+          !homeController.loaded ? const Center(child: CustomCircularProgressIndicator()) :
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 24),
@@ -87,7 +90,25 @@ class _HomeViewState extends State<HomeView> {
                 height: 18,
               ),
               SizedBox(
-
+                height: 35,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: homeController.keywordList.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        child: Container(
+                          alignment: Alignment.center,
+                          // TODO 선택 키워드 스타일 지정
+                          child: KeywordBox(
+                            keyword: homeController.keywordList[index],
+                            position: index,
+                          ),
+                        ),
+                        onTap: () {
+                          homeController.changeIndex(index);
+                        },
+                      );
+                    }),
               ),
               const Expanded(
                 child: SearchNewsView(
