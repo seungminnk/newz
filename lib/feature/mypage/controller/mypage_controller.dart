@@ -73,8 +73,8 @@ class Mypagecontroller extends GetxController {
   }
 
   // 북마크 삭제 아이콘 클릭 함수
-  void bookmarkRemoveBtn(String url) {
-    ApiService.removeBookmark(url);
+  Future<void> bookmarkRemoveBtn(String url) async {
+    await ApiService.removeBookmark(url);
   }
 
   // 웹뷰 페이지 내 북마크 버튼 함수

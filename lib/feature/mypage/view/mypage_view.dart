@@ -256,9 +256,8 @@ class BookmarkCardWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         GestureDetector(
-                          onTap: () {
-                            mypageController
-                                .bookmarkRemoveBtn(news.link.toString());
+                          onTap: () async {
+                            await mypageController.bookmarkRemoveBtn(news.link.toString());
                             scrollController.resetData();
                             Get.back();
                           },

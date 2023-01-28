@@ -50,7 +50,7 @@ class ApiService {
   }
 
   // 북마크 삭제 API
-  static void removeBookmark(String url) async {
+  static Future<void> removeBookmark(String url) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? accessToken = prefs.getString("accessToken");
     var dio = DioManager.instance.dio;
